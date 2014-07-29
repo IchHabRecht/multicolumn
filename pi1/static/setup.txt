@@ -1,0 +1,480 @@
+temp.effectBoxImageRendering {
+	text =
+	text.20 =
+	text.wrap =
+	layout = TEXT
+	layout {
+		value = ###IMAGES###
+	}
+	rendering {
+		simple {
+			imageRowStdWrap.dataWrap = |
+			imageLastRowStdWrap.dataWrap = |
+			noRowsStdWrap.wrap =
+			oneImageStdWrap.dataWrap = |
+			imgTagStdWrap.wrap = |
+			editIconsStdWrap.wrap = |
+			caption {
+				required = 1
+				wrap = <p class="caption"> | </p>
+			}
+			imageStdWrap.dataWrap = <div class="effectBoxImage" style="width:{register:totalwidth}px;"> | </div>
+			imageStdWrapNoWidth.wrap = <div class="effectBoxImage"><div class="inner">|</div></div>
+		}
+	}
+
+	renderMethod = simple
+
+}
+
+
+plugin.tx_multicolumn_pi1 {
+		# internal do not remove
+	includeFromStatic = 1
+
+		# column container
+	columnContainer = COA
+	columnContainer {
+		if.isTrue.field = content
+
+		1 = LOAD_REGISTER
+		1 {
+			width = width: {field:containerWidth}{field:containerMeasure};
+			width {
+				insertData = 1
+				if {
+					isTrue.field = containerWidth
+					isFalse.field = disableStyles
+				}
+			}
+				# to do add configuration option to prevent clear
+			clearfix = clearfix
+
+			makeEqualElementBoxHeight = multicolumnContainerFixHeight
+			makeEqualElementBoxHeight {
+				if.isTrue.field = makeEqualElementBoxHeight
+			}
+
+			makeEqualElementColumnHeight = multicolumnContainerfixColumnHeight
+			makeEqualElementColumnHeight {
+				if.isTrue.field = makeEqualElementColumnHeight
+			}
+
+
+				# layout class
+			layout = multicolumnLayout{field:layoutKey}
+			layout {
+				insertData = 1
+				if.isTrue.field = layoutKey
+			}
+
+				# Extra Class for Container from FlexForm
+			containerClass.cObject = TEXT
+			containerClass.cObject {
+				data = field:containerClass
+				htmlSpecialChars = 1
+				if.isTrue.field = containerClass
+			}
+		}
+
+		2 = TEXT
+		2 {
+			insertData = 1
+			value (
+				<ul class="multicolumnContainer {register:containerClass} {register:layout} {register:clearfix} {register:makeEqualElementBoxHeight} {register:makeEqualElementColumnHeight}" style="{register:width}">
+					{field:content}
+				</ul>
+			)
+		}
+
+		3 = RESTORE_REGISTER
+	}
+
+		# markup for column item
+	column = COA
+	column {
+		1 = LOAD_REGISTER
+		1 {
+			width = width: {field:columnWidth}{field:columnMeasure};
+			width {
+				insertData = 1
+				if.isTrue.field = columnWidth
+			}
+
+			margin = margin: {field:columnMargin}
+			margin {
+				if.isTrue.field = columnMargin
+				insertData = 1
+			}
+
+			padding = padding: {field:columnPadding}
+			padding {
+				if {
+					isTrue.field = columnPadding
+					isFalse.field = disableStyles
+				}
+				insertData = 1
+			}
+
+			columnItems.cObject = TEXT
+			columnItems.cObject {
+				if.isTrue.field = content
+				insertData = 1
+				value (
+					<div class="columnItems" style="{register:padding}">
+						{field:content}
+					</div>
+				)
+			}
+		}
+
+		2 = LOAD_REGISTER
+		2 {
+			styles = style="{register:width} {register:margin}"
+			styles {
+				insertData = 1
+				if.isFalse.field = disableStyles
+			}
+		}
+
+		3 = TEXT
+		3 {
+			insertData = 1
+			value (
+				<li {register:styles} class="column column{field:recordNumber} {field:isFirst} {field:isLast}">
+					{register:columnItems}
+				</li>
+			)
+		}
+
+		4 = RESTORE_REGISTER
+	}
+
+		# render content elements
+	columnItem = COA
+	columnItem {
+		stdWrap.dataWrap = <div class="columnItem columnItem{field:recordNumber} {field:isFirst} {field:isLast} columnItem{field:CType}">|</div>
+
+		10 = < tt_content
+	}
+
+		# maxWidth of colum (needed for shrink images)
+	columnWidth = CASE
+	columnWidth {
+		key.data = field:colPos
+
+		default = TEXT
+		default {
+			value = {$styles.content.imgtext.colPos0.maxW}
+			ifEmpty = {$styles.content.imgtext.maxW}
+			intval = 1
+		}
+
+		#col1
+		1 = TEXT
+		1 {
+			value = {$styles.content.imgtext.colPos1.maxW}
+			ifEmpty = {$styles.content.imgtext.maxW}
+			intval = 1
+		}
+
+		#col2
+		2 = TEXT
+		2 {
+			value = {$styles.content.imgtext.colPos2.maxW}
+			ifEmpty = {$styles.content.imgtext.maxW}
+			intval = 1
+		}
+	}
+
+	# effect box rendering
+		# effect box items
+	effectBoxItems = CASE
+	effectBoxItems {
+		key.field = effect
+
+		default = COA
+		default {
+			stdWrap {
+				dataWrap = <li class="effectBoxItem effectBoxItem{field:recordNumber} {field:isFirst} {field:isLast}"><div class="effectBoxInner">|</div></li>
+			}
+
+			10 = < tt_content
+			10 {
+				stdWrap.innerWrap.cObject =
+				image {
+					20 < temp.effectBoxImageRendering
+				}
+				textpic {
+					20 < temp.effectBoxImageRendering
+
+					30 = TEXT
+					30 {
+						if.isTrue.field = bodytext
+						parseFunc = < lib.parseFunc_RTE
+						field = bodytext
+						wrap = <div class="effectBoxText">|</div>
+					}
+				}
+			}
+		}
+
+		sudoSliderTabFade2 < .default
+		sudoSliderTabFade2 {
+			10 {
+				# remove lib.stdheader from element
+				image.10 = TEXT
+				# remove lib.stdheader from element
+				textpic {
+					10 = TEXT
+					30 = TEXT
+					30 {
+						if.isTrue.field = header
+						parseFunc >
+						field = header
+						crop = 40
+						typolink.parameter.field = header_link
+						wrap = <div class="effectBoxText">|</div>
+					}
+				}
+			}
+		}
+			# it's possible to add custom markup for each effect
+		sudoSliderTabSliding < .default
+		sudoSliderTabSliding {
+			10 >
+			10 = < tt_content
+		}
+
+		easyAccordion < .default
+		easyAccordion {
+			stdWrap {
+				dataWrap = <dt class="effectBoxItem effectBoxItem{field:recordNumber} effectBoxItemHeader {field:isFirst} {field:isLast} header{field:header_layout}"><span>{field:header}</span></dt>|
+			}
+
+			10 {
+				stdWrap.dataWrap = <dd class="effectBoxItem effectBoxItem{field:recordNumber} effectBoxItemContent {field:isFirst} {field:isLast}">|</dd>
+
+					# remove lib.stdheader from element
+				image.10 = TEXT
+					# remove lib.stdheader from element
+				textpic.10 = TEXT
+			}
+		}
+
+		vAccordion < .default
+		vAccordion = COA
+		vAccordion {
+			stdWrap {
+				dataWrap = <li class="effectBoxItem effectBoxItem{field:recordNumber} {field:isFirst} {field:isLast}">|</li>
+			}
+
+			10 = COA
+			10 {
+				stdWrap.prepend = TEXT
+				stdWrap.prepend {
+					wrap = <h5 class="effectBoxItemTitle">|</h5>
+					field = header
+					required = 1
+				}
+
+				wrap = <div class="effectBoxItemContent"><div class="innerWrap">|</div></div>
+				required = 1
+
+				10 >
+				10 =< tt_content
+				10 {
+					textpic {
+							# remove lib.stdheader from elements
+						10 = TEXT
+					}
+				}
+			}
+		}
+
+		simpleTabs = COA
+		simpleTabs {
+			stdWrap.dataWrap = <li class="tabItem tabItem{field:recordNumber} clearfix"><div class="innerTab"><span class="simpleTabNavigationItemContent" style="display: none;">{field:header}</span>|</div></li>
+
+			10 = < tt_content
+			10 {
+				uploads {
+					10 =
+				}
+				list {
+					10 =
+				}
+				text {
+					10 =
+				}
+				textpic {
+					10 =
+				}
+				image {
+					10 =
+				}
+				bullets {
+					10 =
+				}
+				table {
+					10 =
+				}
+				multimedia {
+					10 =
+				}
+				mailform {
+					10 =
+				}
+				search {
+					10 =
+				}
+				login {
+					10 =
+				}
+				menu {
+					10 =
+				}
+				splash {
+					10 =
+				}
+			}
+		}
+
+		roundabout = COA
+		roundabout {
+			stdWrap {
+				dataWrap = <li title="{field:header}" class="{field:itemThree} {field:oddeven} clearfix effectBoxItem effectBoxItem{field:recordNumber} {field:isFirst} {field:isLast}"><div class="effectBoxInner">|</div></li>
+			}
+
+			10 = < tt_content
+			10 {
+				stdWrap.innerWrap.cObject =
+				image {
+					20 < temp.effectBoxImageRendering
+					20 {
+
+					}
+				}
+				textpic {
+					20 < temp.effectBoxImageRendering
+					20 {
+						maxW.cObject =
+						maxW = 20
+						maxW.override.data =
+
+						maxWInText = 20
+						maxWInText.override.data =
+
+						maxWInText.cObject = TEXT
+						maxWInText.cObject.value = 196
+					}
+
+					30 = TEXT
+					30 {
+						if.isTrue.field = bodytext
+						parseFunc = < lib.parseFunc_RTE
+						field = bodytext
+						wrap = <div class="effectBoxText">|</div>
+					}
+				}
+			}
+		}
+	}
+
+		# effect box list
+	effectBox = CASE
+	effectBox {
+		stdWrap {
+			dataWrap = <div class="effectBox effectBoxLoading {field:effect} {field:effectBoxClass}" id="effectBox_{field:uid}">|</div>
+			required = 1
+		}
+		key.field = effect
+
+		default = TEXT
+		default {
+			required = 1
+			field = effectBoxItems
+			dataWrap = <ul class="effectBoxList">|</ul>
+		}
+
+		easyAccordion = TEXT
+		easyAccordion {
+			required = 1
+			field = effectBoxItems
+			dataWrap = <dl style="{field:columnWidth}">|</dl>
+		}
+
+		vAccordion = TEXT
+		vAccordion {
+			required = 1
+			field = effectBoxItems
+			dataWrap = <ul class="vAccordion" id="effectBox_{field:uid}">|</ul>
+		}
+
+		simpleTabs = TEXT
+		simpleTabs {
+			if.isTrue.field = effectBoxItems
+			insertData = 1
+			value (
+				<div class="simpleTabNavigationContainer">
+
+				</div>
+				<ul class="simpleTabsContainer clearfix">
+					{field:effectBoxItems}
+				</ul>
+			)
+		}
+
+		roundabout = TEXT
+		roundabout {
+			if.isTrue.field = effectBoxItems
+			insertData = 1
+
+			value (
+<ul class="effectBoxList">
+	{field:effectBoxItems}
+</ul>
+<div class="effectBoxNavigation effectBoxNavigation{field:effect}">
+	<ul class="nextPrev">
+		<li class="prev" title="{field:lll:prev}">
+			<span>
+				{field:lll:prev}
+			</span>
+		</li>
+		<li class="next" title="{field:lll:next}">
+			<span>
+				{field:lll:next}
+			</span>
+		</li>
+	</ul>
+
+	<div class="pointNav">
+
+	</div>
+</div>
+			)
+		}
+	}
+}
+
+plugin.tx_multicolumn_pi1._CSS_DEFAULT_STYLE (
+	.clearfix:after {
+		clear:both;
+		content:".";
+		display:block;
+		font-size:0;
+		height:0;
+		visibility:hidden;
+	}
+
+	.columnItems,
+	.multicolumnContainer {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	.multicolumnContainer .column {
+		float: left;
+	}
+)

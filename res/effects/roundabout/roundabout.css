@@ -1,0 +1,177 @@
+.roundabout .effectBoxList {
+	list-style: none;
+	padding: 0;
+
+	width: 582px;
+	height: 360px;
+	margin-left: 198px;
+
+}
+
+.roundabout ul,
+.roundabout li {
+	zoom: 1;
+	position: relative;
+}
+.effectBoxLoading .effectBoxList {
+	overflow: hidden;
+	display: none;
+}
+	.roundabout .effectBoxItem {
+		cursor: pointer;
+		width: 555px;
+		height: 269px;
+		padding: 34px 7px 24px 20px;
+		overflow: hidden;
+
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+		background: #E7E7E8;
+		background: -webkit-gradient(linear, 0 0, 0 bottom, from(#E7E7E8), to(#dfe0e0));
+		background: -webkit-linear-gradient(#E7E7E8, #dfe0e0);
+		background: -moz-linear-gradient(#E7E7E8, #dfe0e0);
+		background: -ms-linear-gradient(#E7E7E8, #dfe0e0);
+		background: -o-linear-gradient(#E7E7E8, #dfe0e0);
+		background: linear-gradient(#E7E7E8, #dfe0e0);
+		-pie-background: linear-gradient(#E7E7E8, #dfe0e0);
+		behavior: url(/PIE.htc);
+
+		-webkit-box-shadow: #2a2a2a 1px 1px 2px;
+		-moz-box-shadow: #2a2a2a 1px 1px 2px;
+		box-shadow: #2a2a2a 1px 1px 2px;
+	}
+	.roundabout .effectBoxItem *,
+	.roundabout .effectBoxItem {
+		font-size: 100%;
+	}
+	.roundabout .effectBoxInner {
+	}
+	.roundabout li.roundabout-in-focus {
+		cursor: auto;
+		
+	}
+
+	.roundabout li.effectBoxItem h2 {
+		font-size: 26px;
+		margin: 0 -7px 0 -20px;
+		padding: 0.8% 20px 1.2% 20px;
+		color: #fff;
+		text-shadow: 1px 1px 2px #313438;
+		
+		background: #8B909A;
+		background: -webkit-gradient(linear, 0 0, 0 bottom, from(#8B909A), to(#616670));
+		background: -webkit-linear-gradient(#8B909A, #616670);
+		background: -moz-linear-gradient(#8B909A, #616670);
+		background: -ms-linear-gradient(#8B909A, #616670);
+		background: -o-linear-gradient(#8B909A, #616670);
+		background: linear-gradient(#8B909A, #616670);
+		-pie-background: linear-gradient(#8B909A, #616670);
+		behavior: url(/PIE.htc);
+	}
+
+	.roundabout li.listItemEven h2 {
+		background: #489E52;
+		background: -webkit-gradient(linear, 0 0, 0 bottom, from(#489E52), to(#16731f));
+		background: -webkit-linear-gradient(#489E52, #16731f);
+		background: -moz-linear-gradient(#489E52, #16731f);
+		background: -ms-linear-gradient(#489E52, #16731f);
+		background: -o-linear-gradient(#489E52, #16731f);
+		background: linear-gradient(#489E52, #16731f);
+		-pie-background: linear-gradient(#489E52, #16731f);
+	}
+	
+	.roundabout li.listItemThree h2 {
+		background: #CA2A72;
+		background: -webkit-gradient(linear, 0 0, 0 bottom, from(#CA2A72), to(#9f0249));
+		background: -webkit-linear-gradient(#CA2A72, #9f0249);
+		background: -moz-linear-gradient(#CA2A72, #9f0249);
+		background: -ms-linear-gradient(#CA2A72, #9f0249);
+		background: -o-linear-gradient(#CA2A72, #9f0249);
+		background: linear-gradient(#CA2A72, #9f0249);
+		-pie-background: linear-gradient(#CA2A72, #9f0249);
+	}
+	
+	.roundabout .effectBoxImage img {
+		width: 100%;
+		height: auto;
+	}
+	.roundabout .effectBoxText {
+		width: 64%;
+		margin-top: 3.7%;
+	}
+		.roundabout .effectBoxText p {
+		}
+		.roundabout .effectBoxText .subheader {
+			margin-top: 0;
+		}
+	.roundabout .effectBoxImage {
+		width: 36%;
+		float: right;
+		position: relative;
+		margin-top: 20px;
+	}
+		.roundabout .effectBoxImage .inner {
+			padding-left: 3%;
+		}
+		.roundabout .effectBoxImage img {
+		}
+	
+.effectBoxNavigationroundabout {
+	width: 100%;
+	height: 76px;
+	margin-top: 15px;
+}
+	.effectBoxNavigationroundabout ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.effectBoxNavigationroundabout .nextPrev li {
+		position: absolute;
+		cursor: pointer;
+		width: 44px;
+		height: 44px;
+		display: block;
+		background-image: url(sprites.png);
+		background-repeat: no-repeat;
+	}
+		.effectBoxNavigationroundabout .nextPrev li span {
+			visibility: hidden;
+		}
+	
+	.effectBoxNavigationroundabout .nextPrev li.prev {
+		background-position: 0 0;
+		margin: -30px 0 0 140px;
+	}
+	.effectBoxNavigationroundabout .nextPrev li.next {
+		background-position: 0 -55px;
+		margin: -30px 0 0 815px;
+	}
+	
+	.effectBoxNavigationroundabout  .pointNav {
+		position: absolute;
+		margin-top: 30px;
+	}
+		.effectBoxNavigationroundabout .pointNav li {
+			cursor: pointer;
+			display: inline-block;
+
+			width: 13px;
+			height: 13px;
+			margin-right: 4px;
+			
+			background: url(sprites.png) no-repeat -14px -127px;
+		}
+		
+		.ie7 .effectBoxNavigationroundabout .pointNav li {
+			display: inline;
+		}
+		
+			.effectBoxNavigationroundabout  .pointNav li span {
+				display: none;
+			}
+		.effectBoxNavigationroundabout .pointNav .act {
+			background-position: -14px -179px;
+		}
