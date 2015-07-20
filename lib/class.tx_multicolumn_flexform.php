@@ -31,7 +31,12 @@ class tx_multicolumn_flexform {
 	protected $flex = array();
 
 	public function __construct($flexformString = NULL) {
-		if ($flexformString) {
+		if ($flexformString === NULL || empty($flexformString)) {
+			return;
+		}
+		if (is_array($flexformString)) {
+			$this->flex = $flexformString;
+		} else {
 			$this->flex = t3lib_div::xml2array($flexformString);
 		}
 	}
