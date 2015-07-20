@@ -334,7 +334,7 @@ if (version_compare(TYPO3_branch, '6.0', '>=')) {
 	}
 } else {
 
-	require_once(t3lib_extMgm::extPath('cms', 'layout/interfaces/interface.tx_cms_layout_tt_content_drawitemhook.php'));
+	require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms', 'layout/interfaces/interface.tx_cms_layout_tt_content_drawitemhook.php'));
 
 	class tx_multicolumn_tt_content_drawItem_pre60 extends tx_multicolumn_tt_content_drawItem_base implements tx_cms_layout_tt_content_drawItemHook {
 

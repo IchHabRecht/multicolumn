@@ -39,7 +39,7 @@ class tx_multicolumn_emconfhelper {
 		$GLOBALS['LANG']->includeLLFile('EXT:multicolumn/locallang.xml');
 
 		// check templavoila
-		if (t3lib_extMgm::isLoaded('templavoila')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
 			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), t3lib_FlashMessage::INFO);
 		}
 

@@ -52,7 +52,7 @@ class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook
 		$LL = $this->includeLocalLang();
 
 		$multicolumnElement = array(
-			'icon' => t3lib_extMgm::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
+			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
 			'title' => $LANG->getLLL('pi1_title', $LL),
 			'description' => $LANG->getLLL('pi1_plus_wiz_description', $LL),
 			'tt_content_defValues' => array(

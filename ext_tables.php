@@ -70,14 +70,14 @@ $tempColumns = array(
 	)
 );
 
-t3lib_extMgm::addTCAcolumns('tt_content', $tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 // for 4.5
 if (!empty($GLOBALS['TCA']['tt_content']['palettes']['general'])) {
-	t3lib_extMgm::addFieldsToPalette('tt_content', 'general', 'tx_multicolumn_parentid', 'before:colPos');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'general', 'tx_multicolumn_parentid', 'before:colPos');
 }
 // compatibility
 if (!empty($GLOBALS['TCA']['tt_content']['palettes'][4])) {
-	t3lib_extMgm::addFieldsToPalette('tt_content', 4, 'tx_multicolumn_parentid', 'before:colPos');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 4, 'tx_multicolumn_parentid', 'before:colPos');
 }
 
 if (TYPO3_MODE == 'BE') {
@@ -87,7 +87,7 @@ if (TYPO3_MODE == 'BE') {
 	// add clickmenu expansion
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
 		'name' => 'tx_multicolumn_alt_clickmenu',
-		'path' => PATH_tx_multicolumn . 'hooks/class.tx_multicolumn_alt_clickmenu.php'
+		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn') . 'hooks/class.tx_multicolumn_alt_clickmenu.php',
 	);
 }
 
@@ -101,10 +101,8 @@ $TCA['tt_content']['columns']['colPos']['config']['itemsProcFunc'] = 'tx_multico
 // request refresh if multicolumn_parent_id is changed
 $TCA['tt_content']['ctrl']['requestUpdate'] .= ',layoutKey,tx_multicolumn_parentid';
 
-// add typoscript
-t3lib_extMgm::addStaticFile($_EXTKEY, 'pi1/static/', 'Multicolumn');
+// Add typoscript
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'pi1/static/', 'Multicolumn');
 
-// add configuration flexform
-t3lib_extMgm::addPiFlexFormValue('*', 'FILE:EXT:multicolumn/flexform_ds.xml', 'multicolumn');
-
-?>
+// Add configuration flexform
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:multicolumn/flexform_ds.xml', 'multicolumn');
