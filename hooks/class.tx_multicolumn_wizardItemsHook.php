@@ -22,10 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!class_exists('cms_newContentElementWizardsHook')) {
-	t3lib_div::requireOnce(PATH_typo3 . 'interfaces/interface.cms_newcontentelementwizarditemshook.php');
-}
-
 class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook {
 	/**
 	 * modifies WizardItems array
