@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,11 +25,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_multicolumn_db_list {
 
-	public function makeQueryArray_post (&$queryParts) {
-			//is colPos greater than 9 >
+	public function makeQueryArray_post(&$queryParts) {
+		//is colPos greater than 9 >
 		if (!empty($queryParts['WHERE']) && ($queryParts['FROM'] === 'tt_content') && (preg_match('/colPos=(1[0-9])/', $queryParts['WHERE']))) {
 			$queryParts['WHERE'] .= ' AND tx_multicolumn_parentid = 0';
 		}

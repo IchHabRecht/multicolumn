@@ -1,63 +1,65 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 snowflake productions GmbH
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-*/
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 snowflake productions GmbH
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ */
 class tx_multicolumn_pi_base extends tslib_pibase {
 
 	/**
 	 * Render an array with data element with $confName
 	 *
-	 * @param	string		$tableName		Table name to use for the given data
-	 * @param	String		$confName		Path to typoscript to render each element with
-	 * @param	Array		$recordsArray	Array which contains elements (array) for typoscript rendering
-	 * @param	Array		$appendData		Additinal data
-	 * @return	String		All items rendered as a string
+	 * @param    string $tableName Table name to use for the given data
+	 * @param    String $confName Path to typoscript to render each element with
+	 * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
+	 * @param    Array $appendData Additinal data
+	 * @return    String        All items rendered as a string
 	 */
-	public function renderListItems($tableName, $confName, array $recordsArray, array $appendData = array(), $debug = false) {
-		$arrayLength= count($recordsArray);
-		$rowNr	= 1;
+	public function renderListItems($tableName, $confName, array $recordsArray, array $appendData = array(), $debug = FALSE) {
+		$arrayLength = count($recordsArray);
+		$rowNr = 1;
 		$index = 0;
-		$content = null;
+		$content = NULL;
 
-		foreach($recordsArray as $data) {
+		foreach ($recordsArray as $data) {
 			// first run?
-			if($rowNr == 1)
-				$data['isFirst'] = $confName.'First listItemFirst';
+			if ($rowNr == 1) {
+				$data['isFirst'] = $confName . 'First listItemFirst';
+			}
 
 			// last run
-			if($rowNr == $arrayLength)
-				$data['isLast'] = $confName.'Last listItemLast';
+			if ($rowNr == $arrayLength) {
+				$data['isLast'] = $confName . 'Last listItemLast';
+			}
 
 			// push recordNumber to $data array
 			$data['recordNumber'] = $rowNr;
-			$data['index'] = $rowNr-1;
+			$data['index'] = $rowNr - 1;
 
 			// push arrayLength to $data array
 			$data['arrayLength'] = $arrayLength;
 
 			// Add odd or even to the cObjData array.
-			$data['oddeven'] = $rowNr % 2 ? $confName.'Odd listItemOdd' : $confName.'Even listItemEven';
-			$data['itemThree'] = ($rowNr % 3) ?  '' : $confName.'Three listItemThree';
+			$data['oddeven'] = $rowNr % 2 ? $confName . 'Odd listItemOdd' : $confName . 'Even listItemEven';
+			$data['itemThree'] = ($rowNr % 3) ? '' : $confName . 'Three listItemThree';
 
 			// set data
 			$data = array_merge($data, $appendData);
@@ -67,11 +69,11 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 			$cObj->start($data, $tableName);
 			$cObj->parentRecordNumber = $rowNr;
 
-			$content .= $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName.'.']);
+			$content .= $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
 			unset($cObj);
 
-			$rowNr ++;
+			$rowNr++;
 		}
 
 		return $content;
@@ -80,15 +82,15 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	/**
 	 * Render an array with trough cObjGetSingle
 	 *
-	 * @param	String		$confName Path to typoscript to render each element with
-	 * @param	Array		$recordsArray	Array which contains elements (array) for typoscript rendering
-	 * @return	String		All items rendered as a string
+	 * @param    String $confName Path to typoscript to render each element with
+	 * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
+	 * @return    String        All items rendered as a string
 	 */
 	protected function renderItem($confName, array $data) {
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 		/** @var tslib_cObj $cObj */
 		$cObj->start($data, '_NO_TABLE');
-		$content = $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName.'.']);
+		$content = $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
 		return $content;
 	}
@@ -96,11 +98,13 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	/**
 	 * Includes a css or js file
 	 *
-	 * @param	include files
+	 * @param    include files
 	 */
 	protected function includeCssJsFiles(array $files) {
-		foreach($files as $fileKey=>$file) {
-			if(is_array($file)) continue;
+		foreach ($files as $fileKey => $file) {
+			if (is_array($file)) {
+				continue;
+			}
 			$mediaTypeSplit = strrchr($file, '.');
 			$file = $GLOBALS['TSFE']->tmpl->getFileName($file);
 
@@ -109,14 +113,14 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 					$fileKey => $file,
 					$fileKey . '.' => $files[$fileKey . '.']
 				),
-				'mediaType' => str_replace('.', null, $mediaTypeSplit)
+				'mediaType' => str_replace('.', NULL, $mediaTypeSplit)
 			);
 
-			if(!$this->hookRequest('addJsCssFile', $hookRequestParams)) {
+			if (!$this->hookRequest('addJsCssFile', $hookRequestParams)) {
 				$resolved = $file;
 
-				if(file_exists($resolved)) {
-					($mediaTypeSplit ==  '.js') ? $GLOBALS['TSFE']->getPageRenderer()->addJsFooterFile($resolved) : $GLOBALS['TSFE']->getPageRenderer()->addCssFile($resolved);
+				if (file_exists($resolved)) {
+					($mediaTypeSplit == '.js') ? $GLOBALS['TSFE']->getPageRenderer()->addJsFooterFile($resolved) : $GLOBALS['TSFE']->getPageRenderer()->addCssFile($resolved);
 				}
 			}
 		}
@@ -125,38 +129,39 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	/**
 	 * Displays a flash message
 	 *
-	 * @param	string		$title flash message title
-	 * @param	string		$message flash message message
+	 * @param    string $title flash message title
+	 * @param    string $message flash message message
 	 *
-	 * @retun	string		html content of flash message
+	 * @retun    string        html content of flash message
 	 */
 	protected function showFlashMessage($title, $message, $type = t3lib_FlashMessage::ERROR) {
-			// get relative path
-		$relPath = str_replace(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'), null, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			// add error csss
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($relPath . 'typo3conf/ext/multicolumn/res/flashmessage.css', 'stylesheet','screen');
+		// get relative path
+		$relPath = str_replace(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'), NULL, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		// add error csss
+		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($relPath . 'typo3conf/ext/multicolumn/res/flashmessage.css', 'stylesheet', 'screen');
 		$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+
 		return $flashMessage->render();
 	}
 
 	/**
 	 * Returns an object reference to the hook object if any
 	 *
-	 * @param	string		Name of the function you want to call / hook key
-	 * @param	array		Request params
-	 * @return	integer		Hook objects found
+	 * @param    string        Name of the function you want to call / hook key
+	 * @param    array        Request params
+	 * @return    integer        Hook objects found
 	 */
 	protected function hookRequest($functionName, array $hookRequestParams) {
 		global $TYPO3_CONF_VARS;
 		$hooked = 0;
 
-			// Hook: menuConfig_preProcessModMenu
+		// Hook: menuConfig_preProcessModMenu
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName])) {
-			foreach($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName] as $classRef) {
+			foreach ($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName] as $classRef) {
 				$hookObj = t3lib_div::getUserObj($classRef);
 				if (method_exists($hookObj, $functionName)) {
 					$hookObj->$functionName($this, $hookRequestParams);
-					$hooked ++;
+					$hooked++;
 				}
 			}
 		}
@@ -174,4 +179,5 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	}
 
 }
+
 ?>

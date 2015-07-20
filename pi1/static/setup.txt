@@ -6,6 +6,7 @@ temp.effectBoxImageRendering {
 	layout {
 		value = ###IMAGES###
 	}
+
 	rendering {
 		simple {
 			imageRowStdWrap.dataWrap = |
@@ -18,21 +19,20 @@ temp.effectBoxImageRendering {
 				required = 1
 				wrap = <p class="caption"> | </p>
 			}
+
 			imageStdWrap.dataWrap = <div class="effectBoxImage" style="width:{register:totalwidth}px;"> | </div>
 			imageStdWrapNoWidth.wrap = <div class="effectBoxImage"><div class="inner">|</div></div>
 		}
 	}
 
 	renderMethod = simple
-
 }
 
-
 plugin.tx_multicolumn_pi1 {
-		# internal do not remove
+	# internal do not remove
 	includeFromStatic = 1
 
-		# column container
+	# column container
 	columnContainer = COA
 	columnContainer {
 		if.isTrue.field = content
@@ -47,7 +47,8 @@ plugin.tx_multicolumn_pi1 {
 					isFalse.field = disableStyles
 				}
 			}
-				# to do add configuration option to prevent clear
+
+			# to do add configuration option to prevent clear
 			clearfix = clearfix
 
 			makeEqualElementBoxHeight = multicolumnContainerFixHeight
@@ -60,15 +61,14 @@ plugin.tx_multicolumn_pi1 {
 				if.isTrue.field = makeEqualElementColumnHeight
 			}
 
-
-				# layout class
+			# layout class
 			layout = multicolumnLayout{field:layoutKey}
 			layout {
 				insertData = 1
 				if.isTrue.field = layoutKey
 			}
 
-				# Extra Class for Container from FlexForm
+			# Extra Class for Container from FlexForm
 			containerClass.cObject = TEXT
 			containerClass.cObject {
 				data = field:containerClass
@@ -90,7 +90,7 @@ plugin.tx_multicolumn_pi1 {
 		3 = RESTORE_REGISTER
 	}
 
-		# markup for column item
+	# markup for column item
 	column = COA
 	column {
 		1 = LOAD_REGISTER
@@ -113,6 +113,7 @@ plugin.tx_multicolumn_pi1 {
 					isTrue.field = columnPadding
 					isFalse.field = disableStyles
 				}
+
 				insertData = 1
 			}
 
@@ -150,15 +151,15 @@ plugin.tx_multicolumn_pi1 {
 		4 = RESTORE_REGISTER
 	}
 
-		# render content elements
+	# render content elements
 	columnItem = COA
 	columnItem {
 		stdWrap.dataWrap = <div class="columnItem columnItem{field:recordNumber} {field:isFirst} {field:isLast} columnItem{field:CType}">|</div>
 
-		10 = < tt_content
+		10 =< tt_content
 	}
 
-		# maxWidth of colum (needed for shrink images)
+	# maxWidth of colum (needed for shrink images)
 	columnWidth = CASE
 	columnWidth {
 		key.data = field:colPos
@@ -188,7 +189,7 @@ plugin.tx_multicolumn_pi1 {
 	}
 
 	# effect box rendering
-		# effect box items
+	# effect box items
 	effectBoxItems = CASE
 	effectBoxItems {
 		key.field = effect
@@ -199,19 +200,20 @@ plugin.tx_multicolumn_pi1 {
 				dataWrap = <li class="effectBoxItem effectBoxItem{field:recordNumber} {field:isFirst} {field:isLast}"><div class="effectBoxInner">|</div></li>
 			}
 
-			10 = < tt_content
+			10 =< tt_content
 			10 {
 				stdWrap.innerWrap.cObject =
 				image {
 					20 < temp.effectBoxImageRendering
 				}
+
 				textpic {
 					20 < temp.effectBoxImageRendering
 
 					30 = TEXT
 					30 {
 						if.isTrue.field = bodytext
-						parseFunc = < lib.parseFunc_RTE
+						parseFunc =< lib.parseFunc_RTE
 						field = bodytext
 						wrap = <div class="effectBoxText">|</div>
 					}
@@ -239,11 +241,12 @@ plugin.tx_multicolumn_pi1 {
 				}
 			}
 		}
-			# it's possible to add custom markup for each effect
+
+		# it's possible to add custom markup for each effect
 		sudoSliderTabSliding < .default
 		sudoSliderTabSliding {
 			10 >
-			10 = < tt_content
+			10 =< tt_content
 		}
 
 		easyAccordion < .default
@@ -255,9 +258,9 @@ plugin.tx_multicolumn_pi1 {
 			10 {
 				stdWrap.dataWrap = <dd class="effectBoxItem effectBoxItem{field:recordNumber} effectBoxItemContent {field:isFirst} {field:isLast}">|</dd>
 
-					# remove lib.stdheader from element
+				# remove lib.stdheader from element
 				image.10 = TEXT
-					# remove lib.stdheader from element
+				# remove lib.stdheader from element
 				textpic.10 = TEXT
 			}
 		}
@@ -285,7 +288,7 @@ plugin.tx_multicolumn_pi1 {
 				10 =< tt_content
 				10 {
 					textpic {
-							# remove lib.stdheader from elements
+						# remove lib.stdheader from elements
 						10 = TEXT
 					}
 				}
@@ -296,44 +299,56 @@ plugin.tx_multicolumn_pi1 {
 		simpleTabs {
 			stdWrap.dataWrap = <li class="tabItem tabItem{field:recordNumber} clearfix"><div class="innerTab"><span class="simpleTabNavigationItemContent" style="display: none;">{field:header}</span>|</div></li>
 
-			10 = < tt_content
+			10 =< tt_content
 			10 {
 				uploads {
 					10 =
 				}
+
 				list {
 					10 =
 				}
+
 				text {
 					10 =
 				}
+
 				textpic {
 					10 =
 				}
+
 				image {
 					10 =
 				}
+
 				bullets {
 					10 =
 				}
+
 				table {
 					10 =
 				}
+
 				multimedia {
 					10 =
 				}
+
 				mailform {
 					10 =
 				}
+
 				search {
 					10 =
 				}
+
 				login {
 					10 =
 				}
+
 				menu {
 					10 =
 				}
+
 				splash {
 					10 =
 				}
@@ -346,7 +361,7 @@ plugin.tx_multicolumn_pi1 {
 				dataWrap = <li title="{field:header}" class="{field:itemThree} {field:oddeven} clearfix effectBoxItem effectBoxItem{field:recordNumber} {field:isFirst} {field:isLast}"><div class="effectBoxInner">|</div></li>
 			}
 
-			10 = < tt_content
+			10 =< tt_content
 			10 {
 				stdWrap.innerWrap.cObject =
 				image {
@@ -355,6 +370,7 @@ plugin.tx_multicolumn_pi1 {
 
 					}
 				}
+
 				textpic {
 					20 < temp.effectBoxImageRendering
 					20 {
@@ -372,7 +388,7 @@ plugin.tx_multicolumn_pi1 {
 					30 = TEXT
 					30 {
 						if.isTrue.field = bodytext
-						parseFunc = < lib.parseFunc_RTE
+						parseFunc =< lib.parseFunc_RTE
 						field = bodytext
 						wrap = <div class="effectBoxText">|</div>
 					}
@@ -381,13 +397,14 @@ plugin.tx_multicolumn_pi1 {
 		}
 	}
 
-		# effect box list
+	# effect box list
 	effectBox = CASE
 	effectBox {
 		stdWrap {
 			dataWrap = <div class="effectBox effectBoxLoading {field:effect} {field:effectBoxClass}" id="effectBox_{field:uid}">|</div>
 			required = 1
 		}
+
 		key.field = effect
 
 		default = TEXT

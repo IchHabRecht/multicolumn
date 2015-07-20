@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array (
+$EM_CONF[$_EXTKEY] = array(
 	'title' => 'multicolumn',
 	'description' => 'The Multicolumn extension expands TYPO3 with a new content element called Multicolumn. With the Multicolumn content element it has never been easier to do multicolumn layouts with TYPO3',
 	'category' => 'fe',
@@ -22,17 +22,14 @@ $EM_CONF[$_EXTKEY] = array (
 	'author' => 'snowflake productions gmbh',
 	'author_email' => 'info@snowflake.ch',
 	'author_company' => '',
-	'constraints' => 
-	array (
-		'depends' => 
-		array (
+	'constraints' =>
+		array(
+			'depends' =>
+				array(),
+			'conflicts' =>
+				array(),
+			'suggests' =>
+				array(),
 		),
-		'conflicts' => 
-		array (
-		),
-		'suggests' => 
-		array (
-		),
-	),
 );
 

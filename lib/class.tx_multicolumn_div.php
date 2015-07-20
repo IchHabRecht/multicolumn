@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 final class tx_multicolumn_div {
 
 	/**
@@ -73,7 +73,7 @@ final class tx_multicolumn_div {
 	 * @return array|null
 	 */
 	public static function getEffectConfiguration($pageUid, tx_multicolumn_flexform $flex) {
-		$config = null;
+		$config = NULL;
 		$effect = substr($flex->getFlexValue('effectBox', 'effect'), 0, -1);
 		$flexConfig = $flex->getFlexArray('effectBox');
 		$tsConfig = self::getTSConfig($pageUid, 'effectBox');
@@ -81,11 +81,11 @@ final class tx_multicolumn_div {
 		if (!empty($tsConfig[$effect . '.']['config.'])) {
 			$config = $tsConfig[$effect . '.']['config.'];
 			$config['effect'] = $effect;
-			$tsConfigOptions = (!empty($config['defaultOptions'])) ? $config['defaultOptions'] : null;
+			$tsConfigOptions = (!empty($config['defaultOptions'])) ? $config['defaultOptions'] : NULL;
 
 			// check for options
 			if (!empty($flexConfig['effectOptions'])) {
-				$addComma = (strpos($flexConfig['effectOptions'], ',') === 0 && $tsConfigOptions) ? null : ',';
+				$addComma = (strpos($flexConfig['effectOptions'], ',') === 0 && $tsConfigOptions) ? NULL : ',';
 				$config['options'] = $tsConfigOptions . $addComma . $flexConfig['effectOptions'];
 			} else {
 				$config['options'] = $tsConfigOptions;
@@ -99,6 +99,7 @@ final class tx_multicolumn_div {
 			$config = t3lib_div::array_merge($config, $flexConfig);
 
 		}
+
 		return $config;
 	}
 
@@ -127,6 +128,7 @@ final class tx_multicolumn_div {
 
 			$result = intval($tsConfig['_CURRENT_PID']);
 		}
+
 		return $result;
 	}
 
@@ -147,6 +149,7 @@ final class tx_multicolumn_div {
 	 */
 	public static function isTypo3VersionAboveTypo344() {
 		t3lib_div::logDeprecatedFunction();
+
 		return !defined('TX_MULTICOLUMN_TYPO3_4-5_OR_ABOVE');
 	}
 
@@ -188,17 +191,17 @@ final class tx_multicolumn_div {
 	 */
 	public static function getDefaultLayoutConfiguration() {
 		return array(
-			'layoutKey' => null,
-			'layoutCss' => null,
+			'layoutKey' => NULL,
+			'layoutCss' => NULL,
 			'columns' => 2,
 			'containerMeasure' => '%',
 			'containerWidth' => 100,
 			'columnMeasure' => '%',
-			'columnWidth' => null,
-			'columnMargin' => null,
-			'columnPadding' => null,
-			'disableImageShrink' => null,
-			'disableStyles' => null
+			'columnWidth' => NULL,
+			'columnMargin' => NULL,
+			'columnPadding' => NULL,
+			'disableImageShrink' => NULL,
+			'disableStyles' => NULL
 		);
 	}
 
@@ -228,7 +231,7 @@ final class tx_multicolumn_div {
 	 *
 	 * @return array
 	 */
-	public static function includeBeLocalLang($llFile = null) {
+	public static function includeBeLocalLang($llFile = NULL) {
 		$llFile = $llFile ? $llFile : 'locallang.xml';
 
 		return self::readLLfile(PATH_tx_multicolumn . $llFile, $GLOBALS['LANG']->lang);
@@ -242,14 +245,14 @@ final class tx_multicolumn_div {
 	public static function beUserHasRightToSeeMultiColumnContainer() {
 		// FIXME Too many returns, refactor this mess.
 
-		$hasAccess = true;
+		$hasAccess = TRUE;
 		$TSconfig = t3lib_BEfunc::getPagesTSconfig($GLOBALS['SOBE']->id);
 
 		// check remove items
 		if (!empty($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'])) {
-			$hasAccess = t3lib_div::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? false : true;
+			$hasAccess = t3lib_div::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? FALSE : TRUE;
 			if (!$hasAccess) {
-				return false;
+				return FALSE;
 			}
 		}
 
@@ -260,9 +263,9 @@ final class tx_multicolumn_div {
 
 		// is explicitADmode allow ?
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] === 'explicitAllow') {
-			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? true : false;
+			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? TRUE : FALSE;
 		} else {
-			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? false : true;
+			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? FALSE : TRUE;
 		}
 
 		return $hasAccess;
@@ -286,8 +289,7 @@ final class tx_multicolumn_div {
 				if ($cacheEntry) {
 					return $cacheEntry;
 				}
-			}
-			catch (Exception $e) {
+			} catch (Exception $e) {
 				// No such cache (old TYPO3). Ignore.
 			}
 		}

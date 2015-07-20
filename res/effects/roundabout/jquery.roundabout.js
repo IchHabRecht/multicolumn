@@ -40,14 +40,14 @@
  */
 (function($) {
 	"use strict";
-	
+
 	var defaults, internalData, methods;
 
 	// add default shape
 	$.extend({
 		roundaboutShapes: {
 			def: "lazySusan",
-			lazySusan: function (r, a, t) {
+			lazySusan: function(r, a, t) {
 				return {
 					x: Math.sin(r + a),
 					y: (Math.sin(r + 3 * Math.PI / 2 + a) / 8) * t,
@@ -69,16 +69,20 @@
 		maxScale: 1.0,
 		duration: 600,
 		btnNext: null,
-		btnNextCallback: function() {},
+		btnNextCallback: function() {
+		},
 		btnPrev: null,
-		btnPrevCallback: function() {},
+		btnPrevCallback: function() {
+		},
 		btnToggleAutoplay: null,
 		btnStartAutoplay: null,
 		btnStopAutoplay: null,
 		easing: "swing",
 		clickToFocus: true,
-		clickToFocusCallback: function() {},
-		inFocusCallback : function() {},
+		clickToFocusCallback: function() {
+		},
+		inFocusCallback: function() {
+		},
 		focusBearing: 0.0,
 		shape: "lazySusan",
 		debug: false,
@@ -89,13 +93,15 @@
 		autoplay: false,
 		autoplayDuration: 1000,
 		autoplayPauseOnHover: false,
-		autoplayCallback: function() {},
+		autoplayCallback: function() {
+		},
 		autoplayInitialDelay: 0,
 		enableDrag: false,
 		dropDuration: 600,
 		dropEasing: "swing",
 		dropAnimateTo: "nearest",
-		dropCallback: function() {},
+		dropCallback: function() {
+		},
 		dragAxis: "x",
 		dragFactor: 4,
 		triggerFocusEvents: true,
@@ -123,50 +129,51 @@
 		// starts up roundabout
 		init: function(options, callback, relayout) {
 			var settings,
-			    now = (new Date()).getTime();
+				now = (new Date()).getTime();
 
-			options   = (typeof options === "object") ? options : {};
-			callback  = ($.isFunction(callback)) ? callback : function() {};
-			callback  = ($.isFunction(options)) ? options : callback;
-			settings  = $.extend({}, defaults, options, internalData);
+			options = (typeof options === "object") ? options : {};
+			callback = ($.isFunction(callback)) ? callback : function() {
+			};
+			callback = ($.isFunction(options)) ? options : callback;
+			settings = $.extend({}, defaults, options, internalData);
 
 			return this
 				.each(function() {
 					// make options
 					var self = $(this),
-					    childCount = self.children(settings.childSelector).length,
-					    period = 360.0 / childCount,
-					    startingChild = (settings.startingChild && settings.startingChild > (childCount - 1)) ? (childCount - 1) : settings.startingChild,
-					    startBearing = (settings.startingChild === null) ? settings.bearing : 360 - (startingChild * period),
-					    holderCSSPosition = (self.css("position") !== "static") ? self.css("position") : "relative";
+						childCount = self.children(settings.childSelector).length,
+						period = 360.0 / childCount,
+						startingChild = (settings.startingChild && settings.startingChild > (childCount - 1)) ? (childCount - 1) : settings.startingChild,
+						startBearing = (settings.startingChild === null) ? settings.bearing : 360 - (startingChild * period),
+						holderCSSPosition = (self.css("position") !== "static") ? self.css("position") : "relative";
 
 					self
 						.css({  // starting styles
-							padding:   0,
-							position:  holderCSSPosition
+							padding: 0,
+							position: holderCSSPosition
 						})
 						.addClass("roundabout-holder")
 						.data(  // starting options
-							"roundabout",
-							$.extend(
-								{},
-								settings,
-								{
-									startingChild: startingChild,
-									bearing: startBearing,
-									oppositeOfFocusBearing: methods.normalize.apply(null, [settings.focusBearing - 180]),
-									dragBearing: startBearing,
-									period: period
-								}
-							)
-						);
+						"roundabout",
+						$.extend(
+							{},
+							settings,
+							{
+								startingChild: startingChild,
+								bearing: startBearing,
+								oppositeOfFocusBearing: methods.normalize.apply(null, [settings.focusBearing - 180]),
+								dragBearing: startBearing,
+								period: period
+							}
+						)
+					);
 
 					// unbind any events that we set if we're relaying out
 					if (relayout) {
 						self
 							.unbind(".roundabout")
 							.children(settings.childSelector)
-								.unbind(".roundabout");
+							.unbind(".roundabout");
 					} else {
 						// bind responsive action
 						if (settings.responsive) {
@@ -269,13 +276,13 @@
 							self
 								.drag(function(e, properties) {
 									var data = self.data("roundabout"),
-									    delta = (data.dragAxis.toLowerCase() === "x") ? "deltaX" : "deltaY";
+										delta = (data.dragAxis.toLowerCase() === "x") ? "deltaX" : "deltaY";
 									methods.stopAnimation.apply(self);
 									methods.setBearing.apply(self, [data.dragBearing + properties[delta] / data.dragFactor]);
 								})
 								.drop(function(e) {
 									var data = self.data("roundabout"),
-									    method = methods.getAnimateToMethod(data.dropAnimateTo);
+										method = methods.getAnimateToMethod(data.dropAnimateTo);
 									methods.allowAnimation.apply(self);
 									methods[method].apply(self, [data.dropDuration, data.dropEasing, data.dropCallback]);
 									data.dragBearing = data.period * methods.getNearestChild.apply(self);
@@ -286,9 +293,9 @@
 						self
 							.each(function() {
 								var element = $(this).get(0),
-								    data = $(this).data("roundabout"),
-								    page = (data.dragAxis.toLowerCase() === "x") ? "pageX" : "pageY",
-								    method = methods.getAnimateToMethod(data.dropAnimateTo);
+									data = $(this).data("roundabout"),
+									page = (data.dragAxis.toLowerCase() === "x") ? "pageX" : "pageY",
+									method = methods.getAnimateToMethod(data.dropAnimateTo);
 
 								// some versions of IE don't like this
 								if (element.addEventListener) {
@@ -319,18 +326,18 @@
 				});
 		},
 
-
 		// initChildren
 		// applys settings to child elements, starts roundabout
 		initChildren: function(callback, relayout) {
 			var self = $(this),
-			    data = self.data("roundabout");
+				data = self.data("roundabout");
 
-			callback = callback || function() {};
-			
+			callback = callback || function() {
+				};
+
 			self.children(data.childSelector).each(function(i) {
 				var startWidth, startHeight, startFontSize,
-				    degrees = methods.getPlacement.apply(self, [i]);
+					degrees = methods.getPlacement.apply(self, [i]);
 
 				// on relayout, grab these values from current data
 				if (relayout && $(this).data("roundabout")) {
@@ -347,18 +354,18 @@
 				// now measure
 				$(this)
 					.data(
-						"roundabout",
-						{
-							startWidth: startWidth || $(this).width(),
-							startHeight: startHeight || $(this).height(),
-							startFontSize: startFontSize || parseInt($(this).css("font-size"), 10),
-							degrees: degrees,
-							backDegrees: methods.normalize.apply(null, [degrees - 180]),
-							childNumber: i,
-							currentScale: 1,
-							parent: self
-						}
-					);
+					"roundabout",
+					{
+						startWidth: startWidth || $(this).width(),
+						startHeight: startHeight || $(this).height(),
+						startFontSize: startFontSize || parseInt($(this).css("font-size"), 10),
+						degrees: degrees,
+						backDegrees: methods.normalize.apply(null, [degrees - 180]),
+						childNumber: i,
+						currentScale: 1,
+						parent: self
+					}
+				);
 			});
 
 			methods.updateChildren.apply(self);
@@ -375,8 +382,6 @@
 			return self;
 		},
 
-
-
 		// positioning
 		// -----------------------------------------------------------------------
 
@@ -386,9 +391,9 @@
 			return this
 				.each(function() {
 					var self = $(this),
-					    data = self.data("roundabout"),
-					    inFocus = -1,
-					    info = {
+						data = self.data("roundabout"),
+						inFocus = -1,
+						info = {
 							bearing: data.bearing,
 							tilt: data.tilt,
 							stage: {
@@ -399,7 +404,7 @@
 							inFocus: data.childInFocus,
 							focusBearingRadian: methods.degToRad.apply(null, [data.focusBearing]),
 							shape: $.roundaboutShapes[data.shape] || $.roundaboutShapes[$.roundaboutShapes.def]
-					    };
+						};
 
 					// calculations
 					info.midStage = {
@@ -433,10 +438,12 @@
 					// update child positions
 					self.children(data.childSelector)
 						.each(function(i) {
-							if (methods.updateChild.apply(self, [$(this), info, i, function() { $(this).trigger('ready'); }]) && (!info.animating || data.lastAnimationStep)) {
+							if (methods.updateChild.apply(self, [$(this), info, i, function() {
+									$(this).trigger('ready');
+								}]) && (!info.animating || data.lastAnimationStep)) {
 								inFocus = i;
 								$(this).addClass("roundabout-in-focus");
-								
+
 								self.data("roundabout").inFocusCallback(self);
 							} else {
 								$(this).removeClass("roundabout-in-focus");
@@ -448,7 +455,7 @@
 						if (data.triggerBlurEvents) {
 							self.children(data.childSelector)
 								.eq(info.inFocus)
-									.trigger("blur");
+								.trigger("blur");
 						}
 
 						data.childInFocus = inFocus;
@@ -457,7 +464,7 @@
 							// focus new child
 							self.children(data.childSelector)
 								.eq(inFocus)
-									.trigger("focus");
+								.trigger("focus");
 						}
 					}
 
@@ -465,18 +472,18 @@
 				});
 		},
 
-
 		// updateChild
 		// repositions a child element into its new position
 		updateChild: function(childElement, info, childPos, callback) {
 			var factors,
-			    self = this,
-			    child = $(childElement),
-			    data = child.data("roundabout"),
-			    out = [],
-			    rad = methods.degToRad.apply(null, [(360.0 - data.degrees) + info.bearing]);
+				self = this,
+				child = $(childElement),
+				data = child.data("roundabout"),
+				out = [],
+				rad = methods.degToRad.apply(null, [(360.0 - data.degrees) + info.bearing]);
 
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// adjust radians to be between 0 and Math.PI * 2
 			rad = methods.normalizeRad.apply(null, [rad]);
@@ -522,14 +529,12 @@
 
 			// trigger event
 			child.trigger("reposition");
-			
+
 			// callback
 			callback.apply(self);
 
 			return methods.isInFocus.apply(self, [data.degrees]);
 		},
-
-
 
 		// manipulation
 		// -----------------------------------------------------------------------
@@ -537,15 +542,16 @@
 		// setBearing
 		// changes the bearing of the roundabout
 		setBearing: function(bearing, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 			bearing = methods.normalize.apply(null, [bearing]);
 
 			this
 				.each(function() {
 					var diff, lowerValue, higherValue,
-					    self = $(this),
-					    data = self.data("roundabout"),
-					    oldBearing = data.bearing;
+						self = $(this),
+						data = self.data("roundabout"),
+						oldBearing = data.bearing;
 
 					// set bearing
 					data.bearing = bearing;
@@ -575,11 +581,11 @@
 			return this;
 		},
 
-
 		// adjustBearing
 		// change the bearing of the roundabout by a given degree
 		adjustBearing: function(delta, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 			if (delta === 0) {
 				return this;
 			}
@@ -593,11 +599,11 @@
 			return this;
 		},
 
-
 		// setTilt
 		// changes the tilt of the roundabout
 		setTilt: function(tilt, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			this
 				.each(function() {
@@ -610,11 +616,11 @@
 			return this;
 		},
 
-
 		// adjustTilt
 		// changes the tilt of the roundabout
 		adjustTilt: function(delta, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			this
 				.each(function() {
@@ -625,8 +631,6 @@
 			return this;
 		},
 
-
-
 		// animation
 		// -----------------------------------------------------------------------
 
@@ -635,7 +639,8 @@
 		animateToBearing: function(bearing, duration, easing, passedData, callback) {
 			var now = (new Date()).getTime();
 
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// find callback function in arguments
 			if ($.isFunction(passedData)) {
@@ -652,10 +657,10 @@
 			this
 				.each(function() {
 					var timer, easingFn, newBearing,
-					    self = $(this),
-					    data = self.data("roundabout"),
-					    thisDuration = (!duration) ? data.duration : duration,
-					    thisEasingType = (easing) ? easing : data.easing || "swing";
+						self = $(this),
+						data = self.data("roundabout"),
+						thisDuration = (!duration) ? data.duration : duration,
+						thisEasingType = (easing) ? easing : data.easing || "swing";
 
 					// is this your first time?
 					if (!passedData) {
@@ -704,7 +709,7 @@
 							}, 0);
 						}]);
 
-					// we're done animating
+						// we're done animating
 					} else {
 						data.lastAnimationStep = true;
 
@@ -723,13 +728,13 @@
 			return this;
 		},
 
-
 		// animateToNearbyChild
 		// animates roundabout to a nearby child
 		animateToNearbyChild: function(passedArgs, which) {
 			var duration = passedArgs[0],
-			    easing = passedArgs[1],
-			    callback = passedArgs[2] || function() {};
+				easing = passedArgs[1],
+				callback = passedArgs[2] || function() {
+					};
 
 			// find callback
 			if ($.isFunction(easing)) {
@@ -743,10 +748,10 @@
 			return this
 				.each(function() {
 					var j, range,
-					    self = $(this),
-					    data = self.data("roundabout"),
-					    bearing = (!data.reflect) ? data.bearing % 360 : data.bearing,
-					    length = self.children(data.childSelector).length;
+						self = $(this),
+						data = self.data("roundabout"),
+						bearing = (!data.reflect) ? data.bearing % 360 : data.bearing,
+						length = self.children(data.childSelector).length;
 
 					if (!data.animating) {
 						// reflecting, not moving to previous || not reflecting, moving to next
@@ -797,11 +802,11 @@
 				});
 		},
 
-
 		// animateToNearestChild
 		// animates roundabout to the nearest child
 		animateToNearestChild: function(duration, easing, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// find callback
 			if ($.isFunction(easing)) {
@@ -819,11 +824,11 @@
 				});
 		},
 
-
 		// animateToChild
 		// animates roundabout to a given child position
 		animateToChild: function(childPosition, duration, easing, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// find callback
 			if ($.isFunction(easing)) {
@@ -837,8 +842,8 @@
 			return this
 				.each(function() {
 					var child,
-					    self = $(this),
-					    data = self.data("roundabout");
+						self = $(this),
+						data = self.data("roundabout");
 
 					if (data.childInFocus !== childPosition && !data.animating) {
 						child = self.children(data.childSelector).eq(childPosition);
@@ -847,13 +852,11 @@
 				});
 		},
 
-
 		// animateToNextChild
 		// animates roundabout to the next child
 		animateToNextChild: function(duration, easing, callback) {
 			return methods.animateToNearbyChild.apply(this, [arguments, "next"]);
 		},
-
 
 		// animateToPreviousChild
 		// animates roundabout to the preious child
@@ -861,11 +864,11 @@
 			return methods.animateToNearbyChild.apply(this, [arguments, "previous"]);
 		},
 
-
 		// animateToDelta
 		// animates roundabout to a given delta (in degrees)
 		animateToDelta: function(degrees, duration, easing, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// find callback
 			if ($.isFunction(easing)) {
@@ -883,11 +886,11 @@
 				});
 		},
 
-
 		// animateBearingToFocus
 		// animates roundabout to bring a given angle into focus
 		animateBearingToFocus: function(degrees, duration, easing, callback) {
-			callback = callback || function() {};
+			callback = callback || function() {
+				};
 
 			// find callback
 			if ($.isFunction(easing)) {
@@ -910,7 +913,6 @@
 				});
 		},
 
-
 		// stopAnimation
 		// if an animation is currently in progress, stop it
 		stopAnimation: function() {
@@ -919,7 +921,6 @@
 					$(this).data("roundabout").stopAnimation = true;
 				});
 		},
-
 
 		// allowAnimation
 		// clears the stop-animation hold placed by stopAnimation
@@ -930,8 +931,6 @@
 				});
 		},
 
-
-
 		// autoplay
 		// -----------------------------------------------------------------------
 
@@ -941,20 +940,20 @@
 			return this
 				.each(function() {
 					var self = $(this),
-					    data = self.data("roundabout");
+						data = self.data("roundabout");
 
-					callback = callback || data.autoplayCallback || function() {};
+					callback = callback || data.autoplayCallback || function() {
+						};
 
 					clearInterval(data.autoplayInterval);
 					data.autoplayInterval = setInterval(function() {
 						methods.animateToNextChild.apply(self, [callback]);
 					}, data.autoplayDuration);
 					data.autoplayIsRunning = true;
-					
+
 					self.trigger("autoplayStart");
 				});
 		},
-
 
 		// stopAutoplay
 		// stops autoplaying this roundabout
@@ -964,26 +963,26 @@
 					clearInterval($(this).data("roundabout").autoplayInterval);
 					$(this).data("roundabout").autoplayInterval = null;
 					$(this).data("roundabout").autoplayIsRunning = false;
-					
+
 					// this will prevent autoplayPauseOnHover from restarting autoplay
 					if (!keepAutoplayBindings) {
 						$(this).unbind(".autoplay");
 					}
-					
+
 					$(this).trigger("autoplayStop");
 				});
 		},
-		
-		
+
 		// toggleAutoplay
 		// toggles autoplay pause/resume
 		toggleAutoplay: function(callback) {
 			return this
 				.each(function() {
 					var self = $(this),
-					    data = self.data("roundabout");
+						data = self.data("roundabout");
 
-					callback = callback || data.autoplayCallback || function() {};
+					callback = callback || data.autoplayCallback || function() {
+						};
 
 					if (!methods.isAutoplaying.apply($(this))) {
 						methods.startAutoplay.apply($(this), [callback]);
@@ -993,13 +992,11 @@
 				});
 		},
 
-
 		// isAutoplaying
 		// is this roundabout currently autoplaying?
 		isAutoplaying: function() {
 			return (this.data("roundabout").autoplayIsRunning);
 		},
-
 
 		// changeAutoplayDuration
 		// stops the autoplay, changes the duration, restarts autoplay
@@ -1007,7 +1004,7 @@
 			return this
 				.each(function() {
 					var self = $(this),
-					    data = self.data("roundabout");
+						data = self.data("roundabout");
 
 					data.autoplayDuration = duration;
 
@@ -1020,8 +1017,6 @@
 				});
 		},
 
-
-
 		// helpers
 		// -----------------------------------------------------------------------
 
@@ -1031,7 +1026,6 @@
 			var inRange = degrees % 360.0;
 			return (inRange < 0) ? 360 + inRange : inRange;
 		},
-
 
 		// normalizeRad
 		// regulates radians to be >= 0 and < Math.PI * 2
@@ -1047,7 +1041,6 @@
 			return radians;
 		},
 
-
 		// isChildBackDegreesBetween
 		// checks that a given child's backDegrees is between two values
 		isChildBackDegreesBetween: function(value1, value2) {
@@ -1059,7 +1052,6 @@
 				return (backDegrees < value2 && backDegrees >= value1);
 			}
 		},
-
 
 		// getAnimateToMethod
 		// takes a user-entered option and maps it to an animation method
@@ -1075,28 +1067,26 @@
 			// default selection
 			return "animateToNearestChild";
 		},
-		
-		
+
 		// relayoutChildren
 		// lays out children again with new contextual information
 		relayoutChildren: function() {
 			return this
 				.each(function() {
 					var self = $(this),
-					    settings = $.extend({}, self.data("roundabout"));
+						settings = $.extend({}, self.data("roundabout"));
 
 					settings.startingChild = self.data("roundabout").childInFocus;
 					methods.init.apply(self, [settings, null, true]);
 				});
 		},
 
-
 		// getNearestChild
 		// gets the nearest child from the current bearing
 		getNearestChild: function() {
 			var self = $(this),
-			    data = self.data("roundabout"),
-			    length = self.children(data.childSelector).length;
+				data = self.data("roundabout"),
+				length = self.children(data.childSelector).length;
 
 			if (!data.reflect) {
 				return ((length) - (Math.round(data.bearing / data.period) % length)) % length;
@@ -1105,13 +1095,11 @@
 			}
 		},
 
-
 		// degToRad
 		// converts degrees to radians
 		degToRad: function(degrees) {
 			return methods.normalize.apply(null, [degrees]) * Math.PI / 180.0;
 		},
-
 
 		// getPlacement
 		// returns the starting degree for a given child
@@ -1120,14 +1108,13 @@
 			return (!data.reflect) ? 360.0 - (data.period * child) : data.period * child;
 		},
 
-
 		// isInFocus
 		// is this roundabout currently in focus?
 		isInFocus: function(degrees) {
 			var diff,
-			    self = this,
-			    data = self.data("roundabout"),
-			    bearing = methods.normalize.apply(null, [data.bearing]);
+				self = this,
+				data = self.data("roundabout"),
+				bearing = methods.normalize.apply(null, [data.bearing]);
 
 			degrees = methods.normalize.apply(null, [degrees]);
 			diff = Math.abs(bearing - degrees);
@@ -1136,24 +1123,22 @@
 			// errors, it looks on both 0deg and 360deg ends of the spectrum
 			return (diff <= data.floatComparisonThreshold || diff >= 360 - data.floatComparisonThreshold);
 		},
-		
-		
+
 		// getChildInFocus
 		// returns the current child in focus, or false if none are in focus
 		getChildInFocus: function() {
 			var data = $(this).data("roundabout");
-			
+
 			return (data.childInFocus > -1) ? data.childInFocus : false;
 		},
-
 
 		// compareVersions
 		// compares a given version string with another
 		compareVersions: function(baseVersion, compareVersion) {
 			var i,
-			    base = baseVersion.split(/\./i),
-			    compare = compareVersion.split(/\./i),
-			    maxVersionSegmentLength = (base.length > compare.length) ? base.length : compare.length;
+				base = baseVersion.split(/\./i),
+				compare = compareVersion.split(/\./i),
+				maxVersionSegmentLength = (base.length > compare.length) ? base.length : compare.length;
 
 			for (i = 0; i <= maxVersionSegmentLength; i++) {
 				if (base[i] && !compare[i] && parseInt(base[i], 10) !== 0) {
@@ -1182,7 +1167,6 @@
 			return 0;
 		}
 	};
-
 
 	// start the plugin
 	$.fn.roundabout = function(method) {

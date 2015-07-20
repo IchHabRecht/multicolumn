@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function($) {
 	$('.mcAccordion dl').easyAccordion({
 		autoStart: false
 	});

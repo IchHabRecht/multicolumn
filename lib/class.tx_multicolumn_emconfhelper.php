@@ -66,14 +66,14 @@ class tx_multicolumn_emconfhelper {
 	 * @return boolean true if tx_cms_layout_tt_content_drawItemHook exists
 	 */
 	protected function checkIfDrawItemHookExists($XCLASS) {
-		$drawItemHookExists = true;
+		$drawItemHookExists = TRUE;
 
 		$fileContents = file_get_contents($XCLASS);
 		// check if tt_content_drawItem( method exists?
 		if (strpos($fileContents, 'tt_content_drawItem(')) {
 			// check if tx_cms_layout_tt_content_drawItemHook is implemented
 			if (!strpos($fileContents, 'tx_cms_layout_tt_content_drawItemHook')) {
-				$drawItemHookExists = false;
+				$drawItemHookExists = FALSE;
 			}
 		}
 
@@ -99,7 +99,7 @@ class tx_multicolumn_emconfhelper {
 	 * @return string
 	 */
 	protected function renderDrawItemHookErrorMessage($XCLASS, $extKey) {
-		$XCLASSwarning = str_replace(PATH_site, null, $XCLASS);
+		$XCLASSwarning = str_replace(PATH_site, NULL, $XCLASS);
 
 		$title = $GLOBALS['LANG']->getLL('emconfhelper.xclass.title') . ' ' . $extKey . ' XCLASS:<br />' . $XCLASSwarning;
 		$uninstallLink = $this->buildUninstallLink($extKey);
