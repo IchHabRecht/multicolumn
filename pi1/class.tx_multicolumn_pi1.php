@@ -154,7 +154,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 			$this->multicolumnContainerUid = $this->cObj->data['uid'];
 		}
 
-		$this->flex = t3lib_div::makeInstance('tx_multicolumn_flexform', $this->cObj->data['pi_flexform']);
+		$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $this->cObj->data['pi_flexform']);
 		$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.') ? TRUE : FALSE;
 		// store current max width
 		$this->TSFEmaxWidthBefore = isset($GLOBALS['TSFE']->register['maxImageWidth']) ? $GLOBALS['TSFE']->register['maxImageWidth'] : NULL;
@@ -237,7 +237,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 			,
 				'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : NULL
 			);
-			$listeItemsArray = t3lib_div::array_merge($listeItemsArray, $this->llPrefixed);
+			$listeItemsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listeItemsArray, $this->llPrefixed);
 			$listItemContent = $this->renderListItems('tt_content', 'effectBoxItems', $contentElements, $listeItemsArray);
 		} else {
 			$listItemContent = '';
@@ -247,7 +247,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 		$listData['effect'] = $this->effectConfiguration['effect'];
 		$listData['effectBoxClass'] = $this->effectConfiguration['effectBoxClass'];
 		$listData['effectBoxItems'] = $listItemContent;
-		$listData = t3lib_div::array_merge($listData, $this->llPrefixed);
+		$listData = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listData, $this->llPrefixed);
 
 		$content = $this->renderItem('effectBox', $listData);
 		$GLOBALS['TSFE']->register['maxImageWidth'] = $this->TSFEmaxWidthBefore;

@@ -31,7 +31,7 @@ class tx_multicolumn_db {
 	 * @deprecated
 	 */
 	public static function isBackend() {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 		return (TYPO3_MODE == 'BE');
 	}
@@ -146,7 +146,7 @@ class tx_multicolumn_db {
 		$result = 0;
 		$row = self::getContentElement($mulitColumnId);
 		if ($row['pi_flexform']) {
-			$flexObj = t3lib_div::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			/** @var tx_multicolumn_flexform $flexObj */
 			$layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
 
@@ -276,7 +276,7 @@ class tx_multicolumn_db {
 	 * @deprecated Use tx_multicolumn_db::getContainerChildren() instead
 	 */
 	public static function containerHasChildren($containerUid, $showHidden = TRUE) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 		return self::getContainerChildren($containerUid, $showHidden);
 	}

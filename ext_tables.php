@@ -4,7 +4,6 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // add CType multicolumn
-t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['multicolumn'] = array(
 	'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3,--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.content, tx_multicolumn_items,--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.config,pi_flexform,--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group'
 );

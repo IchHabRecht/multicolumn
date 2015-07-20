@@ -85,9 +85,9 @@ class tx_multicolumn_tt_content_drawItem_base {
 			/** @noinspection PhpUndefinedMethodInspection */
 			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addCssFile('../../../../typo3conf/ext/multicolumn/res/backend/' . $this->cssFile, 'stylesheet', 'screen');
 
-			$this->flex = t3lib_div::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$this->pObj = $parentObject;
-			$this->tmpl = t3lib_div::makeInstance('t3lib_TStemplate');
+			$this->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TStemplate');
 			$this->LL = tx_multicolumn_div::includeBeLocalLang();
 			$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
@@ -212,7 +212,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 			$markup = '<div class="lostContentElementContainer">';
 
 			/** @noinspection PhpUndefinedMethodInspection */
-			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), t3lib_FlashMessage::WARNING);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), t3lib_FlashMessage::WARNING);
 			$markup .= $flashMessage->render();
 
 			$markup .= $this->renderContentElements($elements, 'lostContentElements', TRUE);
@@ -259,7 +259,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 				// pre crop bodytext
 				if ($row['bodytext']) {
 					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
-					$row['bodytext'] = $this->pObj->wordWrapper(t3lib_div::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
+					$row['bodytext'] = $this->pObj->wordWrapper(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
 				}
 
 				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row, $isRTE) . '</div>';
@@ -300,7 +300,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 		$params .= '&tx_multicolumn_parentid=' . $mulitColumnParentId;
 		$params .= '&sys_language_uid=' . $sysLanguageUid;
 		$params .= '&uid_pid=' . $pid;
-		$params .= '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+		$params .= '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 
 		return "window.location.href='db_new_content_el.php" . $params . "'";
 	}

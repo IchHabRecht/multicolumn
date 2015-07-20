@@ -126,8 +126,8 @@ class tx_multicolumn_alt_clickmenu {
 	protected function getPasteIntoLink($multicolumnUid) {
 		$selItem = $this->pObj->clipObj->getSelectedRecord();
 		$elInfo = array(
-			t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
-			t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
 			$this->pObj->clipObj->currentMode()
 		);
 

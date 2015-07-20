@@ -37,7 +37,7 @@ class tx_multicolumn_flexform {
 		if (is_array($flexformString)) {
 			$this->flex = $flexformString;
 		} else {
-			$this->flex = t3lib_div::xml2array($flexformString);
+			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformString);
 		}
 	}
 
@@ -136,7 +136,7 @@ class tx_multicolumn_flexform {
 				$GLOBALS['LANG']->sL($item['label']),
 				$key,
 				//replace absolute with relative path
-				str_replace(PATH_site, '../', t3lib_div::getFileAbsFileName($item['icon']))
+				str_replace(PATH_site, '../', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($item['icon']))
 			);
 		}
 	}
@@ -150,7 +150,7 @@ class tx_multicolumn_flexform {
 	 * */
 	protected function filterItems(array &$items, $filterList) {
 		foreach ($items as $itemKey => $item) {
-			if (!t3lib_div::inList($filterList, str_replace('.', NULL, $itemKey))) {
+			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($filterList, str_replace('.', NULL, $itemKey))) {
 				unset($items[$itemKey]);
 			}
 		}

@@ -91,12 +91,12 @@ final class tx_multicolumn_div {
 				$config['options'] = $tsConfigOptions;
 			}
 
-			$config['options'] = t3lib_div::minifyJavaScript($config['options']);
+			$config['options'] = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($config['options']);
 
 			unset($flexConfig['effectOptions'], $flexConfig['effect']);
 			unset($config['defaultOptions']);
 
-			$config = t3lib_div::array_merge($config, $flexConfig);
+			$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($config, $flexConfig);
 
 		}
 
@@ -229,7 +229,7 @@ final class tx_multicolumn_div {
 
 		// check remove items
 		if (!empty($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'])) {
-			$hasAccess = t3lib_div::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? FALSE : TRUE;
+			$hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? FALSE : TRUE;
 			if (!$hasAccess) {
 				return FALSE;
 			}
@@ -242,9 +242,9 @@ final class tx_multicolumn_div {
 
 		// is explicitADmode allow ?
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] === 'explicitAllow') {
-			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? TRUE : FALSE;
+			$hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? TRUE : FALSE;
 		} else {
-			$hasAccess = t3lib_div::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? FALSE : TRUE;
+			$hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? FALSE : TRUE;
 		}
 
 		return $hasAccess;
@@ -272,7 +272,7 @@ final class tx_multicolumn_div {
 				// No such cache (old TYPO3). Ignore.
 			}
 		}
-		$labels = t3lib_div::readLLfile($filePath, $language);
+		$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($filePath, $language);
 		if (version_compare(TYPO3_branch, '4.5', '>')) {
 			// We need to flatten labels
 			$originalLabels = $labels;

@@ -38,7 +38,7 @@ class tx_multicolumn_tcemain {
 	 * @return void
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, t3lib_TCEmain $pObj) {
-		$GPvar = t3lib_div::_GP('cmd');
+		$GPvar = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 
 		if (is_array($GPvar) && isset($GPvar['tt_content']) && isset($fieldArray['t3_origuid']) && isset($GPvar['tt_content'][$fieldArray['t3_origuid']])) {
 			// element gets localized
@@ -174,14 +174,14 @@ class tx_multicolumn_tcemain {
 	 * @param    integer $orginalId : orginal id of content element (copy from)
 	 */
 	protected function pasteIntoMulticolumnContainer($action, $updateId, $orginalId = NULL) {
-		$multicolumnId = intval(t3lib_div::_GET('tx_multicolumn_parentid'));
+		$multicolumnId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_multicolumn_parentid'));
 		// stop if someone is trying to cut the multicolumn container inside the container
 		if ($multicolumnId == $updateId) {
 			return;
 		}
 
 		$updateRecordFields = array(
-			'colPos' => intval(t3lib_div::_GET('colPos')),
+			'colPos' => intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('colPos')),
 			'tx_multicolumn_parentid' => $multicolumnId
 		);
 
@@ -434,7 +434,7 @@ class tx_multicolumn_tcemain {
 	 * @return string Value of action
 	 */
 	protected function getMulticolumnGetAction() {
-		$gpVars = t3lib_div::_GET('tx_multicolumn');
+		$gpVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_multicolumn');
 
 		return is_array($gpVars) && isset($gpVars['action']) ? $gpVars['action'] : '';
 	}

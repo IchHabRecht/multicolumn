@@ -39,7 +39,7 @@ class tx_multicolumn_tce_eval {
 	 * @return    mixed        max column value
 	 */
 	public function evaluateFieldValue($inputValue, $is_in, &$set) {
-		if ($id = t3lib_div::_GP('popViewId')) {
+		if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popViewId')) {
 			$conf = tx_multicolumn_div::getTSConfig($id, 'config');
 			$maxNumberOfColumns = $conf['advancedLayouts.']['maxNumberOfColumns'];
 

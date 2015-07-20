@@ -35,7 +35,7 @@ class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook
 			$this->addMulitcolumnElementToWizardArray($wizardItems);
 		}
 
-		$this->mulitColumnParentId = intval(t3lib_div::_GP('tx_multicolumn_parentid'));
+		$this->mulitColumnParentId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_multicolumn_parentid'));
 		//is mulitcolum parentId set
 		if ($this->mulitColumnParentId) {
 			$this->addMulticolumnParentId($wizardItems);

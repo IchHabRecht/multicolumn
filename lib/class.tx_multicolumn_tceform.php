@@ -70,7 +70,7 @@ class tx_multicolumn_tceform {
 		if (!empty($itemsProc['config']['itemsProcFunctions'])) {
 			foreach ($itemsProc['config']['itemsProcFunctions'] as $procFunc) {
 				if (!empty($procFunc)) {
-					t3lib_div::callUserFunction($procFunc, $itemsProc, $pObj);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($procFunc, $itemsProc, $pObj);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ class tx_multicolumn_tceform {
 					continue;
 				}
 
-				if (!t3lib_div::inList($itemsUidList, $container['uid'])) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($itemsUidList, $container['uid'])) {
 					$title = $container['header'] ? $container['header'] : $GLOBALS['LANG']->getLLL('pi1_title', $this->LL) . ' ' . $multicolumnContainerItem . ' (uid: ' . $container['uid'] . ')';
 					$this->items[] = array(
 						0 => $title,

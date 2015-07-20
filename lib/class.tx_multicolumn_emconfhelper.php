@@ -86,7 +86,7 @@ class tx_multicolumn_emconfhelper {
 	 * @return string Flash message content
 	 */
 	protected function renderFlashMessage($title, $message, $type = t3lib_FlashMessage::WARNING) {
-		$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $message, $title, $type);
 
 		return $flashMessage->render();
 	}
