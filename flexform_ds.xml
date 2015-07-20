@@ -4,7 +4,7 @@
 	</meta>
 	<sheets>
 		<preSetLayout>
-			<ROOT>	
+			<ROOT>
 				<TCEforms>
 					<sheetTitle>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_preSetLayout</sheetTitle>
 				</TCEforms>
@@ -90,7 +90,7 @@
 							</config>
 						</TCEforms>
 					</containerClass>
-					
+
 					<columnMeasure>
 						<TCEforms>
 							<label>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_dimensionmeasure.column</label>
@@ -142,7 +142,7 @@
 							</config>
 						</TCEforms>
 					</columnMargin>
-					
+
 					<disableImageShrink>
 						<TCEforms>
 							<label>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_disableimageshrink</label>

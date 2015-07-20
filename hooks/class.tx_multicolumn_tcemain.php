@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_multicolumn_tcemain {
 
 	/** @var t3lib_TCEmain */
@@ -169,11 +169,11 @@ class tx_multicolumn_tcemain {
 	/**
 	 * Paste an element into multicolumn container
 	 *
-	 * @param    string        $action: copy or move
-	 * @param    integer        $updateId: content element to update
-	 * @param    integer        $orginalId: orginal id of content element (copy from)
+	 * @param    string $action : copy or move
+	 * @param    integer $updateId : content element to update
+	 * @param    integer $orginalId : orginal id of content element (copy from)
 	 */
-	protected function pasteIntoMulticolumnContainer($action, $updateId, $orginalId = null) {
+	protected function pasteIntoMulticolumnContainer($action, $updateId, $orginalId = NULL) {
 		$multicolumnId = intval(t3lib_div::_GET('tx_multicolumn_parentid'));
 		// stop if someone is trying to cut the multicolumn container inside the container
 		if ($multicolumnId == $updateId) {
@@ -338,7 +338,7 @@ class tx_multicolumn_tcemain {
 	 * Move container children (recursive)
 	 *
 	 * @param array $containerChildren Children of multicolumn container
-	 * @param int $destPid: Target pid of page
+	 * @param int $destPid : Target pid of page
 	 */
 	protected function moveContainerChildren(array $containerChildren, $destPid) {
 		foreach ($containerChildren as $child) {

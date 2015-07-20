@@ -1,3 +1,11 @@
+2015-07-20         [RELEASE] Release of multicolumn 2.2.0 (Nicole Cordes)
+2015-07-20 032edae [TASK] Remove code for non-supported TYPO3 versions (Nicole Cordes)
+2015-07-20 7228428 [TASK] Remove double variable assignment (Nicole Cordes)
+2015-07-20 43bbc95 [TASK] Replace deprecated function PageLayoutView::strip_tags (Nicole Cordes)
+2015-07-20 5852088 [BUGFIX] Observe type of flexformString (Nicole Cordes)
+2015-07-20 576d10a [BUGFIX] Remove requiring interface file (Nicole Cordes)
+2015-07-20 9170346 [TASK] Reformat code according to TYPO3 Coding Guidelines (Nicole Cordes)
+
 2013-10-07  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Remove require_once for tslib_pibase (TYPO3 6.2 compatibility)

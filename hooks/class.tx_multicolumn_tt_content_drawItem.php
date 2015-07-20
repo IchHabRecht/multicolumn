@@ -71,11 +71,11 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Preprocesses the preview rendering of a content element.
 	 *
-	 * @param    tx_cms_layout|\TYPO3\CMS\Backend\View\PageLayoutView        $parentObject: Calling parent object
-	 * @param    boolean                $drawItem: Whether to draw the item using the default functionalities
-	 * @param    string                $headerContent: Header content
-	 * @param    string                $itemContent: Item content
-	 * @param    array                $row: Record row of tt_content
+	 * @param    tx_cms_layout|\TYPO3\CMS\Backend\View\PageLayoutView $parentObject : Calling parent object
+	 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
+	 * @param    string $headerContent : Header content
+	 * @param    string $itemContent : Item content
+	 * @param    array $row : Record row of tt_content
 	 * @return    void
 	 */
 	protected function preProcess_base(&$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
@@ -107,7 +107,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Builds the columns markup
 	 *
-	 * @param    integer            $numberOfColumns: how many columns to build
+	 * @param    integer $numberOfColumns : how many columns to build
 	 * @return    string            html content
 	 */
 	protected function buildColumns($numberOfColumns) {
@@ -150,9 +150,9 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Builds a single column with conten telements
 	 *
-	 * @param    integer            $columnWidth: width of column
-	 * @param    integer            $columnIndex: number of column
-	 * @param    integer            $colPos
+	 * @param    integer $columnWidth : width of column
+	 * @param    integer $columnIndex : number of column
+	 * @param    integer $colPos
 	 * @return    string            $column markup
 	 */
 	protected function buildColumn($columnWidth, $columnIndex, $colPos, &$markup) {
@@ -178,10 +178,10 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Builds the overview of content elements for the column
 	 *
-	 * @param    integer            $colPos
-	 * @param    integer            $pid page id
-	 * @param    integer            $mulitColumnParentId parent id of multicolumn content element
-	 * @param    integer            $sysLanguageUid sys language uid
+	 * @param    integer $colPos
+	 * @param    integer $pid page id
+	 * @param    integer $mulitColumnParentId parent id of multicolumn content element
+	 * @param    integer $sysLanguageUid sys language uid
 	 * @return string
 	 */
 	protected function buildColumnContentElements($colPos, $pid, $mulitColumnParentId, $sysLanguageUid) {
@@ -199,12 +199,12 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Builds the lost content elements container
 	 *
-	 * @param    integer            $lastColumnNumber last visible columnNumber
+	 * @param    integer $lastColumnNumber last visible columnNumber
 	 * @return    string            $column markup
 	 */
 	protected function buildLostContentElementsRow($lastColumnNumber) {
 		$markup = '';
-		$additionalWhere = $additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
+		$additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
 
 		$elements = tx_multicolumn_db::getContentElementsFromContainer(NULL, NULL, $this->multiColUid, $this->multiColCe['sys_language_uid'], TRUE, $additionalWhere, $this->pObj);
 
@@ -218,20 +218,19 @@ class tx_multicolumn_tt_content_drawItem_base {
 			$markup .= $this->renderContentElements($elements, 'lostContentElements', TRUE);
 			$markup .= '</div>';
 		}
+
 		return $markup;
 	}
 
 	/**
 	 * Render content elements like class.tx_cms_layout.php
 	 *
-	 * @param    array        $rowArr records form tt_content table
-	 * @param    string        $additionalClasses to append to <ul>
-	 * @param    string        $additionalClasses to append to <ul>
+	 * @param    array $rowArr records form tt_content table
+	 * @param    string $additionalClasses to append to <ul>
+	 * @param    string $additionalClasses to append to <ul>
 	 */
 	protected function renderContentElements(array $rowArr, $additionalClasses = NULL, $lostElements = FALSE) {
 		$content = '<ul class="contentElements ' . $additionalClasses . '">';
-		// used only for TYPO3 > 4.3
-		$trailingDiv = tx_multicolumn_div::isTypo3VersionAboveTypo343() ? '</div>' : NULL;
 
 		$item = 0;
 		foreach ($rowArr as $rKey => $row) {
@@ -259,12 +258,12 @@ class tx_multicolumn_tt_content_drawItem_base {
 				}
 				// pre crop bodytext
 				if ($row['bodytext']) {
-					$row['bodytext'] = $this->pObj->strip_tags($row['bodytext'], TRUE);
+					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
 					$row['bodytext'] = $this->pObj->wordWrapper(t3lib_div::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
 				}
 
 				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row, $isRTE) . '</div>';
-				$content .= '</div>' . $trailingDiv . '</li>';
+				$content .= '</div></div></li>';
 				$item++;
 			} else {
 				unset($rowArr[$rKey]);
@@ -289,10 +288,10 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Generates the url for the insertRecord links. Special value tx_multicolumn is considered here...
 	 *
-	 * @param    integer        $pid record id
-	 * @param    integer        $colPos Column position value.
-	 * @param    integer        $mulitColumnParentId content id, reference where this content element belongs to
-	 * @param    integer        $sysLanguageUid System language
+	 * @param    integer $pid record id
+	 * @param    integer $colPos Column position value.
+	 * @param    integer $mulitColumnParentId content id, reference where this content element belongs to
+	 * @param    integer $sysLanguageUid System language
 	 * @return    string
 	 */
 	function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0) {
@@ -342,11 +341,11 @@ if (version_compare(TYPO3_branch, '6.0', '>=')) {
 		/**
 		 * Preprocesses the preview rendering of a content element.
 		 *
-		 * @param    tx_cms_layout        $parentObject: Calling parent object
-		 * @param    boolean                $drawItem: Whether to draw the item using the default functionalities
-		 * @param    string                $headerContent: Header content
-		 * @param    string                $itemContent: Item content
-		 * @param    array                $row: Record row of tt_content
+		 * @param    tx_cms_layout $parentObject : Calling parent object
+		 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
+		 * @param    string $headerContent : Header content
+		 * @param    string $itemContent : Item content
+		 * @param    array $row : Record row of tt_content
 		 * @return    void
 		 */
 		public function preProcess(tx_cms_layout &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {

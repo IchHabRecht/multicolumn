@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class tx_multicolumn_db {
 
 	/**
@@ -57,7 +57,7 @@ class tx_multicolumn_db {
 	 * @param tx_cms_layout $pObj
 	 * @return array Array with database fields
 	 */
-	public static function getContentElementsFromContainer($colPos, $pid, $mulitColumnParentId, $sysLanguageUid = 0, $showHidden = false, $additionalWhere = null, $cmsLayout = null) {
+	public static function getContentElementsFromContainer($colPos, $pid, $mulitColumnParentId, $sysLanguageUid = 0, $showHidden = FALSE, $additionalWhere = NULL, $cmsLayout = NULL) {
 		$output = array();
 
 		$isWorkspace = self::isWorkspaceActive();
@@ -161,11 +161,11 @@ class tx_multicolumn_db {
 	 *
 	 * @param integer $uid
 	 * @param string $selectFields
-	 * @param string  $additionalWhere
+	 * @param string $additionalWhere
 	 * @param boolean $useDeleteClause
 	 * @return array Element fields
 	 */
-	public static function getContentElement($uid, $selectFields = '*', $additionalWhere = null, $useDeleteClause = true) {
+	public static function getContentElement($uid, $selectFields = '*', $additionalWhere = NULL, $useDeleteClause = TRUE) {
 		if (TYPO3_MODE == 'BE') {
 			return t3lib_befunc::getRecordWSOL('tt_content', $uid, $selectFields, $additionalWhere, $useDeleteClause);
 		}
@@ -207,7 +207,7 @@ class tx_multicolumn_db {
 	 * @param int $selectFields
 	 * @return array|null
 	 */
-	public static function getContainerFromUid($uid, $selectFields = 'uid,header', $enableFields = false) {
+	public static function getContainerFromUid($uid, $selectFields = 'uid,header', $enableFields = FALSE) {
 		$fromTable = 'tt_content';
 
 		$whereClause = 'uid=' . intval($uid) . ' AND CType=\'multicolumn\'';
@@ -216,6 +216,7 @@ class tx_multicolumn_db {
 		}
 
 		list($container) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
+
 		return $container;
 	}
 
@@ -232,6 +233,7 @@ class tx_multicolumn_db {
 		$whereClause .= self::enableFields('tt_content');
 
 		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
+
 		return $row['counter'] > 0;
 	}
 
@@ -256,7 +258,7 @@ class tx_multicolumn_db {
 	 * @param string $showHidden
 	 * @return array
 	 */
-	public static function getContainerChildren($containerUid, $showHidden = true) {
+	public static function getContainerChildren($containerUid, $showHidden = TRUE) {
 		$fromTable = 'tt_content';
 		$selectFields = 'uid,pid,sys_language_uid,CType';
 		$whereClause = 'tx_multicolumn_parentid=' . intval($containerUid);
@@ -273,7 +275,7 @@ class tx_multicolumn_db {
 	 * @return boolean
 	 * @deprecated Use tx_multicolumn_db::getContainerChildren() instead
 	 */
-	public static function containerHasChildren($containerUid, $showHidden = true) {
+	public static function containerHasChildren($containerUid, $showHidden = TRUE) {
 		t3lib_div::logDeprecatedFunction();
 
 		return self::getContainerChildren($containerUid, $showHidden);
@@ -287,7 +289,7 @@ class tx_multicolumn_db {
 	 * @param array $ignoreFields
 	 * @return string
 	 */
-	protected static function enableFields($table, $showHidden = false, $ignoreFields = array()) {
+	protected static function enableFields($table, $showHidden = FALSE, $ignoreFields = array()) {
 		if (TYPO3_MODE == 'BE') {
 			$enableFields = t3lib_BEfunc::deleteClause($table) . ' AND ' . $table . '.pid>0';
 			if (!$showHidden) {

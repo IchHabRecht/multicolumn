@@ -1,45 +1,48 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 snowflake productions GmbH
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 snowflake productions GmbH
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 require_once(PATH_tx_multicolumn_pi_base);
 
-class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
-	public $prefixId      = 'tx_multicolumn_pi1';        // Same as class name
+class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
+	public $prefixId = 'tx_multicolumn_pi1';        // Same as class name
+
 	public $scriptRelPath = 'pi1/class.tx_multicolumn_pi1.php';    // Path to this script relative to the extension dir.
-	public $extKey        = 'multicolumn';    // The extension key.
-	public $pi_checkCHash = true;
+
+	public $extKey = 'multicolumn';    // The extension key.
+
+	public $pi_checkCHash = TRUE;
 
 	/**
 	 * Current cObj data
 	 *
-	 * @var		array
+	 * @var        array
 	 */
 	protected $currentCobjData;
 
 	/**
 	 * Current cObjrecord string eg. tt_content:23
 	 *
-	 * @var		string
+	 * @var        string
 	 */
 	protected $currentCobjRecordString;
 
@@ -47,56 +50,56 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 	 * Incremented in parent cObj->RECORDS
 	 * and cObj->CONTENT before each record rendering.
 	 *
-	 * @var		int
+	 * @var        int
 	 */
 	protected $currentCobjParentRecordNumber;
 
 	/**
 	 * Instance of tx_multicolumn_flexform
 	 *
-	 * @var		tx_multicolumn_flexform
+	 * @var        tx_multicolumn_flexform
 	 */
 	protected $flex;
 
 	/**
 	 * Layout configuration array from ts / flexform
 	 *
-	 * @var		array
+	 * @var        array
 	 */
 	protected $layoutConfiguration;
 
 	/**
 	 * Layout configuration array from ts / flexform with option split
 	 *
-	 * @var		array
+	 * @var        array
 	 */
 	protected $layoutConfigurationSplited;
 
 	/**
 	 * multicolumn uid
 	 *
-	 * @var		integer
+	 * @var        integer
 	 */
 	protected $multicolumnContainerUid;
 
 	/**
 	 * Is effect box
 	 *
-	 * @var		integer
+	 * @var        integer
 	 */
 	protected $isEffectBox;
 
 	/**
 	 * Effect configuration array from ts / flexform
 	 *
-	 * @var		array
+	 * @var        array
 	 */
 	protected $effectConfiguration;
 
 	/**
 	 * maxWidth before
 	 *
-	 * @var		integer
+	 * @var        integer
 	 */
 	protected $TSFEmaxWidthBefore;
 
@@ -106,25 +109,27 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param    string        $content: The PlugIn content
-	 * @param    array        $conf: The PlugIn configuration
+	 * @param    string $content : The PlugIn content
+	 * @param    array $conf : The PlugIn configuration
 	 * @return   string The content that is displayed on the website
 	 */
-	public function main($content,$conf)    {
+	public function main($content, $conf) {
 		$this->init($content, $conf);
-			// typoscript is not included
-		if(!$this->conf['includeFromStatic'])  return $this->showFlashMessage($this->llPrefixed['lll:error.typoscript.title'], $this->llPrefixed['lll:error.typoscript.message']);
+		// typoscript is not included
+		if (!$this->conf['includeFromStatic']) {
+			return $this->showFlashMessage($this->llPrefixed['lll:error.typoscript.title'], $this->llPrefixed['lll:error.typoscript.message']);
+		}
 
 		$content = $this->layoutConfiguration['columns'] ? $this->renderMulticolumnView() : $this->renderEffectBoxView();
+
 		return $content;
 	}
-
 
 	/**
 	 * Initalizes the plugin.
 	 *
-	 * @param	String		$content: Content sent to plugin
-	 * @param	String[]	$conf: Typoscript configuration array
+	 * @param    String $content : Content sent to plugin
+	 * @param    String[] $conf : Typoscript configuration array
 	 */
 	protected function init($content, $conf) {
 		$this->content = $content;
@@ -141,7 +146,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 		$this->llPrefixed = tx_multicolumn_div::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
 		$this->pi_setPiVarDefaults();
 
-			// Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
+		// Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
 		if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TSFE']->sys_language_uid && $this->cObj->data['_LOCALIZED_UID']) {
 			$this->multicolumnContainerUid = $this->cObj->data['_LOCALIZED_UID'];
 			// take default uid from cObj->data
@@ -150,59 +155,59 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 		}
 
 		$this->flex = t3lib_div::makeInstance('tx_multicolumn_flexform', $this->cObj->data['pi_flexform']);
-		$this->isEffectBox = ($this->flex->getFlexValue ('preSetLayout', 'layoutKey') == 'effectBox.') ? true : false;
-			// store current max width
-		$this->TSFEmaxWidthBefore = isset($GLOBALS['TSFE']->register['maxImageWidth']) ? $GLOBALS['TSFE']->register['maxImageWidth'] : null;
+		$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.') ? TRUE : FALSE;
+		// store current max width
+		$this->TSFEmaxWidthBefore = isset($GLOBALS['TSFE']->register['maxImageWidth']) ? $GLOBALS['TSFE']->register['maxImageWidth'] : NULL;
 
-			// effect view
-		if($this->isEffectBox) {
-			$this->effectConfiguration = tx_multicolumn_div::getEffectConfiguration(null, $this->flex);
-			if(!empty($this->effectConfiguration['options'])) {
+		// effect view
+		if ($this->isEffectBox) {
+			$this->effectConfiguration = tx_multicolumn_div::getEffectConfiguration(NULL, $this->flex);
+			if (!empty($this->effectConfiguration['options'])) {
 				$name = 'mullticolumnEffectBox_' . $this->cObj->data['uid'];
 				$code = 'var ' . $name . ' ={' . $this->effectConfiguration['options'] . '};';
 				$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($name, $code);
 			}
-				// js files
-			if(is_array($this->effectConfiguration['jsFiles.'])) {
+			// js files
+			if (is_array($this->effectConfiguration['jsFiles.'])) {
 				$this->includeCssJsFiles($this->effectConfiguration['jsFiles.']);
 			}
-				// css files
-			if(is_array($this->effectConfiguration['cssFiles.'])) {
+			// css files
+			if (is_array($this->effectConfiguration['cssFiles.'])) {
 				$this->includeCssJsFiles($this->effectConfiguration['cssFiles.']);
 			}
 
 			// default multicolumn view
 		} else {
-			$this->layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration(null, $this->flex);
+			$this->layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration(NULL, $this->flex);
 
-				//include layout css
-			if(!empty($this->layoutConfiguration['layoutCss']) || !empty($this->layoutConfiguration['layoutCss.'])) {
+			//include layout css
+			if (!empty($this->layoutConfiguration['layoutCss']) || !empty($this->layoutConfiguration['layoutCss.'])) {
 				$files = is_array($this->layoutConfiguration['layoutCss.']) ? $this->layoutConfiguration['layoutCss.'] : array('layoutCss' => $this->layoutConfiguration['layoutCss']);
 				$this->includeCssJsFiles($files);
 			}
 
-				// force equal height ?
+			// force equal height ?
 			$config = tx_multicolumn_div::getTSConfig($GLOBALS['TSFE']->id, 'config');
-			if(!empty($this->layoutConfiguration['makeEqualElementBoxHeight'])) {
-				if(is_array($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.'])) {
+			if (!empty($this->layoutConfiguration['makeEqualElementBoxHeight'])) {
+				if (is_array($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.'])) {
 					$this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.']);
 				}
 			}
-				// force equal height for each column
-			if(!empty($this->layoutConfiguration['makeEqualElementColumnHeight'])) {
-				if(is_array($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.'])) {
+			// force equal height for each column
+			if (!empty($this->layoutConfiguration['makeEqualElementColumnHeight'])) {
+				if (is_array($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.'])) {
 					$this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.']);
 				}
 			}
 
-				// do option split
+			// do option split
 			$this->layoutConfigurationSplited = $GLOBALS['TSFE']->tmpl->splitConfArray($this->layoutConfiguration, $this->layoutConfiguration['columns']);
 		}
 	}
 
 	protected function renderMulticolumnView() {
 		$listItemData = $this->buildColumnData();
-				//append config from column 0 for global config container width
+		//append config from column 0 for global config container width
 		$listData = $listItemData[0];
 		$listData['content'] = $this->renderListItems('_NO_TABLE', 'column', $listItemData, $this->llPrefixed);
 		$listData['makeEqualElementBoxHeight'] = $this->layoutConfiguration['makeEqualElementBoxHeight'];
@@ -216,25 +221,25 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 
 		$columnWidth = !empty($this->effectConfiguration['effectBoxWidth']) ? $this->effectConfiguration['effectBoxWidth'] : $this->renderColumnWidth();
 		$isColumnWidthInt = intval($columnWidth);
-			// evalute column width from css string
-		if(empty($isColumnWidthInt)) {
+		// evalute column width from css string
+		if (empty($isColumnWidthInt)) {
 			$matches = array();
 			preg_match('/width?\s*:([0-9]*)/', $columnWidth, $matches);
 			$columnWidth = $matches[1];
 		}
 
-		$GLOBALS['TSFE']->register['maxImageWidth'] = !empty($columnWidth) ? $columnWidth : $GLOBALS['TSFE']->register['maxImageWidth'] ;
+		$GLOBALS['TSFE']->register['maxImageWidth'] = !empty($columnWidth) ? $columnWidth : $GLOBALS['TSFE']->register['maxImageWidth'];
 
 		$contentElements = tx_multicolumn_db::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
-		if(is_array($contentElements)) {
-			$listeItemsArray = array (
+		if (is_array($contentElements)) {
+			$listeItemsArray = array(
 				'effect' => $this->effectConfiguration['effect']
-				,'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : null
+			,
+				'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : NULL
 			);
 			$listeItemsArray = t3lib_div::array_merge($listeItemsArray, $this->llPrefixed);
 			$listItemContent = $this->renderListItems('tt_content', 'effectBoxItems', $contentElements, $listeItemsArray);
-		}
-		else {
+		} else {
 			$listItemContent = '';
 		}
 
@@ -250,16 +255,15 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 		return $content;
 	}
 
-
 	/**
 	 * Gets the data for each column
 	 *
-	 * @return	array			column data
+	 * @return    array            column data
 	 */
 	protected function buildColumnData() {
 		$numberOfColumns = $this->layoutConfiguration['columns'];
 		$columnContent = array();
-		$disableImageShrink = $this->layoutConfiguration['disableImageShrink'] ? true : false;
+		$disableImageShrink = $this->layoutConfiguration['disableImageShrink'] ? TRUE : FALSE;
 
 		$columnNumber = 0;
 		while ($columnNumber < $numberOfColumns) {
@@ -271,15 +275,15 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 			$colPosMaxImageWidth = $this->renderColumnWidth();
 
 			$columnData = $conf;
-			$columnData['columnWidth'] = $conf['columnWidth'] ? $conf['columnWidth'] : round(100/$numberOfColumns);
+			$columnData['columnWidth'] = $conf['columnWidth'] ? $conf['columnWidth'] : round(100 / $numberOfColumns);
 
-			if(empty($this->layoutConfiguration['disableAutomaticImageWidthCalculation'])) {
-					// evaluate columnWidth in pixels
-				if($conf['containerMeasure'] == 'px' && $conf['containerWidth']) {
-					$columnData['columnWidthPixel'] = round($conf['containerWidth']/$numberOfColumns);
+			if (empty($this->layoutConfiguration['disableAutomaticImageWidthCalculation'])) {
+				// evaluate columnWidth in pixels
+				if ($conf['containerMeasure'] == 'px' && $conf['containerWidth']) {
+					$columnData['columnWidthPixel'] = round($conf['containerWidth'] / $numberOfColumns);
 
 					// if columnWidth and column measure is set
-				} else if($conf['columnMeasure'] == 'px' && $conf['columnWidth']) {
+				} else if ($conf['columnMeasure'] == 'px' && $conf['columnWidth']) {
 					$columnData['columnWidthPixel'] = $conf['columnWidth'];
 
 					// if container width is set in percent (default 100%)
@@ -287,21 +291,20 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 					$columnData['columnWidthPixel'] = tx_multicolumn_div::calculateMaxColumnWidth($columnData['columnWidth'], $colPosMaxImageWidth, $numberOfColumns);
 				}
 
-					// calculate total column padding width
-				if($columnData['columnPadding']) {
+				// calculate total column padding width
+				if ($columnData['columnPadding']) {
 					$columnData['columnPaddingTotalWidthPixel'] = tx_multicolumn_div::getPaddingTotalWidth($columnData['columnPadding']);
 				}
-					// do auto scale if requested
-				$maxImageWidth = $disableImageShrink ? null : (isset($columnData['columnWidthPixel']) ? ($columnData['columnWidthPixel'] - $columnData['columnPaddingTotalWidthPixel']) : null);
+				// do auto scale if requested
+				$maxImageWidth = $disableImageShrink ? NULL : (isset($columnData['columnWidthPixel']) ? ($columnData['columnWidthPixel'] - $columnData['columnPaddingTotalWidthPixel']) : NULL);
 
 			} else {
 				$maxImageWidth = $colPosMaxImageWidth;
 			}
 
-
 			$columnData['colPos'] = $multicolumnColPos;
 			$contentElements = tx_multicolumn_db::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
-			if($contentElements) {
+			if ($contentElements) {
 				$GLOBALS['TSFE']->register['maxImageWidth'] = $maxImageWidth;
 				$GLOBALS['TSFE']->register['maxImageWidthInText'] = $maxImageWidth;
 
@@ -309,10 +312,10 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 			}
 
 			$columnContent[] = $columnData;
-			$columnNumber ++;
+			$columnNumber++;
 		}
 
-			// restore maxWidth
+		// restore maxWidth
 		$GLOBALS['TSFE']->register['maxImageWidth'] = $this->TSFEmaxWidthBefore;
 
 		return $columnContent;
@@ -321,19 +324,23 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base  {
 	/**
 	 * Evaluates the maxwidth of current column
 	 *
-	 * @param	String		$confName		Path to typoscript to render each element with
-	 * @param	Array		$recordsArray	Array which contains elements (array) for typoscript rendering
-	 * @param	Array		$appendData		Additinal data
-	 * @return	String		All items rendered as a string
+	 * @param    String $confName Path to typoscript to render each element with
+	 * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
+	 * @param    Array $appendData Additinal data
+	 * @return    String        All items rendered as a string
 	 */
-	protected function renderColumnWidth () {
+	protected function renderColumnWidth() {
 		$conf = is_array($this->layoutConfiguration) ? $this->layoutConfiguration : array();
-		$colPosData = array_merge(array('colPos' => $this->cObj->data['colPos'], 'CType' => $this->cObj->data['CType']), $conf);
+		$colPosData = array_merge(array(
+			'colPos' => $this->cObj->data['colPos'],
+			'CType' => $this->cObj->data['CType']
+		), $conf);
+
 		return intval($this->renderItem('columnWidth', $colPosData));
 	}
 }
 
-if (defined('TYPO3_MODE') && isset($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php']))    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php']);
+if (defined('TYPO3_MODE') && isset($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php'])) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php']);
 }
 ?>
