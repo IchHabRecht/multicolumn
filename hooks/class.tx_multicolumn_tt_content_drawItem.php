@@ -231,8 +231,6 @@ class tx_multicolumn_tt_content_drawItem_base {
 	 */
 	protected function renderContentElements(array $rowArr, $additionalClasses = NULL, $lostElements = FALSE) {
 		$content = '<ul class="contentElements ' . $additionalClasses . '">';
-		// used only for TYPO3 > 4.3
-		$trailingDiv = tx_multicolumn_div::isTypo3VersionAboveTypo343() ? '</div>' : NULL;
 
 		$item = 0;
 		foreach ($rowArr as $rKey => $row) {
@@ -265,7 +263,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 				}
 
 				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row, $isRTE) . '</div>';
-				$content .= '</div>' . $trailingDiv . '</li>';
+				$content .= '</div></div></li>';
 				$item++;
 			} else {
 				unset($rowArr[$rKey]);

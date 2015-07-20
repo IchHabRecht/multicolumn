@@ -35,9 +35,7 @@ if (is_array($TCA['tt_content']['columns']['CType']['config']['items'])) {
 
 $TCA['tt_content']['ctrl']['typeicons']['multicolumn'] = PATH_tx_multicolumn_rel . 'tt_content_multicolumn.gif';
 
-if (tx_multicolumn_div::isTypo3VersionAboveTypo343()) {
-	t3lib_spritemanager::addTcaTypeIcon('tt_content', 'multicolumn', PATH_tx_multicolumn_rel . 'tt_content_multicolumn.gif');
-}
+t3lib_spritemanager::addTcaTypeIcon('tt_content', 'multicolumn', PATH_tx_multicolumn_rel . 'tt_content_multicolumn.gif');
 
 // add tx_multicolumn_contentid to tt_content table
 $tempColumns = array(

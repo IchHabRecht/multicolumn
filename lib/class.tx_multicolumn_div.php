@@ -133,27 +133,6 @@ final class tx_multicolumn_div {
 	}
 
 	/**
-	 * Checks if TYPO3 version is above 3.4.3
-	 *
-	 * @return boolean
-	 */
-	public static function isTypo3VersionAboveTypo343() {
-		return !defined('TX_MULTICOLUMN_TYPO3_4-3');
-	}
-
-	/**
-	 * Deprecated, do not use.
-	 *
-	 * @return boolean
-	 * @deprecated
-	 */
-	public static function isTypo3VersionAboveTypo344() {
-		t3lib_div::logDeprecatedFunction();
-
-		return !defined('TX_MULTICOLUMN_TYPO3_4-5_OR_ABOVE');
-	}
-
-	/**
 	 * Calculates the maximal width  of the column in pixel based on {$styles.content.imgtext.colPos0.maxW}
 	 *
 	 * @param int $columnWidth

@@ -13,14 +13,6 @@ define('PATH_tx_multicolumn', t3lib_extMgm::extPath('multicolumn'));
 define('PATH_tx_multicolumn_rel', t3lib_extMgm::extRelPath($_EXTKEY));
 define('PATH_tx_multicolumn_pi_base', PATH_tx_multicolumn . 'lib/class.tx_multicolumn_pi_base.php');
 
-// is TYPO3 Version < TYPO3 4-3
-if (version_compare(TYPO3_branch, '4.4', '<')) {
-	define('TX_MULTICOLUMN_TYPO3_4-3', TRUE);
-}
-// is TYPO3 Version > TYPO3 4-4
-if (version_compare(TYPO3_branch, '4.5', '<=')) {
-	define('TX_MULTICOLUMN_TYPO3_4-5_OR_ABOVE', TRUE);
-}
 //hooks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'EXT:multicolumn/hooks/class.tx_multicolumn_tcemain.php:tx_multicolumn_tcemain';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:multicolumn/hooks/class.tx_multicolumn_tcemain.php:tx_multicolumn_tcemain';
