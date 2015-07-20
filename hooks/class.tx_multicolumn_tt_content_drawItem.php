@@ -204,7 +204,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 	 */
 	protected function buildLostContentElementsRow($lastColumnNumber) {
 		$markup = '';
-		$additionalWhere = $additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
+		$additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
 
 		$elements = tx_multicolumn_db::getContentElementsFromContainer(NULL, NULL, $this->multiColUid, $this->multiColCe['sys_language_uid'], TRUE, $additionalWhere, $this->pObj);
 
