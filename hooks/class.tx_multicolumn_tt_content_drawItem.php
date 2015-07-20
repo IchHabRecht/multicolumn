@@ -260,7 +260,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 				}
 				// pre crop bodytext
 				if ($row['bodytext']) {
-					$row['bodytext'] = $this->pObj->strip_tags($row['bodytext'], TRUE);
+					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
 					$row['bodytext'] = $this->pObj->wordWrapper(t3lib_div::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
 				}
 
