@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'multicolumn',
 	'description' => 'The Multicolumn extension expands TYPO3 with a new content element called Multicolumn. With the Multicolumn content element it has never been easier to do multicolumn layouts with TYPO3',
 	'category' => 'fe',
-	'version' => '2.2.0',
+	'version' => '3.0.0-dev',
 	'state' => 'stable',
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -24,7 +24,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'CPS-IT GmbH',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '4.5.0-6.2.99',
+			'typo3' => '7.4.0-7.99.99',
 		),
 		'conflicts' => array(
 		),
