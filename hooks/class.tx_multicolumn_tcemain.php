@@ -24,7 +24,7 @@
  ***************************************************************/
 class tx_multicolumn_tcemain {
 
-	/** @var t3lib_TCEmain */
+	/** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
 	protected $pObj;
 
 	/**
@@ -34,10 +34,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table Unused
 	 * @param string $id
 	 * @param array $fieldArray
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, t3lib_TCEmain $pObj) {
+	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		$GPvar = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 
 		if (is_array($GPvar) && isset($GPvar['tt_content']) && isset($fieldArray['t3_origuid']) && isset($GPvar['tt_content'][$fieldArray['t3_origuid']])) {
@@ -105,10 +105,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table
 	 * @param string $id
 	 * @param int $currentContentelementId
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, t3lib_TCEmain $pObj) {
+	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($table == 'tt_content') {
 			$this->pObj = $pObj;
 
@@ -225,10 +225,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table
 	 * @param mixed $id
 	 * @param array $fieldArray
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, t3lib_TCEmain $pObj) {
+	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($status == 'new' && $table == 'tt_content' && $fieldArray['CType'] == 'multicolumn') {
 			$this->pObj = $pObj;
 
@@ -247,10 +247,10 @@ class tx_multicolumn_tcemain {
 	 * @param int $origDestPid
 	 * @param array $moveRec
 	 * @param array $updateFields
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, t3lib_TCEmain $pObj) {
+	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		// check if we must update the move record
 		if ($table == 'tt_content' && ($this->isMulticolumnContainer($uid) || tx_multicolumn_db::contentElementHasAMulticolumnParentContainer($uid) || (($origDestPid < 0) && tx_multicolumn_db::contentElementHasAMulticolumnParentContainer(abs($origDestPid))))) {
 			if (!$this->getMulticolumnGetAction() == 'pasteInto') {
@@ -292,10 +292,10 @@ class tx_multicolumn_tcemain {
 	 * @param int $destPid The page id of the moved record
 	 * @param array $moveRec Record to move
 	 * @param array $updateFields Updated fields
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, array $moveRec, array $updateFields, t3lib_TCEmain $pObj) {
+	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, array $moveRec, array $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($table == 'tt_content' && $this->isMulticolumnContainer($uid)) {
 			if (!$this->getMulticolumnGetAction() == 'pasteInto') {
 				$this->checkIfContainerHasChilds($table, $uid, $destPid, $pObj);
@@ -309,10 +309,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table The table currently processing data for
 	 * @param int $uid The record uid currently processing
 	 * @param int $destPid The page id of the moved record
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	protected function checkIfContainerHasChilds($table, $uid, $destPid, t3lib_TCEmain $pObj) {
+	protected function checkIfContainerHasChilds($table, $uid, $destPid, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		$this->pObj = $pObj;
 
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
