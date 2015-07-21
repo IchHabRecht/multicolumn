@@ -117,22 +117,6 @@ final class tx_multicolumn_div {
 	}
 
 	/**
-	 * Evaluates current page id from backend context
-	 *
-	 * @return int
-	 */
-	public static function getBePidFromCachedTsConfig() {
-		$result = 0;
-		if (is_array($GLOBALS['SOBE']->tceforms->cachedTSconfig)) {
-			$tsConfig = array_pop($GLOBALS['SOBE']->tceforms->cachedTSconfig);
-
-			$result = intval($tsConfig['_CURRENT_PID']);
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Calculates the maximal width  of the column in pixel based on {$styles.content.imgtext.colPos0.maxW}
 	 *
 	 * @param int $columnWidth
