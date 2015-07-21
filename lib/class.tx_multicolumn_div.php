@@ -110,7 +110,7 @@ final class tx_multicolumn_div {
 	 * @return array Preset layout configuration
 	 */
 	public static function getTSConfig($pageUid, $tsConfigKey = 'layoutPreset') {
-		$tsConfig = isset($GLOBALS['TSFE']->cObj) ? $GLOBALS['TSFE']->getPagesTSconfig() : t3lib_BEfunc::getPagesTSconfig($pageUid);
+		$tsConfig = isset($GLOBALS['TSFE']->cObj) ? $GLOBALS['TSFE']->getPagesTSconfig() : \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageUid);
 		$tsConfig = empty($tsConfig['tx_multicolumn.'][$tsConfigKey . '.']) ? $tsConfig['tx_multicolumn.'] : $tsConfig['tx_multicolumn.'][$tsConfigKey . '.'];
 
 		return $tsConfig;
@@ -225,7 +225,7 @@ final class tx_multicolumn_div {
 		// FIXME Too many returns, refactor this mess.
 
 		$hasAccess = TRUE;
-		$TSconfig = t3lib_BEfunc::getPagesTSconfig($GLOBALS['SOBE']->id);
+		$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($GLOBALS['SOBE']->id);
 
 		// check remove items
 		if (!empty($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'])) {

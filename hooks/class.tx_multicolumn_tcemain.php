@@ -130,7 +130,7 @@ class tx_multicolumn_tcemain {
 					$this->copyMulticolumnContainer($id, $containerChildren, $destinationPid, $sysLanguageUid['sys_language_uid']);
 					// check if content element has a seedy relation to multicolumncontainer?
 				} else if ($command == 'copy' && ($newUid = intval($this->pObj->copyMappingArray['tt_content'][$id]))) {
-					$row = t3lib_BEfunc::getRecordWSOL('tt_content', $newUid);
+					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $newUid);
 
 					if (is_array($row)) {
 
@@ -315,7 +315,7 @@ class tx_multicolumn_tcemain {
 	protected function checkIfContainerHasChilds($table, $uid, $destPid, t3lib_TCEmain $pObj) {
 		$this->pObj = $pObj;
 
-		$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
+		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 		if ($row['CType'] == 'multicolumn') {
 			$containerChildren = tx_multicolumn_db::getContainerChildren($row['uid']);
 			if ($containerChildren) {
@@ -404,7 +404,7 @@ class tx_multicolumn_tcemain {
 	protected function checkIfElementGetsCopiedOrMovedInsideOrOutsideAMulticolumnContainer($pidToCheck, array &$fieldArray) {
 		if ($pidToCheck < 0) {
 			$elementId = abs($pidToCheck);
-			$elementBefore = t3lib_BEfunc::getRecord('tt_content', $elementId, 'tx_multicolumn_parentid, colPos');
+			$elementBefore = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $elementId, 'tx_multicolumn_parentid, colPos');
 
 			if ($elementBefore['tx_multicolumn_parentid']) {
 				$fieldArray['tx_multicolumn_parentid'] = $elementBefore['tx_multicolumn_parentid'];
