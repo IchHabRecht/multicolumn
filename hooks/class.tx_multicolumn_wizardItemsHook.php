@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook {
+class tx_multicolumn_wizardItemsHook implements \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface {
 	/**
 	 * modifies WizardItems array
 	 *
