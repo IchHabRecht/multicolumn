@@ -50,7 +50,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Reference of tx_cms_layout Object
 	 *
-	 * @var        t3lib_TStemplate
+	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	protected $tmpl;
 
@@ -87,7 +87,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 
 			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$this->pObj = $parentObject;
-			$this->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TStemplate');
+			$this->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 			$this->LL = tx_multicolumn_div::includeBeLocalLang();
 			$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
