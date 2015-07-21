@@ -167,7 +167,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 
 		if (version_compare(TYPO3_branch, '6.0', '>=')) {
 			/** @noinspection PhpUndefinedMethodInspection */
-			$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
+			$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		}
 
 		$markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
