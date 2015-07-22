@@ -43,18 +43,6 @@ class tx_multicolumn_emconfhelper {
 			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), t3lib_FlashMessage::INFO);
 		}
 
-		if (version_compare(TYPO3_branch, '6.0', '<')) {
-			// check XCLASS (for TYPO3 4.x only)
-			$subClass = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/class.tx_cms_layout.php'];
-
-			$extKeyOfSubClass = $subClass ? $this->getExtKeyByXCLASS($subClass) : '';
-			if ($subClass && $extKeyOfSubClass && !$this->checkIfDrawItemHookExists($subClass)) {
-				$content .= $this->renderDrawItemHookErrorMessage($subClass, $extKeyOfSubClass);
-			} else {
-				$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.ok.title'), $GLOBALS['LANG']->getLL('emconfhelper.ok.message'), t3lib_FlashMessage::OK);
-			}
-		}
-
 		return $content;
 	}
 

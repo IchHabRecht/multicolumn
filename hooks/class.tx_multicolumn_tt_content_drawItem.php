@@ -1,6 +1,6 @@
 <?php
 
-class tx_multicolumn_tt_content_drawItem_base {
+class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
 
 	/**
 	 * CSS file to use for BE styling
@@ -71,14 +71,14 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Preprocesses the preview rendering of a content element.
 	 *
-	 * @param    tx_cms_layout|\TYPO3\CMS\Backend\View\PageLayoutView $parentObject : Calling parent object
-	 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
-	 * @param    string $headerContent : Header content
-	 * @param    string $itemContent : Item content
-	 * @param    array $row : Record row of tt_content
-	 * @return    void
+	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+	 * @param bool $drawItem Whether to draw the item using the default functionalities
+	 * @param string $headerContent Header content
+	 * @param string $itemContent Item content
+	 * @param array $row Record row of tt_content
+	 * @return void
 	 */
-	protected function preProcess_base(&$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
+	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
 		// return if not multicolumn
 		if ($row['CType'] == 'multicolumn') {
 			// add css file
@@ -165,10 +165,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 
 		$markup .= $this->pObj->tt_content_drawColHeader($columnLabel, NULL, $newParams);
 
-		if (version_compare(TYPO3_branch, '6.0', '>=')) {
-			/** @noinspection PhpUndefinedMethodInspection */
-			$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
-		}
+		$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 
 		$markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 
@@ -303,54 +300,6 @@ class tx_multicolumn_tt_content_drawItem_base {
 		$params .= '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 
 		return "window.location.href='db_new_content_el.php" . $params . "'";
-	}
-}
-
-if (version_compare(TYPO3_branch, '6.0', '>=')) {
-	class tx_multicolumn_tt_content_drawItem extends tx_multicolumn_tt_content_drawItem_base implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
-
-		/**
-		 * CSS file to use for BE styling
-		 *
-		 * @var string
-		 */
-		protected $cssFile = 'style-v6.css';
-
-		/**
-		 * Preprocesses the preview rendering of a content element.
-		 *
-		 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-		 * @param boolean $drawItem Whether to draw the item using the default functionalities
-		 * @param string $headerContent Header content
-		 * @param string $itemContent Item content
-		 * @param array $row Record row of tt_content
-		 * @return void
-		 */
-		public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-			parent::preProcess_base($parentObject, $drawItem, $headerContent, $itemContent, $row);
-			/** @noinspection PhpUndefinedMethodInspection */
-			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addCssFile('../../../../typo3conf/ext/multicolumn/res/backend/style-v6.css', 'stylesheet', 'screen');
-		}
-	}
-} else {
-
-	require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms', 'layout/interfaces/interface.tx_cms_layout_tt_content_drawitemhook.php'));
-
-	class tx_multicolumn_tt_content_drawItem_pre60 extends tx_multicolumn_tt_content_drawItem_base implements tx_cms_layout_tt_content_drawItemHook {
-
-		/**
-		 * Preprocesses the preview rendering of a content element.
-		 *
-		 * @param    tx_cms_layout $parentObject : Calling parent object
-		 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
-		 * @param    string $headerContent : Header content
-		 * @param    string $itemContent : Item content
-		 * @param    array $row : Record row of tt_content
-		 * @return    void
-		 */
-		public function preProcess(tx_cms_layout &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-			parent::preProcess_base($parentObject, $drawItem, $headerContent, $itemContent, $row);
-		}
 	}
 }
 

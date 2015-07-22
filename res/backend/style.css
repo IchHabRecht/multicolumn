@@ -10,42 +10,43 @@
 table.multicolumn {
 	width: 100%;
 	padding-top: 10px;
-	border: 1px solid #D7DBE2;
+	margin: 6px 0;
 }
 
 table.multicolumn .column {
-	padding: 0 6px 0;
-	border-left: 1px solid #D7DBE2;
+	padding: 0;
+	background: #F8F8F8;
+	border: 1px solid #CDCDCD;
+	border-bottom-width: 1px;
 }
 
-table.multicolumn .column0 {
-	border-left: none;
-}
-
-table.multicolumn div.t3-page-colHeader {
-	visibility: visible;
+table.multicolumn td.t3-page-column .t3-page-colHeader {
+	padding-top: 0;
+	background: #fff;
+	color: #999;
+	border-bottom: 1px solid #CDCDCD;
 }
 
 table.multicolumn .innerContent {
-	padding: 0;
+	padding: 0 0 17px;
+}
+
+table.multicolumn .t3-icon-document-new {
+	margin: 12px 0 0 16px;
 }
 
 ul.contentElements {
 	margin: 0;
-	padding: 0;
 	list-style-type: none;
 }
 
 ul.contentElements li.contentElement {
-	margin-top: 15px;
-	border-width: 1px 0 0;
-	border-style: solid;
-	border-color: #D7DBE2;
+	margin-top: 12px;
+	padding-top: 12px;
 }
 
 ul.contentElements li.item0 {
 	margin-top: 0;
-	border: none;
 }
 
 div.lostContentElementContainer {

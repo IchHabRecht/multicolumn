@@ -257,13 +257,11 @@ final class tx_multicolumn_div {
 			}
 		}
 		$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($filePath, $language);
-		if (version_compare(TYPO3_branch, '4.5', '>')) {
-			// We need to flatten labels
-			$originalLabels = $labels;
-			foreach ($originalLabels as $languageKey => $languageArray) {
-				foreach ($languageArray as $stringId => $translationData) {
-					$labels[$languageKey][$stringId] = $translationData[0]['target'];
-				}
+		// We need to flatten labels
+		$originalLabels = $labels;
+		foreach ($originalLabels as $languageKey => $languageArray) {
+			foreach ($languageArray as $stringId => $translationData) {
+				$labels[$languageKey][$stringId] = $translationData[0]['target'];
 			}
 		}
 		if (isset($runtimeCache)) {
