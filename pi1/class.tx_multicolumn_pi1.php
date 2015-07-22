@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once(PATH_tx_multicolumn_pi_base);
 
 class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 	public $prefixId = 'tx_multicolumn_pi1';        // Same as class name
@@ -140,7 +139,6 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 		$this->currentCobjParentRecordNumber = $this->cObj->parentRecordNumber;
 		$this->currentCobjRecordString = $this->cObj->currentRecord;
 
-		require_once(PATH_tx_multicolumn . 'lib/class.tx_multicolumn_flexform.php');
 		//fallback to default
 		$LLkey = (isset($this->LOCAL_LANG[$this->LLkey])) ? $this->LLkey : 'default';
 		$this->llPrefixed = tx_multicolumn_div::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');

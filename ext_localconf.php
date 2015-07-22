@@ -6,7 +6,6 @@ if (!defined('TYPO3_MODE')) {
 // define multicolumn path
 define('PATH_tx_multicolumn', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn'));
 define('PATH_tx_multicolumn_rel', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY));
-define('PATH_tx_multicolumn_pi_base', PATH_tx_multicolumn . 'lib/class.tx_multicolumn_pi_base.php');
 
 //hooks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'EXT:multicolumn/hooks/class.tx_multicolumn_tcemain.php:tx_multicolumn_tcemain';
