@@ -237,7 +237,6 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 				$ceClass = 't3-page-ce' . $statusHidden;
 				$content .= '<li id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '" class="contentElement item' . $item . '"><div class="' . $ceClass . '">';
 
-				$isRTE = $this->pObj->isRTEforField('tt_content', $row, 'bodytext');
 				$space = $this->pObj->tt_contentConfig['showInfo'] ? 15 : 5;
 
 				// render diffrent header
@@ -256,10 +255,10 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 				// pre crop bodytext
 				if ($row['bodytext']) {
 					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
-					$row['bodytext'] = $this->pObj->wordWrapper(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
+					$row['bodytext'] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['bodytext'], 50);
 				}
 
-				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row, $isRTE) . '</div>';
+				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
 				$content .= '</div></div></li>';
 				$item++;
 			} else {
