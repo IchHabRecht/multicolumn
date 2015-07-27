@@ -62,10 +62,10 @@ class tx_multicolumn_tceform {
 	 * Decide what to to do. Action is defined in TCA $itemsProc['config']['multicolumnProc']
 	 *
 	 * @param    array $itemsProc
-	 * @param    object        t3lib_TCEforms
+	 * @param \TYPO3\CMS\Backend\Form\DataPreprocessor $pObj
 	 * @param    integer $pid : Target pid of page
 	 */
-	public function init($itemsProc, t3lib_TCEforms $pObj) {
+	public function init($itemsProc, \TYPO3\CMS\Backend\Form\DataPreprocessor $pObj) {
 		// call proFunc
 		if (!empty($itemsProc['config']['itemsProcFunctions'])) {
 			foreach ($itemsProc['config']['itemsProcFunctions'] as $procFunc) {
