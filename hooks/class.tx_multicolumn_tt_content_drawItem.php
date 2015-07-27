@@ -292,14 +292,16 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 	 * @return    string
 	 */
 	function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0) {
-		$params = '?id=' . $pid;
-		$params .= '&colPos=' . $colPos;
-		$params .= '&tx_multicolumn_parentid=' . $mulitColumnParentId;
-		$params .= '&sys_language_uid=' . $sysLanguageUid;
-		$params .= '&uid_pid=' . $pid;
+		$params = '&id=' . (int)$pid;
+		$params .= '&colPos=' . (int)$colPos;
+		$params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
+		$params .= '&sys_language_uid=' . (int)$sysLanguageUid;
+		$params .= '&uid_pid=' . (int)$pid;
 		$params .= '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-		return "window.location.href='db_new_content_el.php" . $params . "'";
+		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('new_content_element') . $params
+		) . ';';
 	}
 }
 
