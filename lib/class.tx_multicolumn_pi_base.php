@@ -64,14 +64,14 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// set data
 			$data = array_merge($data, $appendData);
 
-			$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
-			/** @var tslib_cObj $cObj */
-			$cObj->start($data, $tableName);
-			$cObj->parentRecordNumber = $rowNr;
+			$contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+			$contentObjectRenderer->start($data, $tableName);
+			$contentObjectRenderer->parentRecordNumber = $rowNr;
 
-			$content .= $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
+			$content .= $contentObjectRenderer->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
-			unset($cObj);
+			unset($contentObjectRenderer);
 
 			$rowNr++;
 		}
@@ -87,10 +87,10 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return    String        All items rendered as a string
 	 */
 	protected function renderItem($confName, array $data) {
-		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
-		/** @var tslib_cObj $cObj */
-		$cObj->start($data, '_NO_TABLE');
-		$content = $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
+		$contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+		$contentObjectRenderer->start($data, '_NO_TABLE');
+		$content = $contentObjectRenderer->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
 		return $content;
 	}
