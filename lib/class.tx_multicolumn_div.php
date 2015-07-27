@@ -196,7 +196,11 @@ final class tx_multicolumn_div {
 
 		foreach ($array as $key => $value) {
 			if (is_array($value) && array_key_exists(0, $value)) {
-				$newArray[$prefix . $key] = $value[0]['target'];
+				if (!empty($value[0]['target'])) {
+					$newArray[$prefix . $key] = $value[0]['target'];
+				} else {
+					$newArray[$prefix . $key] = $value[0]['source'];
+				}
 			} else {
 				$newArray[$prefix . $key] = $value;
 			}
