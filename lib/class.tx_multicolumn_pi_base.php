@@ -22,7 +22,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-class tx_multicolumn_pi_base extends tslib_pibase {
+class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * Render an array with data element with $confName
