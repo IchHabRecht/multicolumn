@@ -140,7 +140,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base {
 		$this->currentCobjRecordString = $this->cObj->currentRecord;
 
 		//fallback to default
-		$LLkey = (isset($this->LOCAL_LANG[$this->LLkey])) ? $this->LLkey : 'default';
+		$LLkey = (!empty($this->LOCAL_LANG[$this->LLkey])) ? $this->LLkey : 'default';
 		$this->llPrefixed = tx_multicolumn_div::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
 		$this->pi_setPiVarDefaults();
 
