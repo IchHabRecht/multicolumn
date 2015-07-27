@@ -1,3 +1,7 @@
+2015-07-27         [RELEASE] Release of multicolumn 2.2.1 (Nicole Cordes)
+2015-07-27 0d4ec65 [HOTFIX] Fix backend styling for TYPO3 >= 6.0 (Nicole Cordes)
+2015-07-27 bd866eb [HOTFIX] Fix label handling (Nicole Cordes)
+
 2015-07-20         [RELEASE] Release of multicolumn 2.2.0 (Nicole Cordes)
 2015-07-20 032edae [TASK] Remove code for non-supported TYPO3 versions (Nicole Cordes)
 2015-07-20 7228428 [TASK] Remove double variable assignment (Nicole Cordes)
