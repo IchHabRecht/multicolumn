@@ -210,7 +210,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 			$markup = '<div class="lostContentElementContainer">';
 
 			/** @noinspection PhpUndefinedMethodInspection */
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), t3lib_FlashMessage::WARNING);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			$markup .= $flashMessage->render();
 
 			$markup .= $this->renderContentElements($elements, 'lostContentElements', TRUE);

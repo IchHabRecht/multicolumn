@@ -134,12 +134,12 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	 *
 	 * @retun    string        html content of flash message
 	 */
-	protected function showFlashMessage($title, $message, $type = t3lib_FlashMessage::ERROR) {
+	protected function showFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR) {
 		// get relative path
 		$relPath = str_replace(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), NULL, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		// add error csss
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($relPath . 'typo3conf/ext/multicolumn/res/flashmessage.css', 'stylesheet', 'screen');
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
 
 		return $flashMessage->render();
 	}

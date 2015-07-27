@@ -40,7 +40,7 @@ class tx_multicolumn_emconfhelper {
 
 		// check templavoila
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
-			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), t3lib_FlashMessage::INFO);
+			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		}
 
 		return $content;
@@ -73,8 +73,8 @@ class tx_multicolumn_emconfhelper {
 	 *
 	 * @return string Flash message content
 	 */
-	protected function renderFlashMessage($title, $message, $type = t3lib_FlashMessage::WARNING) {
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+	protected function renderFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING) {
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
 
 		return $flashMessage->render();
 	}
