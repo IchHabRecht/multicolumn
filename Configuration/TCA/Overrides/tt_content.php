@@ -31,7 +31,7 @@ if (is_array($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'
 
 // Add CType multicolumn
 $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = array(
-	'showitem' => 'CType;;4;;1-1-1, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3, ' .
+	'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3, ' .
 		'--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.content, tx_multicolumn_items, ' .
 		'--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.config, pi_flexform, ' .
 		'--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group',
@@ -62,7 +62,7 @@ $tempColumns = array(
 				'edit' => array(
 					'type' => 'popup',
 					'title' => 'Edit',
-					'script' => 'wizard_edit.php',
+					'name' => 'wizard_edit',
 					'popup_onlyOpenIfSelected' => 1,
 					'icon' => 'edit2.gif',
 					'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
