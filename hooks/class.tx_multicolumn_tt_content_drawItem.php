@@ -7,7 +7,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 	 *
 	 * @var string
 	 */
-	protected $cssFile = 'style.css';
+	protected $cssFile = 'res/backend/style.css';
 
 	/**
 	 * Mulitcolumn content element
@@ -82,7 +82,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 		// return if not multicolumn
 		if ($row['CType'] == 'multicolumn') {
 			$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-			$pageRenderer->addCssFile('../../../../typo3conf/ext/multicolumn/res/backend/' . $this->cssFile, 'stylesheet', 'screen');
+			$pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . $this->cssFile, 'stylesheet', 'screen');
 
 			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$this->pObj = $parentObject;
