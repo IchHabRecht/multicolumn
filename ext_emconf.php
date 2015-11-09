@@ -24,7 +24,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'CPS-IT GmbH',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.4.0-7.99.99',
+			'typo3' => '7.6.0-7.99.99',
 		),
 		'conflicts' => array(
 		),
