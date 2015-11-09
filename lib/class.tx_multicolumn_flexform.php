@@ -92,7 +92,7 @@ class tx_multicolumn_flexform {
 	 * */
 	public function addFieldsToFlexForm(&$params) {
 		$type = $params['config']['txMulitcolumnField'];
-		$pid = $params['row']['pid'];
+		$pid = $params['flexParentDatabaseRow']['pid'];
 		$tsConfig = tx_multicolumn_div::getTSConfig($pid, NULL);
 
 		switch ($type) {
