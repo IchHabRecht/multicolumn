@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once(PATH_tx_multicolumn_pi_base);
 
 class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base {
 	public $prefixId = 'tx_multicolumn_pi_sitemap';        // Same as class name

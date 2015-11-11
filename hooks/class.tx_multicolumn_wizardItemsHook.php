@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook {
+class tx_multicolumn_wizardItemsHook implements \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface {
 	/**
 	 * modifies WizardItems array
 	 *
@@ -35,7 +35,7 @@ class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook
 			$this->addMulitcolumnElementToWizardArray($wizardItems);
 		}
 
-		$this->mulitColumnParentId = intval(t3lib_div::_GP('tx_multicolumn_parentid'));
+		$this->mulitColumnParentId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_multicolumn_parentid'));
 		//is mulitcolum parentId set
 		if ($this->mulitColumnParentId) {
 			$this->addMulticolumnParentId($wizardItems);
@@ -52,7 +52,7 @@ class tx_multicolumn_wizardItemsHook implements cms_newContentElementWizardsHook
 		$LL = $this->includeLocalLang();
 
 		$multicolumnElement = array(
-			'icon' => t3lib_extMgm::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
+			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
 			'title' => $LANG->getLLL('pi1_title', $LL),
 			'description' => $LANG->getLLL('pi1_plus_wiz_description', $LL),
 			'tt_content_defValues' => array(

@@ -62,15 +62,15 @@ class tx_multicolumn_tceform {
 	 * Decide what to to do. Action is defined in TCA $itemsProc['config']['multicolumnProc']
 	 *
 	 * @param    array $itemsProc
-	 * @param    object        t3lib_TCEforms
+	 * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj
 	 * @param    integer $pid : Target pid of page
 	 */
-	public function init($itemsProc, t3lib_TCEforms $pObj) {
+	public function init($itemsProc, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj) {
 		// call proFunc
 		if (!empty($itemsProc['config']['itemsProcFunctions'])) {
 			foreach ($itemsProc['config']['itemsProcFunctions'] as $procFunc) {
 				if (!empty($procFunc)) {
-					t3lib_div::callUserFunction($procFunc, $itemsProc, $pObj);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($procFunc, $itemsProc, $pObj);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ class tx_multicolumn_tceform {
 					continue;
 				}
 
-				if (!t3lib_div::inList($itemsUidList, $container['uid'])) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($itemsUidList, $container['uid'])) {
 					$title = $container['header'] ? $container['header'] : $GLOBALS['LANG']->getLLL('pi1_title', $this->LL) . ' ' . $multicolumnContainerItem . ' (uid: ' . $container['uid'] . ')';
 					$this->items[] = array(
 						0 => $title,

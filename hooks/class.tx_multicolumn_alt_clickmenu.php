@@ -22,6 +22,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
+
 class tx_multicolumn_alt_clickmenu {
 	/**
 	 * clickMenu object
@@ -33,11 +36,11 @@ class tx_multicolumn_alt_clickmenu {
 	/**
 	 * Adding tx_multicolumn_parentid on new context menu
 	 *
-	 * @param    object        The calling object. Value by reference.
-	 * @param    array        Array with the currently collected menu items to show.
-	 * @param    string        Table name of clicked item.
-	 * @param    integer        UID of clicked item.
-	 * @return    array        Modified $menuItems array
+	 * @param ClickMenu $backRef The calling object. Value by reference.
+	 * @param array $menuItems Array with the currently collected menu items to show.
+	 * @param string $table Table name of clicked item.
+	 * @param int $uid UID of clicked item.
+	 * @return array Modified $menuItems array
 	 */
 	public function main(clickMenu &$backRef, $menuItems, $table, $uid) {
 		if ($table == 'tt_content') {
@@ -64,8 +67,8 @@ class tx_multicolumn_alt_clickmenu {
 	/**
 	 * Adding multicolumn menu items after pasteafter
 	 *
-	 * @param    array        Array with multicolumn menu items
-	 * @param    array        Array with orginal menu items from alt_clickmenu
+	 * @param array $multicolumnMenuItems Array with multicolumn menu items
+	 * @param array $menuItems Array with orginal menu items from alt_clickmenu
 	 */
 	protected function addMulticolumnMenuItemsAfterPasteafter(array $multicolumnMenuItems, array &$menuItems) {
 		$sortedItems = array();
@@ -84,7 +87,8 @@ class tx_multicolumn_alt_clickmenu {
 	/**
 	 * Builds multicolumn menu items
 	 *
-	 * @param    integer        multicolumn content element uid
+	 * @param int $multicolumnUid multicolumn content element uid
+	 * @return array
 	 */
 	protected function getMulticolumnPasteIntoItems($multicolumnUid) {
 		$multicolumnMenuItems = array();
@@ -120,14 +124,14 @@ class tx_multicolumn_alt_clickmenu {
 	/**
 	 * Builds the modified clickMenu->DB_paste link (adding specific colPos and multicolum_parentid)
 	 *
-	 * @param    integer        multicolumn content element uid
-	 * @return    array        Item array, element in $menuItems
+	 * @param int $multicolumnUid multicolumn content element uid
+	 * @return array Item array, element in $menuItems
 	 */
 	protected function getPasteIntoLink($multicolumnUid) {
 		$selItem = $this->pObj->clipObj->getSelectedRecord();
 		$elInfo = array(
-			t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
-			t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
 			$this->pObj->clipObj->currentMode()
 		);
 
@@ -141,8 +145,8 @@ class tx_multicolumn_alt_clickmenu {
 	/**
 	 * Add &defVals[tt_content][tx_multicolumn_parentid]= to new item
 	 *
-	 * @param    array        Array of new item in context menu
-	 * @param    integer        parent id of multicolumn item
+	 * @param array $newItem Array of new item in context menu
+	 * @param int $multicolumnParentId parent id of multicolumn item
 	 */
 	protected function addMultiColumnParentIdToNewItem(array &$newItem, $multicolumnParentId) {
 		$newItem[3] = str_replace('new', 'new&defVals[tt_content][tx_multicolumn_parentid]=' . intval($multicolumnParentId), $newItem[3]);

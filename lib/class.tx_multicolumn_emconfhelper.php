@@ -39,20 +39,8 @@ class tx_multicolumn_emconfhelper {
 		$GLOBALS['LANG']->includeLLFile('EXT:multicolumn/locallang.xml');
 
 		// check templavoila
-		if (t3lib_extMgm::isLoaded('templavoila')) {
-			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), t3lib_FlashMessage::INFO);
-		}
-
-		if (version_compare(TYPO3_branch, '6.0', '<')) {
-			// check XCLASS (for TYPO3 4.x only)
-			$subClass = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/cms/layout/class.tx_cms_layout.php'];
-
-			$extKeyOfSubClass = $subClass ? $this->getExtKeyByXCLASS($subClass) : '';
-			if ($subClass && $extKeyOfSubClass && !$this->checkIfDrawItemHookExists($subClass)) {
-				$content .= $this->renderDrawItemHookErrorMessage($subClass, $extKeyOfSubClass);
-			} else {
-				$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.ok.title'), $GLOBALS['LANG']->getLL('emconfhelper.ok.message'), t3lib_FlashMessage::OK);
-			}
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
+			$content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		}
 
 		return $content;
@@ -85,8 +73,8 @@ class tx_multicolumn_emconfhelper {
 	 *
 	 * @return string Flash message content
 	 */
-	protected function renderFlashMessage($title, $message, $type = t3lib_FlashMessage::WARNING) {
-		$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+	protected function renderFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING) {
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
 
 		return $flashMessage->render();
 	}

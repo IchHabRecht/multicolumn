@@ -31,7 +31,7 @@ class tx_multicolumn_db {
 	 * @deprecated
 	 */
 	public static function isBackend() {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 		return (TYPO3_MODE == 'BE');
 	}
@@ -146,7 +146,7 @@ class tx_multicolumn_db {
 		$result = 0;
 		$row = self::getContentElement($mulitColumnId);
 		if ($row['pi_flexform']) {
-			$flexObj = t3lib_div::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			/** @var tx_multicolumn_flexform $flexObj */
 			$layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
 
@@ -167,7 +167,7 @@ class tx_multicolumn_db {
 	 */
 	public static function getContentElement($uid, $selectFields = '*', $additionalWhere = NULL, $useDeleteClause = TRUE) {
 		if (TYPO3_MODE == 'BE') {
-			return t3lib_befunc::getRecordWSOL('tt_content', $uid, $selectFields, $additionalWhere, $useDeleteClause);
+			return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $uid, $selectFields, $additionalWhere, $useDeleteClause);
 		}
 
 		$fromTable = 'tt_content';
@@ -276,7 +276,7 @@ class tx_multicolumn_db {
 	 * @deprecated Use tx_multicolumn_db::getContainerChildren() instead
 	 */
 	public static function containerHasChildren($containerUid, $showHidden = TRUE) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 		return self::getContainerChildren($containerUid, $showHidden);
 	}
@@ -291,9 +291,9 @@ class tx_multicolumn_db {
 	 */
 	protected static function enableFields($table, $showHidden = FALSE, $ignoreFields = array()) {
 		if (TYPO3_MODE == 'BE') {
-			$enableFields = t3lib_BEfunc::deleteClause($table) . ' AND ' . $table . '.pid>0';
+			$enableFields = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . ' AND ' . $table . '.pid>0';
 			if (!$showHidden) {
-				$enableFields .= t3lib_BEfunc::BEenableFields($table);
+				$enableFields .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
 			}
 		} else {
 			$enableFields = $GLOBALS['TSFE']->sys_page->enableFields($table, $showHidden, $ignoreFields);

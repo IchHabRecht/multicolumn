@@ -1,13 +1,13 @@
 <?php
 
-class tx_multicolumn_tt_content_drawItem_base {
+class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
 
 	/**
 	 * CSS file to use for BE styling
 	 *
 	 * @var string
 	 */
-	protected $cssFile = 'style.css';
+	protected $cssFile = 'res/backend/style.css';
 
 	/**
 	 * Mulitcolumn content element
@@ -50,7 +50,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Reference of tx_cms_layout Object
 	 *
-	 * @var        t3lib_TStemplate
+	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	protected $tmpl;
 
@@ -71,23 +71,22 @@ class tx_multicolumn_tt_content_drawItem_base {
 	/**
 	 * Preprocesses the preview rendering of a content element.
 	 *
-	 * @param    tx_cms_layout|\TYPO3\CMS\Backend\View\PageLayoutView $parentObject : Calling parent object
-	 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
-	 * @param    string $headerContent : Header content
-	 * @param    string $itemContent : Item content
-	 * @param    array $row : Record row of tt_content
-	 * @return    void
+	 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
+	 * @param bool $drawItem Whether to draw the item using the default functionalities
+	 * @param string $headerContent Header content
+	 * @param string $itemContent Item content
+	 * @param array $row Record row of tt_content
+	 * @return void
 	 */
-	protected function preProcess_base(&$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
+	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
 		// return if not multicolumn
 		if ($row['CType'] == 'multicolumn') {
-			// add css file
-			/** @noinspection PhpUndefinedMethodInspection */
-			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addCssFile('../../../../typo3conf/ext/multicolumn/res/backend/' . $this->cssFile, 'stylesheet', 'screen');
+			$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+			$pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . $this->cssFile, 'stylesheet', 'screen');
 
-			$this->flex = t3lib_div::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$this->pObj = $parentObject;
-			$this->tmpl = t3lib_div::makeInstance('t3lib_TStemplate');
+			$this->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 			$this->LL = tx_multicolumn_div::includeBeLocalLang();
 			$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
@@ -165,10 +164,9 @@ class tx_multicolumn_tt_content_drawItem_base {
 
 		$markup .= $this->pObj->tt_content_drawColHeader($columnLabel, NULL, $newParams);
 
-		if (version_compare(TYPO3_branch, '6.0', '>=')) {
-			/** @noinspection PhpUndefinedMethodInspection */
-			$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
-		}
+		$markup .= '<div class="t3-page-ce t3js-page-ce">';
+		$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '" class="btn btn-default btn-sm">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . $GLOBALS['LANG']->getLL('content', TRUE) . '</a>';
+		$markup .= '</div>';
 
 		$markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 
@@ -212,7 +210,7 @@ class tx_multicolumn_tt_content_drawItem_base {
 			$markup = '<div class="lostContentElementContainer">';
 
 			/** @noinspection PhpUndefinedMethodInspection */
-			$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), t3lib_FlashMessage::WARNING);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			$markup .= $flashMessage->render();
 
 			$markup .= $this->renderContentElements($elements, 'lostContentElements', TRUE);
@@ -240,7 +238,6 @@ class tx_multicolumn_tt_content_drawItem_base {
 				$ceClass = 't3-page-ce' . $statusHidden;
 				$content .= '<li id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '" class="contentElement item' . $item . '"><div class="' . $ceClass . '">';
 
-				$isRTE = $this->pObj->isRTEforField('tt_content', $row, 'bodytext');
 				$space = $this->pObj->tt_contentConfig['showInfo'] ? 15 : 5;
 
 				// render diffrent header
@@ -259,10 +256,10 @@ class tx_multicolumn_tt_content_drawItem_base {
 				// pre crop bodytext
 				if ($row['bodytext']) {
 					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
-					$row['bodytext'] = $this->pObj->wordWrapper(t3lib_div::fixed_lgd_cs($row['bodytext'], 50), 25, ' ');
+					$row['bodytext'] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['bodytext'], 50);
 				}
 
-				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row, $isRTE) . '</div>';
+				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
 				$content .= '</div></div></li>';
 				$item++;
 			} else {
@@ -295,62 +292,16 @@ class tx_multicolumn_tt_content_drawItem_base {
 	 * @return    string
 	 */
 	function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0) {
-		$params = '?id=' . $pid;
-		$params .= '&colPos=' . $colPos;
-		$params .= '&tx_multicolumn_parentid=' . $mulitColumnParentId;
-		$params .= '&sys_language_uid=' . $sysLanguageUid;
-		$params .= '&uid_pid=' . $pid;
-		$params .= '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+		$params = '&id=' . (int)$pid;
+		$params .= '&colPos=' . (int)$colPos;
+		$params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
+		$params .= '&sys_language_uid=' . (int)$sysLanguageUid;
+		$params .= '&uid_pid=' . (int)$pid;
+		$params .= '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-		return "window.location.href='db_new_content_el.php" . $params . "'";
-	}
-}
-
-if (version_compare(TYPO3_branch, '6.0', '>=')) {
-	class tx_multicolumn_tt_content_drawItem extends tx_multicolumn_tt_content_drawItem_base implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
-
-		/**
-		 * CSS file to use for BE styling
-		 *
-		 * @var string
-		 */
-		protected $cssFile = 'style-v6.css';
-
-		/**
-		 * Preprocesses the preview rendering of a content element.
-		 *
-		 * @param \TYPO3\CMS\Backend\View\PageLayoutView $parentObject Calling parent object
-		 * @param boolean $drawItem Whether to draw the item using the default functionalities
-		 * @param string $headerContent Header content
-		 * @param string $itemContent Item content
-		 * @param array $row Record row of tt_content
-		 * @return void
-		 */
-		public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-			parent::preProcess_base($parentObject, $drawItem, $headerContent, $itemContent, $row);
-			/** @noinspection PhpUndefinedMethodInspection */
-			$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addCssFile('../../../../typo3conf/ext/multicolumn/res/backend/style-v6.css', 'stylesheet', 'screen');
-		}
-	}
-} else {
-
-	require_once(t3lib_extMgm::extPath('cms', 'layout/interfaces/interface.tx_cms_layout_tt_content_drawitemhook.php'));
-
-	class tx_multicolumn_tt_content_drawItem_pre60 extends tx_multicolumn_tt_content_drawItem_base implements tx_cms_layout_tt_content_drawItemHook {
-
-		/**
-		 * Preprocesses the preview rendering of a content element.
-		 *
-		 * @param    tx_cms_layout $parentObject : Calling parent object
-		 * @param    boolean $drawItem : Whether to draw the item using the default functionalities
-		 * @param    string $headerContent : Header content
-		 * @param    string $itemContent : Item content
-		 * @param    array $row : Record row of tt_content
-		 * @return    void
-		 */
-		public function preProcess(tx_cms_layout &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
-			parent::preProcess_base($parentObject, $drawItem, $headerContent, $itemContent, $row);
-		}
+		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(
+			\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('new_content_element') . $params
+		) . ';';
 	}
 }
 

@@ -22,7 +22,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-class tx_multicolumn_pi_base extends tslib_pibase {
+class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * Render an array with data element with $confName
@@ -64,14 +64,14 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 			// set data
 			$data = array_merge($data, $appendData);
 
-			$cObj = t3lib_div::makeInstance('tslib_cObj');
-			/** @var tslib_cObj $cObj */
-			$cObj->start($data, $tableName);
-			$cObj->parentRecordNumber = $rowNr;
+			$contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+			$contentObjectRenderer->start($data, $tableName);
+			$contentObjectRenderer->parentRecordNumber = $rowNr;
 
-			$content .= $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
+			$content .= $contentObjectRenderer->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
-			unset($cObj);
+			unset($contentObjectRenderer);
 
 			$rowNr++;
 		}
@@ -87,10 +87,10 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	 * @return    String        All items rendered as a string
 	 */
 	protected function renderItem($confName, array $data) {
-		$cObj = t3lib_div::makeInstance('tslib_cObj');
-		/** @var tslib_cObj $cObj */
-		$cObj->start($data, '_NO_TABLE');
-		$content = $cObj->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
+		$contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+		$contentObjectRenderer->start($data, '_NO_TABLE');
+		$content = $contentObjectRenderer->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
 
 		return $content;
 	}
@@ -134,12 +134,12 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 	 *
 	 * @retun    string        html content of flash message
 	 */
-	protected function showFlashMessage($title, $message, $type = t3lib_FlashMessage::ERROR) {
+	protected function showFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR) {
 		// get relative path
-		$relPath = str_replace(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'), NULL, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		$relPath = str_replace(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), NULL, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		// add error csss
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($relPath . 'typo3conf/ext/multicolumn/res/flashmessage.css', 'stylesheet', 'screen');
-		$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $message, $title, $type);
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
 
 		return $flashMessage->render();
 	}
@@ -158,7 +158,7 @@ class tx_multicolumn_pi_base extends tslib_pibase {
 		// Hook: menuConfig_preProcessModMenu
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName])) {
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName] as $classRef) {
-				$hookObj = t3lib_div::getUserObj($classRef);
+				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 				if (method_exists($hookObj, $functionName)) {
 					$hookObj->$functionName($this, $hookRequestParams);
 					$hooked++;

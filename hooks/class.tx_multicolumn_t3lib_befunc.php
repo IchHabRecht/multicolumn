@@ -33,8 +33,7 @@ class tx_multicolumn_t3lib_befunc {
 	 */
 	public function getFlexFormDS_postProcessDS(&$dataStructArray, $conf, $row, $table, $fieldName) {
 		if ($table == 'tt_content' && $row['CType'] == 'multicolumn' && is_array($dataStructArray['sheets'])) {
-			require_once(PATH_tx_multicolumn . 'lib/class.tx_multicolumn_flexform.php');
-			$flex = t3lib_div::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$layout = $flex->getFlexValue('preSetLayout', 'layoutKey');
 
 			if ($layout == 'effectBox.') {

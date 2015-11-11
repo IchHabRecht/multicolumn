@@ -24,7 +24,7 @@
  ***************************************************************/
 class tx_multicolumn_tcemain {
 
-	/** @var t3lib_TCEmain */
+	/** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
 	protected $pObj;
 
 	/**
@@ -34,11 +34,11 @@ class tx_multicolumn_tcemain {
 	 * @param string $table Unused
 	 * @param string $id
 	 * @param array $fieldArray
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, t3lib_TCEmain $pObj) {
-		$GPvar = t3lib_div::_GP('cmd');
+	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
+		$GPvar = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 
 		if (is_array($GPvar) && isset($GPvar['tt_content']) && isset($fieldArray['t3_origuid']) && isset($GPvar['tt_content'][$fieldArray['t3_origuid']])) {
 			// element gets localized
@@ -105,10 +105,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table
 	 * @param string $id
 	 * @param int $currentContentelementId
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, t3lib_TCEmain $pObj) {
+	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($table == 'tt_content') {
 			$this->pObj = $pObj;
 
@@ -130,7 +130,7 @@ class tx_multicolumn_tcemain {
 					$this->copyMulticolumnContainer($id, $containerChildren, $destinationPid, $sysLanguageUid['sys_language_uid']);
 					// check if content element has a seedy relation to multicolumncontainer?
 				} else if ($command == 'copy' && ($newUid = intval($this->pObj->copyMappingArray['tt_content'][$id]))) {
-					$row = t3lib_BEfunc::getRecordWSOL('tt_content', $newUid);
+					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $newUid);
 
 					if (is_array($row)) {
 
@@ -174,14 +174,14 @@ class tx_multicolumn_tcemain {
 	 * @param    integer $orginalId : orginal id of content element (copy from)
 	 */
 	protected function pasteIntoMulticolumnContainer($action, $updateId, $orginalId = NULL) {
-		$multicolumnId = intval(t3lib_div::_GET('tx_multicolumn_parentid'));
+		$multicolumnId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_multicolumn_parentid'));
 		// stop if someone is trying to cut the multicolumn container inside the container
 		if ($multicolumnId == $updateId) {
 			return;
 		}
 
 		$updateRecordFields = array(
-			'colPos' => intval(t3lib_div::_GET('colPos')),
+			'colPos' => intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('colPos')),
 			'tx_multicolumn_parentid' => $multicolumnId
 		);
 
@@ -225,10 +225,10 @@ class tx_multicolumn_tcemain {
 	 * @param string $table
 	 * @param mixed $id
 	 * @param array $fieldArray
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, t3lib_TCEmain $pObj) {
+	public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($status == 'new' && $table == 'tt_content' && $fieldArray['CType'] == 'multicolumn') {
 			$this->pObj = $pObj;
 
@@ -247,10 +247,10 @@ class tx_multicolumn_tcemain {
 	 * @param int $origDestPid
 	 * @param array $moveRec
 	 * @param array $updateFields
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, t3lib_TCEmain $pObj) {
+	public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		// check if we must update the move record
 		if ($table == 'tt_content' && ($this->isMulticolumnContainer($uid) || tx_multicolumn_db::contentElementHasAMulticolumnParentContainer($uid) || (($origDestPid < 0) && tx_multicolumn_db::contentElementHasAMulticolumnParentContainer(abs($origDestPid))))) {
 			if (!$this->getMulticolumnGetAction() == 'pasteInto') {
@@ -292,10 +292,10 @@ class tx_multicolumn_tcemain {
 	 * @param int $destPid The page id of the moved record
 	 * @param array $moveRec Record to move
 	 * @param array $updateFields Updated fields
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, array $moveRec, array $updateFields, t3lib_TCEmain $pObj) {
+	public function moveRecord_firstElementPostProcess($table, $uid, $destPid, array $moveRec, array $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		if ($table == 'tt_content' && $this->isMulticolumnContainer($uid)) {
 			if (!$this->getMulticolumnGetAction() == 'pasteInto') {
 				$this->checkIfContainerHasChilds($table, $uid, $destPid, $pObj);
@@ -309,13 +309,13 @@ class tx_multicolumn_tcemain {
 	 * @param string $table The table currently processing data for
 	 * @param int $uid The record uid currently processing
 	 * @param int $destPid The page id of the moved record
-	 * @param t3lib_TCEmain $pObj
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $pObj
 	 * @return void
 	 */
-	protected function checkIfContainerHasChilds($table, $uid, $destPid, t3lib_TCEmain $pObj) {
+	protected function checkIfContainerHasChilds($table, $uid, $destPid, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj) {
 		$this->pObj = $pObj;
 
-		$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
+		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 		if ($row['CType'] == 'multicolumn') {
 			$containerChildren = tx_multicolumn_db::getContainerChildren($row['uid']);
 			if ($containerChildren) {
@@ -404,7 +404,7 @@ class tx_multicolumn_tcemain {
 	protected function checkIfElementGetsCopiedOrMovedInsideOrOutsideAMulticolumnContainer($pidToCheck, array &$fieldArray) {
 		if ($pidToCheck < 0) {
 			$elementId = abs($pidToCheck);
-			$elementBefore = t3lib_BEfunc::getRecord('tt_content', $elementId, 'tx_multicolumn_parentid, colPos');
+			$elementBefore = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $elementId, 'tx_multicolumn_parentid, colPos');
 
 			if ($elementBefore['tx_multicolumn_parentid']) {
 				$fieldArray['tx_multicolumn_parentid'] = $elementBefore['tx_multicolumn_parentid'];
@@ -434,7 +434,7 @@ class tx_multicolumn_tcemain {
 	 * @return string Value of action
 	 */
 	protected function getMulticolumnGetAction() {
-		$gpVars = t3lib_div::_GET('tx_multicolumn');
+		$gpVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_multicolumn');
 
 		return is_array($gpVars) && isset($gpVars['action']) ? $gpVars['action'] : '';
 	}
