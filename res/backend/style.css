@@ -18,6 +18,7 @@ table.multicolumn .column {
 	background: #F8F8F8;
 	border: 1px solid #CDCDCD;
 	border-bottom-width: 1px;
+	vertical-align: top;
 }
 
 table.multicolumn td.t3-page-column .t3-page-colHeader {
@@ -25,10 +26,6 @@ table.multicolumn td.t3-page-column .t3-page-colHeader {
 	background: #fff;
 	color: #999;
 	border-bottom: 1px solid #CDCDCD;
-}
-
-table.multicolumn .innerContent {
-	padding: 0 0 17px;
 }
 
 table.multicolumn .t3-icon-document-new {
@@ -39,11 +36,6 @@ ul.contentElements {
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
-}
-
-ul.contentElements li.contentElement {
-	margin-top: 12px;
-	padding-top: 12px;
 }
 
 ul.contentElements li.item0 {
