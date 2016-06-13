@@ -1,5 +1,11 @@
 <?php
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Lang\LanguageService;
+
 class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
 
 	/**
@@ -81,12 +87,12 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
 		// return if not multicolumn
 		if ($row['CType'] == 'multicolumn') {
-			$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+			$pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 			$pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . $this->cssFile, 'stylesheet', 'screen');
 
-			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+			$this->flex = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
 			$this->pObj = $parentObject;
-			$this->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
+			$this->tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 			$this->LL = tx_multicolumn_div::includeBeLocalLang();
 			$this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
@@ -149,23 +155,37 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 	/**
 	 * Builds a single column with conten telements
 	 *
-	 * @param    integer $columnWidth : width of column
-	 * @param    integer $columnIndex : number of column
-	 * @param    integer $colPos
-	 * @return    string            $column markup
+	 * @param int $columnWidth : width of column
+	 * @param int $columnIndex : number of column
+	 * @param int $colPos
+	 * @param string $markup
+	 * @return string            $column markup
 	 */
 	protected function buildColumn($columnWidth, $columnIndex, $colPos, &$markup) {
-		$markup .= '<td id="column_' . $this->multiColCe['uid'] . '_' . $colPos . '" class="t3-page-column t3-page-column-' . $columnIndex . ' column column' . $columnIndex . '" style="width: ' . $columnWidth . '%"><div class="innerContent">';
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$markup .= '<td id="column_' . (int)$this->multiColCe['uid'] . '_' . (int)$colPos . '" '
+			. 'class="t3-page-column t3-page-column-' . (int)$columnIndex . ' column column' . (int)$columnIndex . '" '
+			. 'style="width: ' . $columnWidth . '%">'
+			. '<div class="innerContent">';
 
 		$newParams = $this->getNewRecordParams($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 		$columnNumber = $columnIndex + 1;
 		/** @noinspection PhpUndefinedMethodInspection */
-		$columnLabel = $this->isEffectBox ? $GLOBALS['LANG']->getLLL('cms_layout.effectBox', $this->LL) : $GLOBALS['LANG']->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . $columnNumber;
+		$columnLabel = $this->isEffectBox
+			? $this->getLanguageService()->getLLL('cms_layout.effectBox', $this->LL)
+			: $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . $columnNumber;
 
 		$markup .= $this->pObj->tt_content_drawColHeader($columnLabel, NULL, $newParams);
 
-		$markup .= '<div class="t3-page-ce t3js-page-ce">';
-		$markup .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', 1) . '" class="btn btn-default btn-sm">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . ' ' . $GLOBALS['LANG']->getLL('content', TRUE) . '</a>';
+		$markup .= '<div class="t3-page-ce t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] .
+			'-' . StringUtility::getUniqueId() . '">';
+		$markup .= '<a href="#" '
+			. 'onclick="' . htmlspecialchars($newParams) . '" '
+			. 'title="'. $this->getLanguageService()->getLL('newContentElement', true) . '" '
+			. 'class="btn btn-default btn-sm">'
+			. $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+			. ' '
+			. $this->getLanguageService()->getLL('content', true) . '</a>';
 		$markup .= '</div>';
 
 		$markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
@@ -210,7 +230,12 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 			$markup = '<div class="lostContentElementContainer">';
 
 			/** @noinspection PhpUndefinedMethodInspection */
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLLL('cms_layout.lostElements.message', $this->LL), $GLOBALS['LANG']->getLLL('cms_layout.lostElements.title', $this->LL), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance(
+				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
+				$this->getLanguageService()->getLLL('cms_layout.lostElements.message', $this->LL),
+				$this->getLanguageService()->getLLL('cms_layout.lostElements.title', $this->LL),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+			);
 			$markup .= $flashMessage->render();
 
 			$markup .= $this->renderContentElements($elements, 'lostContentElements', TRUE);
@@ -256,7 +281,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 				// pre crop bodytext
 				if ($row['bodytext']) {
 					$row['bodytext'] = strip_tags(preg_replace('/<br.?\\/?>/', LF, $row['bodytext']));
-					$row['bodytext'] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['bodytext'], 50);
+					$row['bodytext'] = GeneralUtility::fixed_lgd_cs($row['bodytext'], 50);
 				}
 
 				$content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
@@ -297,11 +322,18 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 		$params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
 		$params .= '&sys_language_uid=' . (int)$sysLanguageUid;
 		$params .= '&uid_pid=' . (int)$pid;
-		$params .= '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		$params .= '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
-		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(
+		return 'window.location.href=' . GeneralUtility::quoteJSvalue(
 			\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('new_content_element') . $params
 		) . ';';
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }
 
