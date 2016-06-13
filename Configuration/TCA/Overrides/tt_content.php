@@ -53,6 +53,7 @@ $tempColumns = array(
 			'items' => array(
 				array(),
 			),
+			'default' => 0,
 			'size' => 1,
 			'minitems' => 0,
 			'maxitems' => 1,
