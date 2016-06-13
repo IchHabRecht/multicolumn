@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>1</uid>
+		<pid>1</pid>
+		<CType>multicolumn</CType>
+		<header>Multicolumn Container</header>
+		<colPos>0</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<tx_multicolumn_parentid>0</tx_multicolumn_parentid>
+	</tt_content>
+	<tt_content>
+		<uid>2</uid>
+		<pid>1</pid>
+		<CType>textpic</CType>
+		<header>Multicolumn Child 1</header>
+		<colPos>10</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<tx_multicolumn_parentid>1</tx_multicolumn_parentid>
+	</tt_content>
+</dataset>

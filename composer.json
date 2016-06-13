@@ -23,6 +23,14 @@
   "require-dev": {
     "phpunit/phpunit": "~4.7.0"
   },
+  "autoload": {
+    "classmap": ["hooks/", "lib/", "pi1/", "pi_sitemap/"]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+    }
+  },
   "replace": {
     "multicolumn": "self.version",
     "typo3-ter/multicolumn": "self.version"
