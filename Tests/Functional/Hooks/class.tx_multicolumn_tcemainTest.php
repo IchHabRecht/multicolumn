@@ -55,24 +55,6 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
-     * get the current UID from the LAST copied parent UID
-     *
-     * @param $oldUid
-     * @return int
-     */
-    protected function getUIDFromCopy($oldUid)
-    {
-        $result = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            'uid',
-            self::TABLE_CONTENT,
-            't3_origuid=\'' . $oldUid . '\'',
-            '',
-            'uid DESC'
-        );
-        return isset($result['uid']) ? $result['uid'] : 0;
-    }
-
-    /**
      * Copy an existing multicolumn container to another column
      *
      * @test
@@ -99,8 +81,8 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
-        $containerUid = $this->getUIDFromCopy(1);
-        $childUid = $this->getUIDFromCopy(2);
+        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
+        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
@@ -128,7 +110,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
-     * copy an existing multicolumn container into another page (see: tt_content.xml)
+     * Copy an existing multicolumn container to another page
      *
      * @test
      */
@@ -154,8 +136,8 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
-        $containerUid = $this->getUIDFromCopy(1);
-        $childUid = $this->getUIDFromCopy(2);
+        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
+        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
