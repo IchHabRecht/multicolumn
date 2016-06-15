@@ -128,7 +128,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
-     * copy an existing multicolumn container into another page (see: tt_content.xml)
+     * Copy an existing multicolumn container to another page
      *
      * @test
      */
@@ -183,7 +183,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
-     * Create an new multicolumn container
+     * Create a new multicolumn container
      *
      * @test
      */
@@ -217,5 +217,46 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
             . ' AND tx_multicolumn_parentid=1'
         );
         $this->assertSame(2, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function copyIntoContainerAfterElementInDefaultLanguage()
+    {
+        $cmpMap = [
+            self::TABLE_CONTENT => [
+                3 => [
+                    'copy' => -2
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start([], $cmpMap);
+        $dataHandler->process_cmdmap();
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'textpic\''
+            . ' AND colPos=10'
+            . ' AND sys_language_uid=0'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(2, $count);
+    }
+
+    /**
+     * Not testable currently.
+     * The information about, which column, is missing
+     *
+     * @test
+     */
+    public function copyIntoContainerColumnInDefaultLanguage()
+    {
+
     }
 }
