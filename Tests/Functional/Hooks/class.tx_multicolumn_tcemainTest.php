@@ -25,10 +25,14 @@
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class tx_multicolumn_tcemainTest extends FunctionalTestCase
+class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
 {
+    const CTYPE_MULTICOLUMN = 'multicolumn';
+
+    const TABLE_CONTENT = 'tt_content';
+
     /**
      * @var array
      */
@@ -47,33 +51,32 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
         $this->importDataSet($fixturePath . 'tt_content.xml');
 
-        $this->setUpBackendUserFromFixture(1);
-        Bootstrap::getInstance()->initializeLanguageObject();
+        // we don't need this stuff as a child of AbstractDataHandlerActionTestCase anymore, the parent will do
+        //$this->setUpBackendUserFromFixture(1);
+        //Bootstrap::getInstance()->initializeLanguageObject();
     }
 
     /**
+     * copy an existing multicolumn container into another ROOT-PageColumn (see: tt_content.xml)
+     *
      * @test
      */
     public function copyContainerAndChildrenToOtherColumnInDefaultLanguage()
     {
         $dataMap = [];
         $cmpMap = [
-            'tt_content' =>
-                [
-                    1 =>
-                        [
-                            'copy' =>
-                                [
-                                    'action' => 'paste',
-                                    'target' => 1,
-                                    'update' =>
-                                        [
-                                            'colPos' => 2,
-                                            'sys_language_uid' => 0,
-                                        ],
-                                ],
+            self::TABLE_CONTENT => [
+                1 => [
+                    'copy' => [
+                        'action' => 'paste',
+                        'target' => 1,
+                        'update' => [
+                            'colPos' => 2,
+                            'sys_language_uid' => 0,
                         ],
+                    ],
                 ],
+            ],
         ];
 
         $dataHandler = new DataHandler();
@@ -82,11 +85,11 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
+            self::TABLE_CONTENT,
             'uid=3'
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'multicolumn\''
+            . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
             . ' AND colPos=2'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -94,7 +97,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
+            self::TABLE_CONTENT,
             'uid=4'
             . ' AND pid=1'
             . ' AND deleted=0'
@@ -105,19 +108,16 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $this->assertSame(1, $count);
     }
 
-    public function createNewContainer()
-    {
-
-    }
-
     /**
+     * copy an existing multicolumn container into another page (see: tt_content.xml)
+     *
      * @test
      */
     public function copyContainerAndChildrenToOtherPageInDefaultLanguage()
     {
         $dataMap = [];
         $cmpMap = [
-            'tt_content' => [
+            self::TABLE_CONTENT => [
                 1 => [
                     'copy' => [
                         'action' => 'paste',
@@ -137,11 +137,11 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
+            self::TABLE_CONTENT,
             'uid=3'
             . ' AND pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\'multicolumn\''
+            . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
             . ' AND colPos=0'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -149,7 +149,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
+            self::TABLE_CONTENT,
             'uid=4'
             . ' AND pid=2'
             . ' AND deleted=0'
@@ -160,4 +160,37 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $this->assertSame(1, $count);
     }
 
+    /**
+     * create an new Multicolumn container
+     *
+     * @test
+     */
+    public function createNewContainerWithDefaultLanguage()
+    {
+        $config = [
+            'header' => 'Mutlicolumn insert Test',
+            'colPos' => 0,
+            'CType' => self::CTYPE_MULTICOLUMN,
+            'sys_language_uid' => 0,
+            'tx_multicolumn_parentid' => 0
+        ];
+
+        $result = $this->actionService->createNewRecord(self::TABLE_CONTENT, 1, $config);
+
+        if (isset($result[self::TABLE_CONTENT])) {
+            foreach ($result[self::TABLE_CONTENT] as $ttcId) {
+                $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+                    '*',
+                    self::TABLE_CONTENT,
+                    'uid='.$ttcId
+                    . ' AND pid=1'
+                    . ' AND deleted=0'
+                    . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
+                    . ' AND colPos=0'
+                    . ' AND tx_multicolumn_parentid=0'
+                );
+                $this->assertSame(1, $count);
+            }
+        }
+    }
 }
