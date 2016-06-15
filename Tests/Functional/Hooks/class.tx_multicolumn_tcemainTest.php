@@ -25,12 +25,12 @@
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
-class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
+class tx_multicolumn_tcemainTest extends FunctionalTestCase
 {
     const CTYPE_MULTICOLUMN = 'multicolumn';
-
     const TABLE_CONTENT = 'tt_content';
 
     /**
@@ -51,13 +51,12 @@ class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
         $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
         $this->importDataSet($fixturePath . 'tt_content.xml');
 
-        // we don't need this stuff as a child of AbstractDataHandlerActionTestCase anymore, the parent will do
-        //$this->setUpBackendUserFromFixture(1);
-        //Bootstrap::getInstance()->initializeLanguageObject();
+        $this->setUpBackendUserFromFixture(1);
+        Bootstrap::getInstance()->initializeLanguageObject();
     }
 
     /**
-     * copy an existing multicolumn container into another ROOT-PageColumn (see: tt_content.xml)
+     * Copy an existing multicolumn container to another column
      *
      * @test
      */
@@ -89,7 +88,7 @@ class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
             'uid=3'
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=2'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -124,11 +123,11 @@ class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
                         'target' => 2,
                         'update' => [
                             'colPos' => 0,
-                            'sys_language_uid' => 0
-                        ]
-                    ]
-                ]
-            ]
+                            'sys_language_uid' => 0,
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $dataHandler = new DataHandler();
@@ -141,7 +140,7 @@ class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
             'uid=3'
             . ' AND pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=0'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -161,36 +160,39 @@ class tx_multicolumn_tcemainTest extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * create an new Multicolumn container
+     * Create an new multicolumn container
      *
      * @test
      */
-    public function createNewContainerWithDefaultLanguage()
+    public function addContainerInDefaultLanguage()
     {
-        $config = [
-            'header' => 'Mutlicolumn insert Test',
-            'colPos' => 0,
-            'CType' => self::CTYPE_MULTICOLUMN,
-            'sys_language_uid' => 0,
-            'tx_multicolumn_parentid' => 0
+        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_CONTENT => [
+                $uniqueNewID => [
+                    'CType' => 'textpic',
+                    'header' => 'new TextPic Element in Multicolumn',
+                    'colPos' => 10,
+                    'sys_language_uid' => 0,
+                    'tx_multicolumn_parentid' => 1,
+                    'pid' => 1,
+                ],
+            ],
         ];
 
-        $result = $this->actionService->createNewRecord(self::TABLE_CONTENT, 1, $config);
+        $dataHandler = new DataHandler();
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
 
-        if (isset($result[self::TABLE_CONTENT])) {
-            foreach ($result[self::TABLE_CONTENT] as $ttcId) {
-                $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-                    '*',
-                    self::TABLE_CONTENT,
-                    'uid='.$ttcId
-                    . ' AND pid=1'
-                    . ' AND deleted=0'
-                    . ' AND CType=\''.self::CTYPE_MULTICOLUMN.'\''
-                    . ' AND colPos=0'
-                    . ' AND tx_multicolumn_parentid=0'
-                );
-                $this->assertSame(1, $count);
-            }
-        }
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'textpic\''
+            . ' AND colPos=10'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(2, $count);
     }
 }
