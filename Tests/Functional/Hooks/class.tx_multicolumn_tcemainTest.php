@@ -218,7 +218,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $dataHandler->start([], $cmpMap);
         $dataHandler->process_cmdmap();
 
-        // check if the multicolumn is softdeleted
+        // Check if the multicolumn is deleted
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
@@ -229,7 +229,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         );
         $this->assertSame(1, $count);
 
-        // check if the child is from the deleted multicolumn is also softdeleted
+        // Check if the child is from the deleted multicolumn is also deleted
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
