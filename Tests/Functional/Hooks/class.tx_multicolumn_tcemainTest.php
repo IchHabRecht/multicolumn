@@ -239,6 +239,8 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
      */
     public function copyIntoContainerColumnInDefaultLanguage()
     {
-
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
     }
 }
