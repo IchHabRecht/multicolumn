@@ -105,6 +105,11 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $this->assertSame(1, $count);
     }
 
+    public function createNewContainer()
+    {
+
+    }
+
     /**
      * @test
      */
@@ -112,22 +117,18 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     {
         $dataMap = [];
         $cmpMap = [
-            'tt_content' =>
-                [
-                    1 =>
-                        [
-                            'copy' =>
-                                [
-                                    'action' => 'paste',
-                                    'target' => 2,
-                                    'update' =>
-                                        [
-                                            'colPos' => 0,
-                                            'sys_language_uid' => 0,
-                                        ],
-                                ],
-                        ],
-                ],
+            'tt_content' => [
+                1 => [
+                    'copy' => [
+                        'action' => 'paste',
+                        'target' => 2,
+                        'update' => [
+                            'colPos' => 0,
+                            'sys_language_uid' => 0
+                        ]
+                    ]
+                ]
+            ]
         ];
 
         $dataHandler = new DataHandler();
