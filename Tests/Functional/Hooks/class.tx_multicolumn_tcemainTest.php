@@ -55,6 +55,24 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
+     * get the current UID from the LAST copied parent UID
+     *
+     * @param $oldUid
+     * @return int
+     */
+    protected function getUIDFromCopy($oldUid)
+    {
+        $result = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+            'uid',
+            self::TABLE_CONTENT,
+            't3_origuid=\'' . $oldUid . '\'',
+            '',
+            'uid DESC'
+        );
+        return isset($result['uid']) ? $result['uid'] : 0;
+    }
+
+    /**
      * Copy an existing multicolumn container to another column
      *
      * @test
@@ -81,10 +99,13 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
+        $containerUid = $this->getUIDFromCopy(1);
+        $childUid = $this->getUIDFromCopy(2);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
-            'uid=3'
+            'uid=' . $containerUid
             . ' AND pid=1'
             . ' AND deleted=0'
             . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
@@ -96,12 +117,12 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
-            'uid=4'
+            'uid=' . $childUid
             . ' AND pid=1'
             . ' AND deleted=0'
             . ' AND CType=\'textpic\''
             . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=3'
+            . ' AND tx_multicolumn_parentid=' . $containerUid
         );
         $this->assertSame(1, $count);
     }
@@ -133,10 +154,13 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
+        $containerUid = $this->getUIDFromCopy(1);
+        $childUid = $this->getUIDFromCopy(2);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
-            'uid=3'
+            'uid=' . $containerUid
             . ' AND pid=2'
             . ' AND deleted=0'
             . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
@@ -148,12 +172,12 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             self::TABLE_CONTENT,
-            'uid=4'
+            'uid=' . $childUid
             . ' AND pid=2'
             . ' AND deleted=0'
             . ' AND CType=\'textpic\''
             . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=3'
+            . ' AND tx_multicolumn_parentid=' . $containerUid
         );
         $this->assertSame(1, $count);
     }
