@@ -235,6 +235,7 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
             . ' AND CType=\'textpic\''
             . ' AND colPos=11'
             . ' AND tx_multicolumn_parentid=0'
+            . ' AND sys_language_uid=0'
             . ' AND pid=1'
         );
         $this->assertSame(1, $count);
