@@ -194,4 +194,40 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         );
         $this->assertSame(2, $count);
     }
+
+    /**
+     * @test
+     */
+    public function addContainerInContainerInDefaultLanguage()
+    {
+        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_CONTENT => [
+                $uniqueNewID => [
+                    'CType' => self::CTYPE_MULTICOLUMN,
+                    'header' => 'nested multicolumn',
+                    'colPos' => 10,
+                    'sys_language_uid' => 0,
+                    'tx_multicolumn_parentid' => 1,
+                    'pid' => 1,
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
+            . ' AND colPos=10'
+            . ' AND sys_language_uid=0'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(1, $count);
+    }
 }
