@@ -26,7 +26,6 @@
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 class tx_multicolumn_tcemainTest extends FunctionalTestCase
 {
