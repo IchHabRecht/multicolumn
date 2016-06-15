@@ -194,4 +194,45 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         );
         $this->assertSame(2, $count);
     }
+
+    /**
+     * @test
+     */
+    public function deleteContainerInDefaultLanguage()
+    {
+        $cmpMap = [
+            self::TABLE_CONTENT => [
+                1 => [
+                    'delete' => 1
+                ]
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start([], $cmpMap);
+        $dataHandler->process_cmdmap();
+
+        // check if the multicolumn is softdeleted
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'uid=1'
+            . ' AND deleted=1'
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
+            . ' AND sys_language_uid=0'
+        );
+        $this->assertSame(1, $count);
+
+        // check if the child is from the deleted multicolumn is also softdeleted
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'uid=2'
+            . ' AND deleted=1'
+            . ' AND CType=\'textpic\''
+            . ' AND tx_multicolumn_parentid=1'
+            . ' AND sys_language_uid=0'
+        );
+        $this->assertSame(1, $count);
+    }
 }
