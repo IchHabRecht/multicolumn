@@ -200,4 +200,43 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         );
         $this->assertSame(2, $count);
     }
+
+    /**
+     * @test
+     */
+    public function copyElementFromContainerInDefaultLanguage()
+    {
+        $cmpMap = [
+            self::TABLE_CONTENT => [
+                2 => [
+                    'copy' => [
+                        'action' => 'paste',
+                        'target' => '1',
+                        'update' => [
+                            'colPos' => 11,
+                            'sys_language_uid' => 0,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start([], $cmpMap);
+        $dataHandler->process_cmdmap();
+
+        $copiedUID = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::TABLE_CONTENT,
+            'uid=' . $copiedUID
+            . ' AND deleted=0'
+            . ' AND CType=\'textpic\''
+            . ' AND colPos=11'
+            . ' AND tx_multicolumn_parentid=0'
+            . ' AND pid=1'
+        );
+        $this->assertSame(1, $count);
+    }
 }
