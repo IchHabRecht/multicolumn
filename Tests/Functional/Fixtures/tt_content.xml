@@ -18,4 +18,13 @@
 		<sys_language_uid>0</sys_language_uid>
 		<tx_multicolumn_parentid>1</tx_multicolumn_parentid>
 	</tt_content>
+	<tt_content>
+		<uid>3</uid>
+		<pid>1</pid>
+		<CType>textpic</CType>
+		<header>outside Element</header>
+		<colPos>0</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<tx_multicolumn_parentid>0</tx_multicolumn_parentid>
+	</tt_content>
 </dataset>
