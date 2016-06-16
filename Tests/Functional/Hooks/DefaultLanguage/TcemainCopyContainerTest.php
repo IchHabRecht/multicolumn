@@ -23,11 +23,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
-class tx_multicolumn_tcemainTest extends FunctionalTestCase
+class TcemainCopyContainerTest extends FunctionalTestCase
 {
     const CTYPE_MULTICOLUMN = 'multicolumn';
     const TABLE_CONTENT = 'tt_content';
@@ -160,84 +160,6 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
             . ' AND CType=\'textpic\''
             . ' AND colPos=10'
             . ' AND tx_multicolumn_parentid=' . $containerUid
-        );
-        $this->assertSame(1, $count);
-    }
-
-    /**
-     * Create an new multicolumn container
-     *
-     * @test
-     */
-    public function addContainerInDefaultLanguage()
-    {
-        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
-        $dataMap = [
-            self::TABLE_CONTENT => [
-                $uniqueNewID => [
-                    'CType' => 'textpic',
-                    'header' => 'new TextPic Element in Multicolumn',
-                    'colPos' => 10,
-                    'sys_language_uid' => 0,
-                    'tx_multicolumn_parentid' => 1,
-                    'pid' => 1,
-                ],
-            ],
-        ];
-
-        $dataHandler = new DataHandler();
-        $dataHandler->start($dataMap, []);
-        $dataHandler->process_datamap();
-
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            self::TABLE_CONTENT,
-            'pid=1'
-            . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
-            . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=1'
-        );
-        $this->assertSame(2, $count);
-    }
-
-    /**
-     * @test
-     */
-    public function deleteContainerInDefaultLanguage()
-    {
-        $cmpMap = [
-            self::TABLE_CONTENT => [
-                1 => [
-                    'delete' => 1
-                ]
-            ],
-        ];
-
-        $dataHandler = new DataHandler();
-        $dataHandler->start([], $cmpMap);
-        $dataHandler->process_cmdmap();
-
-        // Check if the multicolumn is deleted
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            self::TABLE_CONTENT,
-            'uid=1'
-            . ' AND deleted=1'
-            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
-            . ' AND sys_language_uid=0'
-        );
-        $this->assertSame(1, $count);
-
-        // Check if the child is from the deleted multicolumn is also deleted
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            self::TABLE_CONTENT,
-            'uid=2'
-            . ' AND deleted=1'
-            . ' AND CType=\'textpic\''
-            . ' AND tx_multicolumn_parentid=1'
-            . ' AND sys_language_uid=0'
         );
         $this->assertSame(1, $count);
     }
