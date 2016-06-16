@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
-class TcemainAddTest extends FunctionalTestCase
+class TcemainDeleteTest extends FunctionalTestCase
 {
     const CTYPE_MULTICOLUMN = 'multicolumn';
     const TABLE_CONTENT = 'tt_content';
