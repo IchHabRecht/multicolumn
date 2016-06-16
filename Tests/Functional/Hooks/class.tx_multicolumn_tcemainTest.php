@@ -237,4 +237,41 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         );
         $this->assertSame(1, $count);
     }
+
+    /**
+     * Add a new multicolumn container to page with multicolumn container in the same column
+     *
+     * @test
+     */
+    public function addContainerToPageWithContainerInSameColumnInDefaultLanguage()
+    {
+        $uniqueNewID = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::CONTENT_TABLE => [
+                $uniqueNewID => [
+                    'pid' => 1,
+                    'CType' => self::CTYPE_MULTICOLUMN,
+                    'header' => 'New multicolumn container',
+                    'colPos' => 0,
+                    'sys_language_uid' => 0,
+                    'tx_multicolumn_parentid' => '',
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            self::CONTENT_TABLE,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
+            . ' AND colPos=0'
+            . ' AND tx_multicolumn_parentid=0'
+        );
+        $this->assertSame(2, $count);
+    }
 }
