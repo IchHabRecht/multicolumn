@@ -23,12 +23,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
-class tx_multicolumn_tcemainTest extends FunctionalTestCase
+class TcemainCopyContainerTest extends FunctionalTestCase
 {
+    const CTYPE_MULTICOLUMN = 'multicolumn';
+    const TABLE_CONTENT = 'tt_content';
+
     /**
      * @var array
      */
@@ -52,41 +55,42 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
+     * Copy an existing multicolumn container to another column
+     *
      * @test
      */
     public function copyContainerAndChildrenToOtherColumnInDefaultLanguage()
     {
         $dataMap = [];
         $cmpMap = [
-            'tt_content' =>
-                [
-                    1 =>
-                        [
-                            'copy' =>
-                                [
-                                    'action' => 'paste',
-                                    'target' => 1,
-                                    'update' =>
-                                        [
-                                            'colPos' => 2,
-                                            'sys_language_uid' => 0,
-                                        ],
-                                ],
+            self::TABLE_CONTENT => [
+                1 => [
+                    'copy' => [
+                        'action' => 'paste',
+                        'target' => 1,
+                        'update' => [
+                            'colPos' => 2,
+                            'sys_language_uid' => 0,
                         ],
+                    ],
                 ],
+            ],
         ];
 
         $dataHandler = new DataHandler();
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
+        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
+        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
-            'uid=3'
+            self::TABLE_CONTENT,
+            'uid=' . $containerUid
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'multicolumn\''
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=2'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -94,53 +98,54 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
-            'uid=4'
+            self::TABLE_CONTENT,
+            'uid=' . $childUid
             . ' AND pid=1'
             . ' AND deleted=0'
             . ' AND CType=\'textpic\''
             . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=3'
+            . ' AND tx_multicolumn_parentid=' . $containerUid
         );
         $this->assertSame(1, $count);
     }
 
     /**
+     * Copy an existing multicolumn container to another page
+     *
      * @test
      */
     public function copyContainerAndChildrenToOtherPageInDefaultLanguage()
     {
         $dataMap = [];
         $cmpMap = [
-            'tt_content' =>
-                [
-                    1 =>
-                        [
-                            'copy' =>
-                                [
-                                    'action' => 'paste',
-                                    'target' => 2,
-                                    'update' =>
-                                        [
-                                            'colPos' => 0,
-                                            'sys_language_uid' => 0,
-                                        ],
-                                ],
+            self::TABLE_CONTENT => [
+                1 => [
+                    'copy' => [
+                        'action' => 'paste',
+                        'target' => 2,
+                        'update' => [
+                            'colPos' => 0,
+                            'sys_language_uid' => 0,
                         ],
+                    ],
                 ],
+            ],
         ];
 
         $dataHandler = new DataHandler();
         $dataHandler->start($dataMap, $cmpMap);
         $dataHandler->process_cmdmap();
 
+        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
+        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
-            'uid=3'
+            self::TABLE_CONTENT,
+            'uid=' . $containerUid
             . ' AND pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\'multicolumn\''
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=0'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -148,15 +153,14 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            'tt_content',
-            'uid=4'
+            self::TABLE_CONTENT,
+            'uid=' . $childUid
             . ' AND pid=2'
             . ' AND deleted=0'
             . ' AND CType=\'textpic\''
             . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=3'
+            . ' AND tx_multicolumn_parentid=' . $containerUid
         );
         $this->assertSame(1, $count);
     }
-
 }
