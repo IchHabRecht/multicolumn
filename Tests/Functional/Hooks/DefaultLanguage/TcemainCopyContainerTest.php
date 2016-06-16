@@ -23,11 +23,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 
-class tx_multicolumn_tcemainTest extends FunctionalTestCase
+class TcemainCopyContainerTest extends FunctionalTestCase
 {
     const CTYPE_MULTICOLUMN = 'multicolumn';
     const TABLE_CONTENT = 'tt_content';
@@ -162,85 +162,5 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
             . ' AND tx_multicolumn_parentid=' . $containerUid
         );
         $this->assertSame(1, $count);
-    }
-
-    /**
-     * Create a new multicolumn container
-     *
-     * @test
-     */
-    public function addContainerInDefaultLanguage()
-    {
-        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
-        $dataMap = [
-            self::TABLE_CONTENT => [
-                $uniqueNewID => [
-                    'CType' => 'textpic',
-                    'header' => 'new TextPic Element in Multicolumn',
-                    'colPos' => 10,
-                    'sys_language_uid' => 0,
-                    'tx_multicolumn_parentid' => 1,
-                    'pid' => 1,
-                ],
-            ],
-        ];
-
-        $dataHandler = new DataHandler();
-        $dataHandler->start($dataMap, []);
-        $dataHandler->process_datamap();
-
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            self::TABLE_CONTENT,
-            'pid=1'
-            . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
-            . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=1'
-        );
-        $this->assertSame(2, $count);
-    }
-
-    /**
-     * @test
-     */
-    public function copyIntoContainerAfterElementInDefaultLanguage()
-    {
-        $cmpMap = [
-            self::TABLE_CONTENT => [
-                3 => [
-                    'copy' => -2
-                ],
-            ],
-        ];
-
-        $dataHandler = new DataHandler();
-        $dataHandler->start([], $cmpMap);
-        $dataHandler->process_cmdmap();
-
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
-            '*',
-            self::TABLE_CONTENT,
-            'pid=1'
-            . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
-            . ' AND colPos=10'
-            . ' AND sys_language_uid=0'
-            . ' AND tx_multicolumn_parentid=1'
-        );
-        $this->assertSame(2, $count);
-    }
-
-    /**
-     * Not testable currently.
-     * The information about, which column, is missing
-     *
-     * @test
-     */
-    public function copyIntoContainerColumnInDefaultLanguage()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
     }
 }
