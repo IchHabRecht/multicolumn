@@ -26,11 +26,13 @@
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 class tx_multicolumn_tcemainTest extends FunctionalTestCase
 {
+    const CONTENT_TABLE = 'tt_content';
     const CTYPE_MULTICOLUMN = 'multicolumn';
-    const TABLE_CONTENT = 'tt_content';
+    const CTYPE_TEXTPIC = 'textpic';
 
     /**
      * @var array
@@ -61,9 +63,8 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
      */
     public function copyContainerAndChildrenToOtherColumnInDefaultLanguage()
     {
-        $dataMap = [];
         $cmpMap = [
-            self::TABLE_CONTENT => [
+            self::CONTENT_TABLE => [
                 1 => [
                     'copy' => [
                         'action' => 'paste',
@@ -78,15 +79,15 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         ];
 
         $dataHandler = new DataHandler();
-        $dataHandler->start($dataMap, $cmpMap);
+        $dataHandler->start([], $cmpMap);
         $dataHandler->process_cmdmap();
 
-        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
-        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
+        $containerUid = $dataHandler->copyMappingArray[self::CONTENT_TABLE][1];
+        $childUid = $dataHandler->copyMappingArray[self::CONTENT_TABLE][2];
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            self::TABLE_CONTENT,
+            self::CONTENT_TABLE,
             'uid=' . $containerUid
             . ' AND pid=1'
             . ' AND deleted=0'
@@ -98,11 +99,11 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            self::TABLE_CONTENT,
+            self::CONTENT_TABLE,
             'uid=' . $childUid
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
+            . ' AND CType=\'' . self::CTYPE_TEXTPIC . '\''
             . ' AND colPos=10'
             . ' AND tx_multicolumn_parentid=' . $containerUid
         );
@@ -116,9 +117,8 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
      */
     public function copyContainerAndChildrenToOtherPageInDefaultLanguage()
     {
-        $dataMap = [];
         $cmpMap = [
-            self::TABLE_CONTENT => [
+            self::CONTENT_TABLE => [
                 1 => [
                     'copy' => [
                         'action' => 'paste',
@@ -133,15 +133,15 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
         ];
 
         $dataHandler = new DataHandler();
-        $dataHandler->start($dataMap, $cmpMap);
+        $dataHandler->start([], $cmpMap);
         $dataHandler->process_cmdmap();
 
-        $containerUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][1];
-        $childUid = $dataHandler->copyMappingArray[self::TABLE_CONTENT][2];
+        $containerUid = $dataHandler->copyMappingArray[self::CONTENT_TABLE][1];
+        $childUid = $dataHandler->copyMappingArray[self::CONTENT_TABLE][2];
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            self::TABLE_CONTENT,
+            self::CONTENT_TABLE,
             'uid=' . $containerUid
             . ' AND pid=2'
             . ' AND deleted=0'
@@ -153,11 +153,11 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            self::TABLE_CONTENT,
+            self::CONTENT_TABLE,
             'uid=' . $childUid
             . ' AND pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
+            . ' AND CType=\'' . self::CTYPE_TEXTPIC . '\''
             . ' AND colPos=10'
             . ' AND tx_multicolumn_parentid=' . $containerUid
         );
@@ -165,22 +165,22 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
     }
 
     /**
-     * Create an new multicolumn container
+     * Add a new multicolumn container to empty page
      *
      * @test
      */
-    public function addContainerInDefaultLanguage()
+    public function addContainerToEmptyPageInDefaultLanguage()
     {
-        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
+        $uniqueNewID = StringUtility::getUniqueId('NEW');
         $dataMap = [
-            self::TABLE_CONTENT => [
+            self::CONTENT_TABLE => [
                 $uniqueNewID => [
-                    'CType' => 'textpic',
-                    'header' => 'new TextPic Element in Multicolumn',
-                    'colPos' => 10,
+                    'pid' => 2,
+                    'CType' => self::CTYPE_MULTICOLUMN,
+                    'header' => 'New multicolumn container',
+                    'colPos' => 0,
                     'sys_language_uid' => 0,
-                    'tx_multicolumn_parentid' => 1,
-                    'pid' => 1,
+                    'tx_multicolumn_parentid' => '',
                 ],
             ],
         ];
@@ -191,13 +191,13 @@ class tx_multicolumn_tcemainTest extends FunctionalTestCase
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
-            self::TABLE_CONTENT,
-            'pid=1'
+            self::CONTENT_TABLE,
+            'pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\'textpic\''
-            . ' AND colPos=10'
-            . ' AND tx_multicolumn_parentid=1'
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
+            . ' AND colPos=0'
+            . ' AND tx_multicolumn_parentid=0'
         );
-        $this->assertSame(2, $count);
+        $this->assertSame(1, $count);
     }
 }
