@@ -36,7 +36,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
      */
     public function copyContainerAndChildrenToOtherColumnInDefaultLanguage()
     {
-        $cmpMap = [
+        $cmdMap = [
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
                 1 => [
                     'copy' => [
@@ -52,7 +52,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         ];
 
         $dataHandler = new DataHandler();
-        $dataHandler->start([], $cmpMap);
+        $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
@@ -90,7 +90,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
      */
     public function copyContainerAndChildrenToOtherPageInDefaultLanguage()
     {
-        $cmpMap = [
+        $cmdMap = [
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
                 1 => [
                     'copy' => [
@@ -106,7 +106,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         ];
 
         $dataHandler = new DataHandler();
-        $dataHandler->start([], $cmpMap);
+        $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
