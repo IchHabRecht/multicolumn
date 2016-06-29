@@ -208,4 +208,51 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         );
         $this->assertSame(2, $count);
     }
+
+    /**
+     * Copy a multicolumn container to another multicolumn container
+     *
+     * @test
+     */
+    public function copyContainerAndChildrenToOtherContainerInDefaultLanguage()
+    {
+        $cmdMap = [
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+                1 => [
+                    'copy' => -2,
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start([], $cmdMap);
+        $dataHandler->process_cmdmap();
+
+        $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
+        $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            'uid=' . $containerUid
+            . ' AND pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN . '\''
+            . ' AND colPos=10'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(1, $count);
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            'uid=' . $childUid
+            . ' AND pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_TEXTPIC . '\''
+            . ' AND colPos=10'
+            . ' AND tx_multicolumn_parentid=' . $containerUid
+        );
+        $this->assertSame(1, $count);
+    }
 }
