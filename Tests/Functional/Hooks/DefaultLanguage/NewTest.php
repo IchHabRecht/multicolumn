@@ -140,4 +140,42 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
         );
         $this->assertSame(2, $count);
     }
+
+    /**
+     * Add a new multicolumn container to an existing multicolumn container
+     *
+     * @test
+     */
+    public function addContainerToOtherContainerInDefaultLanguage()
+    {
+        $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+                $uniqueNewID => [
+                    'pid' => 1,
+                    'CType' => self::CTYPE_MULTICOLUMN,
+                    'header' => 'Nested multicolumn container',
+                    'colPos' => 10,
+                    'sys_language_uid' => 0,
+                    'tx_multicolumn_parentid' => 1,
+                ],
+            ],
+        ];
+
+        $dataHandler = new DataHandler();
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''
+            . ' AND colPos=10'
+            . ' AND sys_language_uid=0'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(1, $count);
+    }
 }
