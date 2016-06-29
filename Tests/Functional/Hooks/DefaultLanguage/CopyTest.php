@@ -138,6 +138,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
     }
 
     /**
+     * Copy a multicolumn child record to another column
+     *
      * @test
      */
     public function copyChildFromContainerToOtherColumnInDefaultLanguage()
@@ -175,5 +177,35 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
             . ' AND pid=1'
         );
         $this->assertSame(1, $count);
+    }
+
+    /**
+     * Copy a record into a multicolumn container after another record
+     *
+     * @test
+     */
+    public function copyRecordIntoContainerAfterRecordInDefaultLanguage()
+    {
+        $cmdMap = [
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+                3 => [
+                    'copy' => -2,
+                ],
+            ],
+        ];
+        $dataHandler = new DataHandler();
+        $dataHandler->start([], $cmdMap);
+        $dataHandler->process_cmdmap();
+        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+            '*',
+            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            'pid=1'
+            . ' AND deleted=0'
+            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_TEXTPIC . '\''
+            . ' AND colPos=10'
+            . ' AND sys_language_uid=0'
+            . ' AND tx_multicolumn_parentid=1'
+        );
+        $this->assertSame(2, $count);
     }
 }
