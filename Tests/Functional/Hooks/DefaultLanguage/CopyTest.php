@@ -138,6 +138,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
     }
 
     /**
+     * Copy a multicolumn child record to another column
+     *
      * @test
      */
     public function copyChildFromContainerToOtherColumnInDefaultLanguage()
