@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tt_content>
+		<uid>4</uid>
+		<pid>1</pid>
+		<CType>multicolumn</CType>
+		<header>Multicolumn Nested Container</header>
+		<colPos>10</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<tx_multicolumn_parentid>1</tx_multicolumn_parentid>
+	</tt_content>
+	<tt_content>
+		<uid>5</uid>
+		<pid>1</pid>
+		<CType>textpic</CType>
+		<header>Multicolumn Nested Container Child 1</header>
+		<colPos>10</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<tx_multicolumn_parentid>4</tx_multicolumn_parentid>
+	</tt_content>
+</dataset>
