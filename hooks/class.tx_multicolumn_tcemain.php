@@ -106,16 +106,19 @@ class tx_multicolumn_tcemain {
 	 * @param string $id
 	 * @param int $currentContentelementId
 	 * @param t3lib_TCEmain $pObj
+	 * @param array $pasteUpdate
+	 * @param array $pasteDatamap
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, t3lib_TCEmain $pObj) {
+	public function processCmdmap_postProcess($command, $table, $id, $currentContentelementId, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj, $pasteUpdate, $pasteDatamap) {
 		if ($table == 'tt_content') {
 			$this->pObj = $pObj;
 
+			$copyId = (int)$pObj->copyMappingArray[$table][$id];
 			// if pasteinto multicolumn container is requested?
 			if ($this->getMulticolumnGetAction() == 'pasteInto') {
-				$moveOrCopy = $this->pObj->copyMappingArray['tt_content'][$id] ? 'copy' : 'move';
-				$updateId = ($moveOrCopy == 'copy') ? $this->pObj->copyMappingArray['tt_content'][$id] : $id;
+				$moveOrCopy = $copyId ? 'copy' : 'move';
+				$updateId = ($moveOrCopy == 'copy') ? $copyId : $id;
 
 				$this->pasteIntoMulticolumnContainer($moveOrCopy, $updateId, $id);
 			} else {
@@ -125,12 +128,20 @@ class tx_multicolumn_tcemain {
 				if ($command == 'copy' && $containerChildren) {
 					// the only way from here without db request to get the destinationPid?
 					$destinationPid = key($this->pObj->cachedTSconfig);
-					$sysLanguageUid = tx_multicolumn_db::getContentElement($this->pObj->copyMappingArray['tt_content'][$id], 'sys_language_uid');
 
-					$this->copyMulticolumnContainer($id, $containerChildren, $destinationPid, $sysLanguageUid['sys_language_uid']);
+					if (isset($pasteUpdate['sys_language_uid'])) {
+						$sysLanguageUid = $pasteUpdate['sys_language_uid'];
+					} elseif (isset($pasteDatamap[$table][$copyId]['sys_language_uid'])) {
+						$sysLanguageUid = $pasteDatamap[$table][$copyId]['sys_language_uid'];
+					} else {
+						$contentElement = tx_multicolumn_db::getContentElement($copyId, 'sys_language_uid');
+						$sysLanguageUid = $contentElement['sys_language_uid'];
+					}
+
+					$this->copyMulticolumnContainer($id, $containerChildren, $destinationPid, $sysLanguageUid);
 					// check if content element has a seedy relation to multicolumncontainer?
-				} else if ($command == 'copy' && ($newUid = intval($this->pObj->copyMappingArray['tt_content'][$id]))) {
-					$row = t3lib_BEfunc::getRecordWSOL('tt_content', $newUid);
+				} else if ($command == 'copy' && ($newUid = $copyId)) {
+					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $newUid);
 
 					if (is_array($row)) {
 
