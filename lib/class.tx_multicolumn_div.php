@@ -32,7 +32,7 @@ final class tx_multicolumn_div {
 	/**
 	 * Get layout configuration options merged between typoscript and flexform options
 	 *
-	 * @param array $pageUid
+	 * @param int $pageUid
 	 * @param tx_multicolumn_flexform $flex
 	 * @return array
 	 */
@@ -68,7 +68,7 @@ final class tx_multicolumn_div {
 	/**
 	 * Get layout configuration options merged between typoscript and flexform options
 	 *
-	 * @param array $pageUid
+	 * @param int $pageUid
 	 * @param tx_multicolumn_flexform $flex
 	 * @return array|null
 	 */
@@ -106,7 +106,7 @@ final class tx_multicolumn_div {
 	/**
 	 * Get preset layout configuration from tsconfig
 	 *
-	 * @param array $pageUid
+	 * @param int $pageUid
 	 * @return array Preset layout configuration
 	 */
 	public static function getTSConfig($pageUid, $tsConfigKey = 'layoutPreset') {

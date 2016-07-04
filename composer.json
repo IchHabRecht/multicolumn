@@ -25,6 +25,7 @@
   },
   "autoload": {
     "classmap": [
+      "Classes/",
       "hooks/",
       "lib/",
       "pi1/",
