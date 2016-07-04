@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array (
   'title' => 'multicolumn',
   'description' => 'The Multicolumn extension expands TYPO3 with a new content element called Multicolumn. With the Multicolumn content element it has never been easier to do multicolumn layouts with TYPO3',
   'category' => 'fe',
-  'version' => '3.0.0',
+  'version' => '3.1.0-dev',
   'state' => 'stable',
   'uploadfolder' => 0,
   'createDirs' => '',
@@ -22,16 +22,16 @@ $EM_CONF[$_EXTKEY] = array (
   'author' => 'Nicole Cordes (developed by snowflake productions gmbh)',
   'author_email' => 'cordes@cps-it.de',
   'author_company' => 'CPS-IT GmbH',
-  'constraints' => 
+  'constraints' =>
   array (
-    'depends' => 
+    'depends' =>
     array (
       'typo3' => '7.6.0-7.99.99',
     ),
-    'conflicts' => 
+    'conflicts' =>
     array (
     ),
-    'suggests' => 
+    'suggests' =>
     array (
     ),
   ),
