@@ -45,6 +45,9 @@
     "typo3-ter/multicolumn": "self.version"
   },
   "config": {
+    "preferred-install": {
+      "typo3/cms": "source"
+    },
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin"
   },
