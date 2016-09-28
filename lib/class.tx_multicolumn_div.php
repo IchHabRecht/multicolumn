@@ -22,6 +22,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 final class tx_multicolumn_div
 {
 
@@ -96,12 +100,12 @@ final class tx_multicolumn_div
                 $config['options'] = $tsConfigOptions;
             }
 
-            $config['options'] = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($config['options']);
+            $config['options'] = GeneralUtility::minifyJavaScript($config['options']);
 
             unset($flexConfig['effectOptions'], $flexConfig['effect']);
             unset($config['defaultOptions']);
 
-            $config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($config, $flexConfig);
+            $config = GeneralUtility::array_merge($config, $flexConfig);
 
         }
 
@@ -233,7 +237,7 @@ final class tx_multicolumn_div
 
         // check remove items
         if (!empty($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'])) {
-            $hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? false : true;
+            $hasAccess = GeneralUtility::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? false : true;
             if (!$hasAccess) {
                 return false;
             }
@@ -246,9 +250,9 @@ final class tx_multicolumn_div
 
         // is explicitADmode allow ?
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] === 'explicitAllow') {
-            $hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? true : false;
+            $hasAccess = GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? true : false;
         } else {
-            $hasAccess = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? false : true;
+            $hasAccess = GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? false : true;
         }
 
         return $hasAccess;
@@ -278,7 +282,8 @@ final class tx_multicolumn_div
                 // No such cache (old TYPO3). Ignore.
             }
         }
-        $labels = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($filePath, $language);
+        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+        $labels = $languageFactory->getParsedData($filePath, $language);
         // We need to flatten labels
         $originalLabels = $labels;
         foreach ($originalLabels as $languageKey => $languageArray) {
