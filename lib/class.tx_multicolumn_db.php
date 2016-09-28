@@ -22,6 +22,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class tx_multicolumn_db
 {
 
@@ -33,7 +39,7 @@ class tx_multicolumn_db
      */
     public static function isBackend()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+        GeneralUtility::logDeprecatedFunction();
 
         return (TYPO3_MODE == 'BE');
     }
@@ -57,45 +63,69 @@ class tx_multicolumn_db
      * @param int $sysLanguageUid
      * @param boolean $showHidden
      * @param string $additionalWhere
-     * @param tx_cms_layout $pObj
+     * @param PageLayoutView $cmsLayout
      *
      * @return array Array with database fields
      */
     public static function getContentElementsFromContainer($colPos, $pid, $mulitColumnParentId, $sysLanguageUid = 0, $showHidden = false, $additionalWhere = null, $cmsLayout = null)
     {
-        $output = [];
-
         $isWorkspace = self::isWorkspaceActive();
 
         $selectFields = '*';
         $fromTable = 'tt_content';
 
-        $whereClause = ($additionalWhere ? $additionalWhere : '1=1');
-        if ($colPos) {
-            $whereClause .= ' AND colPos=' . intval($colPos);
-        }
-        if ($pid && !$isWorkspace) {
-            $whereClause .= ' AND pid=' . intval($pid);
-        }
-
-        $whereClause .= ' AND tx_multicolumn_parentid=' . intval($mulitColumnParentId);
-        $whereClause .= ' AND sys_language_uid=' . intval($sysLanguageUid);
-
-        // enable fields
-        $whereClause .= self::enableFields($fromTable, $showHidden);
-        if ($isWorkspace) {
-            $whereClause = self::getWorkspaceClause($whereClause);
-        }
-
-        $orderBy = 'sorting ASC';
-
-        if ($cmsLayout) {
-            // use cms layout object for correct icons
-            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause, '', $orderBy);
+        if (version_compare(TYPO3_version, '8', '>=') && $cmsLayout) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+            if ($isWorkspace) {
+                $queryBuilder->getRestrictions()->add(BackendWorkspaceRestriction::class);
+            }
+            $queryBuilder->select($selectFields)
+                ->from($fromTable)
+                ->where(
+                    $queryBuilder->expr()->eq('tx_multicolumn_parentid', (int)$mulitColumnParentId),
+                    $queryBuilder->expr()->eq('sys_language_uid', (int)$sysLanguageUid)
+                )
+                ->orderBy('sorting');
+            if (!empty($additionalWhere)) {
+                $queryBuilder->andWhere($additionalWhere);
+            }
+            if ($colPos) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('colPos', (int)$colPos));
+            }
+            if ($pid && !$isWorkspace) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq('pid', (int)$pid));
+            }
+            $res = $queryBuilder->execute();
             $output = $cmsLayout->getResult($res, 'tt_content', 1);
-            $GLOBALS['TYPO3_DB']->sql_free_result($res);
         } else {
-            $output = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause, '', $orderBy);
+            $whereClause = ($additionalWhere ? $additionalWhere : '1=1');
+            if ($colPos) {
+                $whereClause .= ' AND colPos=' . intval($colPos);
+            }
+            if ($pid && !$isWorkspace) {
+                $whereClause .= ' AND pid=' . intval($pid);
+            }
+
+            $whereClause .= ' AND tx_multicolumn_parentid=' . intval($mulitColumnParentId);
+            $whereClause .= ' AND sys_language_uid=' . intval($sysLanguageUid);
+
+            // enable fields
+            $whereClause .= self::enableFields($fromTable, $showHidden);
+            if ($isWorkspace) {
+                $whereClause = self::getWorkspaceClause($whereClause);
+            }
+
+            $orderBy = 'sorting ASC';
+
+            if ($cmsLayout) {
+                // use cms layout object for correct icons
+                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause, '', $orderBy);
+                $output = $cmsLayout->getResult($res, 'tt_content', 1);
+                $GLOBALS['TYPO3_DB']->sql_free_result($res);
+            } else {
+                $output = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause, '', $orderBy);
+            }
         }
 
         return $output;
@@ -156,7 +186,7 @@ class tx_multicolumn_db
         $result = 0;
         $row = self::getContentElement($mulitColumnId);
         if ($row['pi_flexform']) {
-            $flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+            $flexObj = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
             /** @var tx_multicolumn_flexform $flexObj */
             $layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
 
@@ -300,7 +330,7 @@ class tx_multicolumn_db
      */
     public static function containerHasChildren($containerUid, $showHidden = true)
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+        GeneralUtility::logDeprecatedFunction();
 
         return self::getContainerChildren($containerUid, $showHidden);
     }
