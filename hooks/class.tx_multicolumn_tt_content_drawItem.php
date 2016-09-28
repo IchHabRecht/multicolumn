@@ -1,9 +1,13 @@
 <?php
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Lang\LanguageService;
 
 class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
@@ -239,16 +243,14 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 
         if ($elements) {
             $markup = '<div class="lostContentElementContainer">';
-
-            /** @noinspection PhpUndefinedMethodInspection */
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                $this->getLanguageService()->getLLL('cms_layout.lostElements.message', $this->LL),
-                $this->getLanguageService()->getLLL('cms_layout.lostElements.title', $this->LL),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-            );
-            $markup .= $flashMessage->render();
-
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+            $view->assignMultiple([
+                'title' => $this->getLanguageService()->getLLL('cms_layout.lostElements.title', $this->LL),
+                'message' => $this->getLanguageService()->getLLL('cms_layout.lostElements.message', $this->LL),
+                'state' => InfoboxViewHelper::STATE_WARNING
+            ]);
+            $markup .=  $view->render();
             $markup .= $this->renderContentElements($elements, 'lostContentElements', true);
             $markup .= '</div>';
         }
@@ -341,7 +343,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
         $params .= '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
         return 'window.location.href=' . GeneralUtility::quoteJSvalue(
-            \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('new_content_element') . $params
+            BackendUtility::getModuleUrl('new_content_element') . $params
         ) . ';';
     }
 

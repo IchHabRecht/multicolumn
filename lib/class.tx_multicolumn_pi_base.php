@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +21,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
+
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
+
 class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
 
@@ -67,7 +73,7 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // set data
             $data = array_merge($data, $appendData);
 
-            $contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+            $contentObjectRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
             /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
             $contentObjectRenderer->start($data, $tableName);
             $contentObjectRenderer->parentRecordNumber = $rowNr;
@@ -92,7 +98,7 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function renderItem($confName, array $data)
     {
-        $contentObjectRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $contentObjectRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
         $contentObjectRenderer->start($data, '_NO_TABLE');
         $content = $contentObjectRenderer->cObjGetSingle($this->conf[$confName], $this->conf[$confName . '.']);
@@ -135,20 +141,38 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Displays a flash message
      *
-     * @param    string $title flash message title
-     * @param    string $message flash message message
-     *
-     * @retun    string        html content of flash message
+     * @param string $title flash message title
+     * @param string $message flash message message
+     * @param int $type
+     * @return string html content of flash message
      */
-    protected function showFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR)
+    protected function showFlashMessage($title, $message, $type = FlashMessage::ERROR)
     {
-        // get relative path
-        $relPath = str_replace(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), null, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-        // add error csss
-        $GLOBALS['TSFE']->getPageRenderer()->addCssFile($relPath . 'typo3conf/ext/multicolumn/res/flashmessage.css', 'stylesheet', 'screen');
-        $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
+        switch ($type) {
+            case FlashMessage::ERROR:
+                $background = '#efc7c7';
+                break;
+            case FlashMessage::INFO:
+                $background = '#ebf3fb';
+                break;
+            case FlashMessage::NOTICE:
+                $background = '#f9f9f9';
+                break;
+            case FlashMessage::OK:
+                $background = '#d1e2bd';
+                break;
+            case FlashMessage::WARNING:
+                $background = '#fbefdd';
+                break;
+            default:
+                $background = 'yellow';
+        }
 
-        return $flashMessage->render();
+        $html = '<p style="background-color: ' . $background . ';">';
+        $html .= '<strong>' . htmlspecialchars($title) . '</strong>';
+        $html .= '<br>' . htmlspecialchars($message) . '</p>';
+
+        return $html;
     }
 
     /**
@@ -167,7 +191,7 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Hook: menuConfig_preProcessModMenu
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName] as $classRef) {
-                $hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+                $hookObj = GeneralUtility::getUserObj($classRef);
                 if (method_exists($hookObj, $functionName)) {
                     $hookObj->$functionName($this, $hookRequestParams);
                     $hooked++;

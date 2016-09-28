@@ -22,6 +22,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
+
 /**
  * This class implements a compatibility check for the extension. It will output
  * error messages in EM in case if issues are found.
@@ -42,7 +47,11 @@ class tx_multicolumn_emconfhelper
 
         // check templavoila
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('templavoila')) {
-            $content .= $this->renderFlashMessage($GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'), $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+            $content .= $this->renderFlashMessage(
+                $GLOBALS['LANG']->getLL('emconfhelper.templavoila.title'),
+                $GLOBALS['LANG']->getLL('emconfhelper.templavoila.message'),
+                InfoboxViewHelper::STATE_INFO
+            );
         }
 
         return $content;
@@ -75,13 +84,22 @@ class tx_multicolumn_emconfhelper
     /**
      * Renders a flash message
      *
-     * @return string Flash message content
+     * @param string $title
+     * @param string $message
+     * @param int $type
+     * @return string
      */
-    protected function renderFlashMessage($title, $message, $type = \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)
+    protected function renderFlashMessage($title, $message, $type = InfoboxViewHelper::STATE_WARNING)
     {
-        $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, $title, $type);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+        $view->assignMultiple([
+            'title' => $title,
+            'message' => $message,
+            'state' => $type
+        ]);
 
-        return $flashMessage->render();
+        return $view->render();
     }
 
     /**
