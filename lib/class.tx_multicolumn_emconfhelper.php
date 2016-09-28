@@ -85,25 +85,6 @@ class tx_multicolumn_emconfhelper
     }
 
     /**
-     * Renders the error message from the XCLASS.
-     *
-     * @param string $XCLASS
-     * @param string $extKey
-     *
-     * @return string
-     */
-    protected function renderDrawItemHookErrorMessage($XCLASS, $extKey)
-    {
-        $XCLASSwarning = str_replace(PATH_site, null, $XCLASS);
-
-        $title = $GLOBALS['LANG']->getLL('emconfhelper.xclass.title') . ' ' . $extKey . ' XCLASS:<br />' . $XCLASSwarning;
-        $uninstallLink = $this->buildUninstallLink($extKey);
-        $message = $extKey . ' ' . $GLOBALS['LANG']->getLL('emconfhelper.xclass.message') . ' ' . $uninstallLink . '.';
-
-        return $this->renderFlashMessage($title, $message);
-    }
-
-    /**
      * Builds uninstall link for XCLASS extension
      *
      * @return string Flash message content
