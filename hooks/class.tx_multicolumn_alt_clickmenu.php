@@ -25,132 +25,141 @@
 
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 
-class tx_multicolumn_alt_clickmenu {
-	/**
-	 * clickMenu object
-	 *
-	 * @var        clickMenu
-	 */
-	protected $pObj;
+class tx_multicolumn_alt_clickmenu
+{
+    /**
+     * clickMenu object
+     *
+     * @var        clickMenu
+     */
+    protected $pObj;
 
-	/**
-	 * Adding tx_multicolumn_parentid on new context menu
-	 *
-	 * @param ClickMenu $backRef The calling object. Value by reference.
-	 * @param array $menuItems Array with the currently collected menu items to show.
-	 * @param string $table Table name of clicked item.
-	 * @param int $uid UID of clicked item.
-	 * @return array Modified $menuItems array
-	 */
-	public function main(clickMenu &$backRef, $menuItems, $table, $uid) {
-		if ($table == 'tt_content') {
-			$this->pObj = $backRef;
-			$this->rec = $this->pObj->rec;
-			$isMulticolumnContainer = ($this->rec['CType'] == 'multicolumn') ? TRUE : FALSE;
+    /**
+     * Adding tx_multicolumn_parentid on new context menu
+     *
+     * @param ClickMenu $backRef The calling object. Value by reference.
+     * @param array $menuItems Array with the currently collected menu items to show.
+     * @param string $table Table name of clicked item.
+     * @param int $uid UID of clicked item.
+     *
+     * @return array Modified $menuItems array
+     */
+    public function main(clickMenu &$backRef, $menuItems, $table, $uid)
+    {
+        if ($table == 'tt_content') {
+            $this->pObj = $backRef;
+            $this->rec = $this->pObj->rec;
+            $isMulticolumnContainer = ($this->rec['CType'] == 'multicolumn') ? true : false;
 
-			// has menuitems the new button? add multicolumnparent id to request
-			if ($this->rec['tx_multicolumn_parentid'] && $menuItems['new']) {
-				//add multicolumn_parent_id to new url
-				$this->addMultiColumnParentIdToNewItem($menuItems['new'], $this->rec['tx_multicolumn_parentid']);
-			}
+            // has menuitems the new button? add multicolumnparent id to request
+            if ($this->rec['tx_multicolumn_parentid'] && $menuItems['new']) {
+                //add multicolumn_parent_id to new url
+                $this->addMultiColumnParentIdToNewItem($menuItems['new'], $this->rec['tx_multicolumn_parentid']);
+            }
 
-			// is element a multicolumn container ? add column pasting
-			if ($isMulticolumnContainer && $menuItems['pasteafter']) {
-				$multicolumnMenuItems = $this->getMulticolumnPasteIntoItems($uid);
-				$this->addMulticolumnMenuItemsAfterPasteafter($multicolumnMenuItems, $menuItems);
-			}
-		}
+            // is element a multicolumn container ? add column pasting
+            if ($isMulticolumnContainer && $menuItems['pasteafter']) {
+                $multicolumnMenuItems = $this->getMulticolumnPasteIntoItems($uid);
+                $this->addMulticolumnMenuItemsAfterPasteafter($multicolumnMenuItems, $menuItems);
+            }
+        }
 
-		return $menuItems;
-	}
+        return $menuItems;
+    }
 
-	/**
-	 * Adding multicolumn menu items after pasteafter
-	 *
-	 * @param array $multicolumnMenuItems Array with multicolumn menu items
-	 * @param array $menuItems Array with orginal menu items from alt_clickmenu
-	 */
-	protected function addMulticolumnMenuItemsAfterPasteafter(array $multicolumnMenuItems, array &$menuItems) {
-		$sortedItems = array();
-		foreach ($menuItems as $menuKey => $item) {
-			if ($menuKey == 'pasteafter') {
-				$sortedItems[$menuKey] = $item;
-				$sortedItems = array_merge($sortedItems, $multicolumnMenuItems);
-			} else {
-				$sortedItems[$menuKey] = $item;
-			}
-		}
+    /**
+     * Adding multicolumn menu items after pasteafter
+     *
+     * @param array $multicolumnMenuItems Array with multicolumn menu items
+     * @param array $menuItems Array with orginal menu items from alt_clickmenu
+     */
+    protected function addMulticolumnMenuItemsAfterPasteafter(array $multicolumnMenuItems, array &$menuItems)
+    {
+        $sortedItems = [];
+        foreach ($menuItems as $menuKey => $item) {
+            if ($menuKey == 'pasteafter') {
+                $sortedItems[$menuKey] = $item;
+                $sortedItems = array_merge($sortedItems, $multicolumnMenuItems);
+            } else {
+                $sortedItems[$menuKey] = $item;
+            }
+        }
 
-		$menuItems = $sortedItems;
-	}
+        $menuItems = $sortedItems;
+    }
 
-	/**
-	 * Builds multicolumn menu items
-	 *
-	 * @param int $multicolumnUid multicolumn content element uid
-	 * @return array
-	 */
-	protected function getMulticolumnPasteIntoItems($multicolumnUid) {
-		$multicolumnMenuItems = array();
-		$multicolumnMenuItems['multicolumnspacer-1'] = 'spacer';
+    /**
+     * Builds multicolumn menu items
+     *
+     * @param int $multicolumnUid multicolumn content element uid
+     *
+     * @return array
+     */
+    protected function getMulticolumnPasteIntoItems($multicolumnUid)
+    {
+        $multicolumnMenuItems = [];
+        $multicolumnMenuItems['multicolumnspacer-1'] = 'spacer';
 
-		$multicolumnSelectItems = array();
-		$LL = tx_multicolumn_div::includeBeLocalLang();
-		$pasteIntoLink = $this->getPasteIntoLink($multicolumnUid);
+        $multicolumnSelectItems = [];
+        $LL = tx_multicolumn_div::includeBeLocalLang();
+        $pasteIntoLink = $this->getPasteIntoLink($multicolumnUid);
 
-		// get number of columns
-		$columns = tx_multicolumn_db::getNumberOfColumnsFromContainer($multicolumnUid);
+        // get number of columns
+        $columns = tx_multicolumn_db::getNumberOfColumnsFromContainer($multicolumnUid);
 
-		$columnIndex = 0;
-		$columnTitle = $GLOBALS['LANG']->getLLL('multicolumColumn', $LL) . ' ' . $GLOBALS['LANG']->getLLL('cms_layout.columnTitle', $LL);
+        $columnIndex = 0;
+        $columnTitle = $GLOBALS['LANG']->getLLL('multicolumColumn', $LL) . ' ' . $GLOBALS['LANG']->getLLL('cms_layout.columnTitle', $LL);
 
-		while ($columnIndex < $columns) {
-			$item = $pasteIntoLink;
-			// set correct title
-			$item[1] .= ' ' . $GLOBALS['LANG']->getLLL('multicolumColumn.clickmenu', $LL) . ' ' . ($columnIndex + 1);
-			// add colPos
-			$item[3] = str_replace('pasteInto', 'pasteInto&colPos=' . (tx_multicolumn_div::colPosStart + $columnIndex), $item[3]);
+        while ($columnIndex < $columns) {
+            $item = $pasteIntoLink;
+            // set correct title
+            $item[1] .= ' ' . $GLOBALS['LANG']->getLLL('multicolumColumn.clickmenu', $LL) . ' ' . ($columnIndex + 1);
+            // add colPos
+            $item[3] = str_replace('pasteInto', 'pasteInto&colPos=' . (tx_multicolumn_div::colPosStart + $columnIndex), $item[3]);
 
-			$multicolumnMenuItems['multicolumn-pasteinto-' . $columnIndex] = $item;
+            $multicolumnMenuItems['multicolumn-pasteinto-' . $columnIndex] = $item;
 
-			$columnIndex++;
-		}
+            $columnIndex++;
+        }
 
-		$multicolumnMenuItems['multicolumnspacer-2'] = 'spacer';
+        $multicolumnMenuItems['multicolumnspacer-2'] = 'spacer';
 
-		return $multicolumnMenuItems;
-	}
+        return $multicolumnMenuItems;
+    }
 
-	/**
-	 * Builds the modified clickMenu->DB_paste link (adding specific colPos and multicolum_parentid)
-	 *
-	 * @param int $multicolumnUid multicolumn content element uid
-	 * @return array Item array, element in $menuItems
-	 */
-	protected function getPasteIntoLink($multicolumnUid) {
-		$selItem = $this->pObj->clipObj->getSelectedRecord();
-		$elInfo = array(
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
-			$this->pObj->clipObj->currentMode()
-		);
+    /**
+     * Builds the modified clickMenu->DB_paste link (adding specific colPos and multicolum_parentid)
+     *
+     * @param int $multicolumnUid multicolumn content element uid
+     *
+     * @return array Item array, element in $menuItems
+     */
+    protected function getPasteIntoLink($multicolumnUid)
+    {
+        $selItem = $this->pObj->clipObj->getSelectedRecord();
+        $elInfo = [
+            \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $GLOBALS['BE_USER']->uc['titleLen']),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $this->rec), $BE_USER->uc['titleLen']),
+            $this->pObj->clipObj->currentMode(),
+        ];
 
-		$item = $this->pObj->DB_paste('tt_content', $multicolumnUid, 'into', $elInfo);
-		$item[3] = str_replace('tt_content%7C', 'tt_content%7C-', $item[3]);
-		$item[3] = str_replace('&uPT=1', '&uPT=1&tx_multicolumn[action]=pasteInto&tx_multicolumn_parentid=' . intval($multicolumnUid), $item[3]);
+        $item = $this->pObj->DB_paste('tt_content', $multicolumnUid, 'into', $elInfo);
+        $item[3] = str_replace('tt_content%7C', 'tt_content%7C-', $item[3]);
+        $item[3] = str_replace('&uPT=1', '&uPT=1&tx_multicolumn[action]=pasteInto&tx_multicolumn_parentid=' . intval($multicolumnUid), $item[3]);
 
-		return $item;
-	}
+        return $item;
+    }
 
-	/**
-	 * Add &defVals[tt_content][tx_multicolumn_parentid]= to new item
-	 *
-	 * @param array $newItem Array of new item in context menu
-	 * @param int $multicolumnParentId parent id of multicolumn item
-	 */
-	protected function addMultiColumnParentIdToNewItem(array &$newItem, $multicolumnParentId) {
-		$newItem[3] = str_replace('new', 'new&defVals[tt_content][tx_multicolumn_parentid]=' . intval($multicolumnParentId), $newItem[3]);
-	}
+    /**
+     * Add &defVals[tt_content][tx_multicolumn_parentid]= to new item
+     *
+     * @param array $newItem Array of new item in context menu
+     * @param int $multicolumnParentId parent id of multicolumn item
+     */
+    protected function addMultiColumnParentIdToNewItem(array &$newItem, $multicolumnParentId)
+    {
+        $newItem[3] = str_replace('new', 'new&defVals[tt_content][tx_multicolumn_parentid]=' . intval($multicolumnParentId), $newItem[3]);
+    }
 }
 
 ?>

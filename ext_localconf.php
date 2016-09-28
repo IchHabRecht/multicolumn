@@ -1,6 +1,6 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+    die ('Access denied.');
 }
 
 // define multicolumn path
@@ -34,9 +34,9 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_multicolumn_tce_eval'] = 
 
 // Add dataProvider for FormEngine
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'][\CPSIT\Multicolumn\Form\FormDataProvider\TcaFlexEffectivePid::class] = [
-	'depends' => [
+    'depends' => [
         \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-	],
+    ],
     'before' => [
         \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
     ],

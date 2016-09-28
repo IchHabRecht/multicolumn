@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,100 +22,107 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+class tx_multicolumn_wizardItemsHook implements \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface
+{
+    /**
+     * modifies WizardItems array
+     *
+     * @param    array                    array of Wizard Items
+     * @param    SC_db_new_content_el    parent object New Content element wizard
+     *
+     * @return    void
+     */
+    public function manipulateWizardItems(&$wizardItems, &$parentObject)
+    {
+        if (tx_multicolumn_div::beUserHasRightToSeeMultiColumnContainer()) {
+            $this->addMulitcolumnElementToWizardArray($wizardItems);
+        }
 
-class tx_multicolumn_wizardItemsHook implements \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface {
-	/**
-	 * modifies WizardItems array
-	 *
-	 * @param    array                    array of Wizard Items
-	 * @param    SC_db_new_content_el    parent object New Content element wizard
-	 * @return    void
-	 */
-	public function manipulateWizardItems(&$wizardItems, &$parentObject) {
-		if (tx_multicolumn_div::beUserHasRightToSeeMultiColumnContainer()) {
-			$this->addMulitcolumnElementToWizardArray($wizardItems);
-		}
+        $this->mulitColumnParentId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_multicolumn_parentid'));
+        //is mulitcolum parentId set
+        if ($this->mulitColumnParentId) {
+            $this->addMulticolumnParentId($wizardItems);
+        }
+    }
 
-		$this->mulitColumnParentId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_multicolumn_parentid'));
-		//is mulitcolum parentId set
-		if ($this->mulitColumnParentId) {
-			$this->addMulticolumnParentId($wizardItems);
-		}
-	}
+    /* Processing the wizard items array
+     *
+     * @param	array		$wizardItems: The wizard items
+     * @return	array		Modified array with wizard items
+     */
+    protected function addMulitcolumnElementToWizardArray(&$wizardItems)
+    {
+        global $LANG;
+        $LL = $this->includeLocalLang();
 
-	/* Processing the wizard items array
-	 *
-	 * @param	array		$wizardItems: The wizard items
-	 * @return	array		Modified array with wizard items
-	 */
-	protected function addMulitcolumnElementToWizardArray(&$wizardItems) {
-		global $LANG;
-		$LL = $this->includeLocalLang();
+        $multicolumnElement = [
+            'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
+            'title' => $LANG->getLLL('pi1_title', $LL),
+            'description' => $LANG->getLLL('pi1_plus_wiz_description', $LL),
+            'tt_content_defValues' => [
+                'CType' => 'multicolumn',
+            ],
+            'params' => '&defVals[tt_content][CType]=multicolumn',
+        ];
 
-		$multicolumnElement = array(
-			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'pi1/ce_wiz.gif',
-			'title' => $LANG->getLLL('pi1_title', $LL),
-			'description' => $LANG->getLLL('pi1_plus_wiz_description', $LL),
-			'tt_content_defValues' => array(
-				'CType' => 'multicolumn'
-			),
-			'params' => '&defVals[tt_content][CType]=multicolumn'
-		);
+        $sortedItems = [];
 
-		$sortedItems = array();
+        $position = $this->getWizardItemPosition($wizardItems);
 
-		$position = $this->getWizardItemPosition($wizardItems);
+        foreach ($wizardItems as $key => &$item) {
+            $sortedItems[$key] = $item;
+            if ($key == $position) {
+                $sortedItems['common_multicolumn'] = $multicolumnElement;
+            }
+        }
 
-		foreach ($wizardItems as $key => &$item) {
-			$sortedItems[$key] = $item;
-			if ($key == $position) {
-				$sortedItems['common_multicolumn'] = $multicolumnElement;
-			}
-		}
+        $wizardItems = $sortedItems;
+    }
 
-		$wizardItems = $sortedItems;
-	}
+    /* Evaluates the position of the multicolumn element in the wizardItem list
+     *
+     * @param	array		$wizardItems: The wizard items
+     * @return	string		The array key to insert
+     */
+    protected function getWizardItemPosition(array $wizardItems)
+    {
+        foreach ($wizardItems as $key => &$item) {
+            if (!strstr($key, 'common')) {
+                return $lastKey;
+            }
+            $lastKey = $key;
+        }
+    }
 
-	/* Evaluates the position of the multicolumn element in the wizardItem list
-	 *
-	 * @param	array		$wizardItems: The wizard items
-	 * @return	string		The array key to insert
-	 */
-	protected function getWizardItemPosition(array $wizardItems) {
-		foreach ($wizardItems as $key => &$item) {
-			if (!strstr($key, 'common')) {
-				return $lastKey;
-			}
-			$lastKey = $key;
-		}
-	}
+    /**
+     * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
+     *
+     * @return    array    The array with language labels
+     */
+    protected function includeLocalLang()
+    {
+        $llFile = PATH_tx_multicolumn . 'locallang.xml';
+        $LOCAL_LANG = tx_multicolumn_div::readLLfile($llFile, $GLOBALS['LANG']->lang);
 
-	/**
-	 * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
-	 *
-	 * @return    array    The array with language labels
-	 */
-	protected function includeLocalLang() {
-		$llFile = PATH_tx_multicolumn . 'locallang.xml';
-		$LOCAL_LANG = tx_multicolumn_div::readLLfile($llFile, $GLOBALS['LANG']->lang);
+        return $LOCAL_LANG;
+    }
 
-		return $LOCAL_LANG;
-	}
-
-	/**
-	 * add mulitcolumn parentid to wizard params
-	 *
-	 * @param    array                    array of Wizard Items
-	 * @return    void
-	 */
-	protected function addMulticolumnParentId(array &$wizardItems) {
-		foreach ($wizardItems as &$wizardItem) {
-			if ($wizardItem['params']) {
-				//add mulitcolumn parent id
-				$wizardItem['params'] .= '&defVals[tt_content][tx_multicolumn_parentid]=' . $this->mulitColumnParentId;
-			}
-		}
-	}
+    /**
+     * add mulitcolumn parentid to wizard params
+     *
+     * @param    array                    array of Wizard Items
+     *
+     * @return    void
+     */
+    protected function addMulticolumnParentId(array &$wizardItems)
+    {
+        foreach ($wizardItems as &$wizardItem) {
+            if ($wizardItem['params']) {
+                //add mulitcolumn parent id
+                $wizardItem['params'] .= '&defVals[tt_content][tx_multicolumn_parentid]=' . $this->mulitColumnParentId;
+            }
+        }
+    }
 }
 
 ?>

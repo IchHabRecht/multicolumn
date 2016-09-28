@@ -22,136 +22,144 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class tx_multicolumn_flexform {
-	/**
-	 * Flexform configuration
-	 *
-	 * @var array
-	 */
-	protected $flex = array();
+class tx_multicolumn_flexform
+{
+    /**
+     * Flexform configuration
+     *
+     * @var array
+     */
+    protected $flex = [];
 
-	public function __construct($flexformString = NULL) {
-		if ($flexformString === NULL || empty($flexformString)) {
-			return;
-		}
-		if (is_array($flexformString)) {
-			$this->flex = $flexformString;
-		} else {
-			$this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformString);
-		}
-	}
+    public function __construct($flexformString = null)
+    {
+        if ($flexformString === null || empty($flexformString)) {
+            return;
+        }
+        if (is_array($flexformString)) {
+            $this->flex = $flexformString;
+        } else {
+            $this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexformString);
+        }
+    }
 
-	/**
-	 * Returns the value of flexform setting
-	 *
-	 * @param    string        Name of sheet
-	 * @param    key        Name of flexform key
-	 *
-	 * @return    mixed        Flex value (typical a string)
-	 *
-	 * */
-	public function getFlexValue($sheet, $key) {
-		if (is_array($this->flex['data'])) {
-			return $this->flex['data'][$sheet]['lDEF'][$key]['vDEF'];
-		}
-	}
+    /**
+     * Returns the value of flexform setting
+     *
+     * @param    string        Name of sheet
+     * @param    key        Name of flexform key
+     *
+     * @return    mixed        Flex value (typical a string)
+     *
+     * */
+    public function getFlexValue($sheet, $key)
+    {
+        if (is_array($this->flex['data'])) {
+            return $this->flex['data'][$sheet]['lDEF'][$key]['vDEF'];
+        }
+    }
 
-	/**
-	 * Returns the flexform array
-	 *
-	 * @param    string        Key of column if none whole array is returned
-	 *
-	 * @return    array        Flexform array
-	 *
-	 * */
-	public function getFlexArray($key = NULL) {
-		$flexform = array();
+    /**
+     * Returns the flexform array
+     *
+     * @param    string        Key of column if none whole array is returned
+     *
+     * @return    array        Flexform array
+     *
+     * */
+    public function getFlexArray($key = null)
+    {
+        $flexform = [];
 
-		if (is_array($this->flex['data'])) {
+        if (is_array($this->flex['data'])) {
 
-			if ($key && $this->flex['data'][$key]['lDEF']) {
-				foreach ($this->flex['data'][$key]['lDEF'] as $flexKey => $value) {
-					if ($value['vDEF']) {
-						$flexform[$flexKey] = $value['vDEF'];
-					}
-				}
-			} else {
-				$flexform = $this->flex['data'];
-			}
+            if ($key && $this->flex['data'][$key]['lDEF']) {
+                foreach ($this->flex['data'][$key]['lDEF'] as $flexKey => $value) {
+                    if ($value['vDEF']) {
+                        $flexform[$flexKey] = $value['vDEF'];
+                    }
+                }
+            } else {
+                $flexform = $this->flex['data'];
+            }
 
-		}
+        }
 
-		return $flexform;
-	}
+        return $flexform;
+    }
 
-	/**
-	 * Generates the icons for the flexform selector layout
-	 *
-	 * @param array $params Array with current record and empty items arra
-	 * @return array Generated items array
-	 * */
-	public function addFieldsToFlexForm(&$params) {
-		$type = $params['config']['txMulitcolumnField'];
-		$pid = $params['flexParentDatabaseRow']['pid'];
-		$tsConfig = tx_multicolumn_div::getTSConfig($pid, NULL);
+    /**
+     * Generates the icons for the flexform selector layout
+     *
+     * @param array $params Array with current record and empty items arra
+     *
+     * @return array Generated items array
+     * */
+    public function addFieldsToFlexForm(&$params)
+    {
+        $type = $params['config']['txMulitcolumnField'];
+        $pid = $params['flexParentDatabaseRow']['pid'];
+        $tsConfig = tx_multicolumn_div::getTSConfig($pid, null);
 
-		switch ($type) {
-			case 'preSetLayout':
-				if (is_array($tsConfig['layoutPreset.'])) {
-					// enable only specific effects
-					if (!empty($tsConfig['config.']['layoutPreset.']['enableLayouts'])) {
-						$this->filterItems($tsConfig['layoutPreset.'], $tsConfig['config.']['layoutPreset.']['enableLayouts']);
-					}
+        switch ($type) {
+            case 'preSetLayout':
+                if (is_array($tsConfig['layoutPreset.'])) {
+                    // enable only specific effects
+                    if (!empty($tsConfig['config.']['layoutPreset.']['enableLayouts'])) {
+                        $this->filterItems($tsConfig['layoutPreset.'], $tsConfig['config.']['layoutPreset.']['enableLayouts']);
+                    }
 
-					// add effectBox to the end
-					if (!empty($tsConfig['layoutPreset.']['effectBox.'])) {
-						$effectBox = $tsConfig['layoutPreset.']['effectBox.'];
-						// add effect box to the end
-						unset($tsConfig['layoutPreset.']['effectBox.']);
-						$tsConfig['layoutPreset.']['effectBox.'] = $effectBox;
-					}
-					$this->buildItems($tsConfig['layoutPreset.'], $params);
-				}
-				break;
-			case 'effect':
-				if (is_array($tsConfig['effectBox.'])) {
+                    // add effectBox to the end
+                    if (!empty($tsConfig['layoutPreset.']['effectBox.'])) {
+                        $effectBox = $tsConfig['layoutPreset.']['effectBox.'];
+                        // add effect box to the end
+                        unset($tsConfig['layoutPreset.']['effectBox.']);
+                        $tsConfig['layoutPreset.']['effectBox.'] = $effectBox;
+                    }
+                    $this->buildItems($tsConfig['layoutPreset.'], $params);
+                }
+                break;
+            case 'effect':
+                if (is_array($tsConfig['effectBox.'])) {
 
-					// enable only specific effects
-					if (!empty($tsConfig['config.']['effectBox.']['enableEffects'])) {
-						$this->filterItems($tsConfig['effectBox.'], $tsConfig['config.']['effectBox.']['enableEffects']);
-					}
+                    // enable only specific effects
+                    if (!empty($tsConfig['config.']['effectBox.']['enableEffects'])) {
+                        $this->filterItems($tsConfig['effectBox.'], $tsConfig['config.']['effectBox.']['enableEffects']);
+                    }
 
-					$this->buildItems($tsConfig['effectBox.'], $params);
-				}
-				break;
-		}
-	}
+                    $this->buildItems($tsConfig['effectBox.'], $params);
+                }
+                break;
+        }
+    }
 
-	protected function buildItems(array $config, &$params) {
-		foreach ($config as $key => $item) {
-			$params['items'][] = array(
-				$GLOBALS['LANG']->sL($item['label']),
-				$key,
-				//replace absolute with relative path
-				str_replace(PATH_site, '../', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($item['icon']))
-			);
-		}
-	}
+    protected function buildItems(array $config, &$params)
+    {
+        foreach ($config as $key => $item) {
+            $params['items'][] = [
+                $GLOBALS['LANG']->sL($item['label']),
+                $key,
+                //replace absolute with relative path
+                str_replace(PATH_site, '../', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($item['icon'])),
+            ];
+        }
+    }
 
-	/**
-	 * Filter out items from an array
-	 *
-	 * @param    array        array
-	 * @param    object        comma seperated list
-	 *
-	 * */
-	protected function filterItems(array &$items, $filterList) {
-		foreach ($items as $itemKey => $item) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($filterList, str_replace('.', NULL, $itemKey))) {
-				unset($items[$itemKey]);
-			}
-		}
-	}
+    /**
+     * Filter out items from an array
+     *
+     * @param    array        array
+     * @param    object        comma seperated list
+     *
+     * */
+    protected function filterItems(array &$items, $filterList)
+    {
+        foreach ($items as $itemKey => $item) {
+            if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($filterList, str_replace('.', null, $itemKey))) {
+                unset($items[$itemKey]);
+            }
+        }
+    }
 }
 
 ?>
