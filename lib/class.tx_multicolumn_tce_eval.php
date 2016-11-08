@@ -22,32 +22,35 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class tx_multicolumn_tce_eval {
+class tx_multicolumn_tce_eval
+{
 
-	/**
-	 * Returns input value
-	 *
-	 * @return    mixed        set value or null
-	 */
-	public function returnFieldJS() {
-		return 'return (value ? value : null);';
-	}
+    /**
+     * Returns input value
+     *
+     * @return    mixed        set value or null
+     */
+    public function returnFieldJS()
+    {
+        return 'return (value ? value : null);';
+    }
 
-	/**
-	 * Checks if input value of advanced layout column is greater than $returnValue
-	 *
-	 * @return    mixed        max column value
-	 */
-	public function evaluateFieldValue($inputValue, $is_in, &$set) {
-		if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popViewId')) {
-			$conf = tx_multicolumn_div::getTSConfig($id, 'config');
-			$maxNumberOfColumns = $conf['advancedLayouts.']['maxNumberOfColumns'];
+    /**
+     * Checks if input value of advanced layout column is greater than $returnValue
+     *
+     * @return    mixed        max column value
+     */
+    public function evaluateFieldValue($inputValue, $is_in, &$set)
+    {
+        if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popViewId')) {
+            $conf = tx_multicolumn_div::getTSConfig($id, 'config');
+            $maxNumberOfColumns = $conf['advancedLayouts.']['maxNumberOfColumns'];
 
-			$returnValue = ($inputValue > $maxNumberOfColumns) ? $maxNumberOfColumns : $inputValue;
-		}
+            $returnValue = ($inputValue > $maxNumberOfColumns) ? $maxNumberOfColumns : $inputValue;
+        }
 
-		return $returnValue ? $returnValue : ($inputValue ? $inputValue : NULL);
-	}
+        return $returnValue ? $returnValue : ($inputValue ? $inputValue : null);
+    }
 }
 
 ?>

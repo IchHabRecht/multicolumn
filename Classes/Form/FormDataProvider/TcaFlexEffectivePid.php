@@ -14,6 +14,7 @@ class TcaFlexEffectivePid implements FormDataProviderInterface
      * the pid where new records are stored later.
      *
      * @param array $result
+     *
      * @return array
      */
     public function addData(array $result)

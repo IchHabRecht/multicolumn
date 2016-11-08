@@ -1,14 +1,14 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+    die ('Access denied.');
 }
 
 if (TYPO3_MODE == 'BE') {
-	// Add clickmenu expansion
-	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
-		'name' => 'tx_multicolumn_alt_clickmenu',
-		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn') . 'hooks/class.tx_multicolumn_alt_clickmenu.php',
-	);
+    // Add clickmenu expansion
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = [
+        'name' => 'tx_multicolumn_alt_clickmenu',
+        'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn') . 'hooks/class.tx_multicolumn_alt_clickmenu.php',
+    ];
 }
 
 // Add typoscript

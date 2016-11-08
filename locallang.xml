@@ -11,7 +11,7 @@
 			<label index="cms_layout.effectBox">Effect Box column</label>
 			<label index="cms_layout.columnTitle">Column</label>
 			<label index="cms_layout.lostElements.title">Lost content elements</label>
-			<label index="cms_layout.lostElements.message">Following elements has no relation to a multicolumn column. You can edit the element and switch to an other column or simply cut and paste with the element context menu.</label>
+			<label index="cms_layout.lostElements.message">Following elements have no relation to a multicolumn column. You can edit the element and switch to an other column or simply cut and paste with the element context menu.</label>
 			<label index="cms_layout.deleteWarning">(This multicolumn container has %s content element(s) which will be deleted, too!)</label>
 			<label index="multicolumColumn">Multicolumn column:</label>
 			<label index="multicolumColumn.clickmenu">column</label>
