@@ -94,7 +94,7 @@ class tx_multicolumn_tceform
      */
     protected function buildMulticolumnList()
     {
-        if ($containers = tx_multicolumn_db::getContainersFromPid($this->row['pid'], $this->row['sys_language_uid'])) {
+        if ($containers = tx_multicolumn_db::getContainersFromPid($this->row['pid'], $this->row['sys_language_uid'][0])) {
             if ($this->items) {
                 $itemsUidList = $this->getItemsUidList();
             }

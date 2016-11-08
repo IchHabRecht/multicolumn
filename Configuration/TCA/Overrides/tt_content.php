@@ -59,7 +59,7 @@ $tempColumns = [
             'itemsProcFunc' => 'tx_multicolumn_tceform->init',
             'multicolumnProc' => 'buildMulticolumnList',
             'items' => [
-                [],
+                ['', 0],
             ],
             'default' => 0,
             'size' => 1,
