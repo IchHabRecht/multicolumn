@@ -42,7 +42,7 @@ $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = [
     'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general, hidden, header;;3;;2-2-2, linkToTop;;;;3-3-3, ' .
         '--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.content, tx_multicolumn_items, ' .
         '--div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.config, pi_flexform, ' .
-        '--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime, fe_group',
+        '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime, fe_group',
 ];
 
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['multicolumn'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'tt_content_multicolumn.gif';
