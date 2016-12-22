@@ -1,3 +1,6 @@
+2016-12-22         [RELEASE] Release of multicolumn 3.2.1 (Nicole Cordes)
+2016-12-22 f26093f [TASK] Raise compatibility to TYPO3 8.5 (Nicole Cordes)
+
 2016-11-08         [RELEASE] Release of multicolumn 3.2.0 (Nicole Cordes)
 2016-11-08 b2d851b [TASK] Raise version compatibility to TYPO3 8.4.99 (Nicole Cordes)
 2016-11-08 fd37349 [BUGFIX] Remove xdebug only if available (Nicole Cordes)
