@@ -70,8 +70,8 @@ class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base
     /**
      * Initalizes the plugin.
      *
-     * @param    String $content : Content sent to plugin
-     * @param    String[] $conf : Typoscript configuration array
+     * @param    string $content : Content sent to plugin
+     * @param    string[] $conf : Typoscript configuration array
      */
     protected function init($content, $conf)
     {
@@ -84,4 +84,3 @@ class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base
 if (defined('TYPO3_MODE') && isset($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi_sitemap/class.tx_multicolumn_pi_sitemap.php'])) {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi_sitemap/class.tx_multicolumn_pi_sitemap.php']);
 }
-?>

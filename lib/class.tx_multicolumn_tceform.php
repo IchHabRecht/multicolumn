@@ -34,7 +34,7 @@ class tx_multicolumn_tceform
     /**
      * How many items exists?
      *
-     * @var        integer
+     * @var        int
      */
     protected $itemsCount = 0;
 
@@ -64,7 +64,7 @@ class tx_multicolumn_tceform
      *
      * @param    array $itemsProc
      * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj
-     * @param    integer $pid : Target pid of page
+     * @param    int $pid : Target pid of page
      */
     public function init($itemsProc, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj)
     {
@@ -162,5 +162,3 @@ class tx_multicolumn_tceform
         }
     }
 }
-
-?>

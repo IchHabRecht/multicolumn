@@ -23,23 +23,20 @@
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
-
     /**
      * Render an array with data element with $confName
      *
-     * @param    string $tableName Table name to use for the given data
-     * @param    String $confName Path to typoscript to render each element with
-     * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
-     * @param    Array $appendData Additinal data
+     * @param string $tableName Table name to use for the given data
+     * @param string $confName Path to typoscript to render each element with
+     * @param array $recordsArray Array which contains elements (array) for typoscript rendering
+     * @param array $appendData Additinal data
+     * @param bool $debug
      *
-     * @return    String        All items rendered as a string
+     * @return    string        All items rendered as a string
      */
     public function renderListItems($tableName, $confName, array $recordsArray, array $appendData = [], $debug = false)
     {
@@ -91,10 +88,10 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Render an array with trough cObjGetSingle
      *
-     * @param    String $confName Path to typoscript to render each element with
-     * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
+     * @param    string $confName Path to typoscript to render each element with
+     * @param    array $recordsArray Array which contains elements (array) for typoscript rendering
      *
-     * @return    String        All items rendered as a string
+     * @return    string        All items rendered as a string
      */
     protected function renderItem($confName, array $data)
     {
@@ -178,10 +175,10 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Returns an object reference to the hook object if any
      *
-     * @param    string        Name of the function you want to call / hook key
-     * @param    array        Request params
+     * @param string $functionName Name of the function you want to call / hook key
+     * @param array $hookRequestParams Request params
      *
-     * @return    integer        Hook objects found
+     * @return    int        Hook objects found
      */
     protected function hookRequest($functionName, array $hookRequestParams)
     {
@@ -211,7 +208,4 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->cObj->currentRecord = $this->currentCobjRecordString;
         $this->cObj->parentRecordNumber = $this->currentCobjParentRecordNumber;
     }
-
 }
-
-?>

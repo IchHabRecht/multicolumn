@@ -46,8 +46,8 @@ class tx_multicolumn_flexform
     /**
      * Returns the value of flexform setting
      *
-     * @param    string        Name of sheet
-     * @param    key        Name of flexform key
+     * @param string $sheet Name of sheet
+     * @param string $key Name of flexform key
      *
      * @return    mixed        Flex value (typical a string)
      *
@@ -63,6 +63,7 @@ class tx_multicolumn_flexform
      * Returns the flexform array
      *
      * @param    string        Key of column if none whole array is returned
+     * @param string|null $key
      *
      * @return    array        Flexform array
      *
@@ -72,7 +73,6 @@ class tx_multicolumn_flexform
         $flexform = [];
 
         if (is_array($this->flex['data'])) {
-
             if ($key && $this->flex['data'][$key]['lDEF']) {
                 foreach ($this->flex['data'][$key]['lDEF'] as $flexKey => $value) {
                     if ($value['vDEF']) {
@@ -82,7 +82,6 @@ class tx_multicolumn_flexform
             } else {
                 $flexform = $this->flex['data'];
             }
-
         }
 
         return $flexform;
@@ -121,7 +120,6 @@ class tx_multicolumn_flexform
                 break;
             case 'effect':
                 if (is_array($tsConfig['effectBox.'])) {
-
                     // enable only specific effects
                     if (!empty($tsConfig['config.']['effectBox.']['enableEffects'])) {
                         $this->filterItems($tsConfig['effectBox.'], $tsConfig['config.']['effectBox.']['enableEffects']);
@@ -148,8 +146,8 @@ class tx_multicolumn_flexform
     /**
      * Filter out items from an array
      *
-     * @param    array        array
-     * @param    object        comma seperated list
+     * @param array $items
+     * @param string $filterList comma seperated list
      *
      * */
     protected function filterItems(array &$items, $filterList)
@@ -161,5 +159,3 @@ class tx_multicolumn_flexform
         }
     }
 }
-
-?>

@@ -27,10 +27,11 @@ class tx_multicolumn_t3lib_befunc
     /**
      * Manipulates the flexform output. If effectBox is choosen unset advanced layout tab
      *
-     * @param    array $dataStructArray Flexform datastruct
-     * @param    array $conf :    tca
-     * @param    array $row (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
-     * @param    array $fieldArray : (reference) The field array of a record
+     * @param array $dataStructArray Flexform datastruct
+     * @param array $conf :    tca
+     * @param array $row (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
+     * @param string $table
+     * @param string $fieldName
      */
     public function getFlexFormDS_postProcessDS(&$dataStructArray, $conf, $row, $table, $fieldName)
     {
@@ -46,5 +47,3 @@ class tx_multicolumn_t3lib_befunc
         }
     }
 }
-
-?>

@@ -3,7 +3,6 @@
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -12,7 +11,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface
 {
-
     /**
      * CSS file to use for BE styling
      *
@@ -75,7 +73,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Is effectbox?
      *
-     * @var        boolean
+     * @var        bool
      */
     protected $isEffectBox;
 
@@ -119,7 +117,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Builds the columns markup
      *
-     * @param    integer $numberOfColumns : how many columns to build
+     * @param    int $numberOfColumns : how many columns to build
      *
      * @return    string            html content
      */
@@ -207,10 +205,10 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Builds the overview of content elements for the column
      *
-     * @param    integer $colPos
-     * @param    integer $pid page id
-     * @param    integer $mulitColumnParentId parent id of multicolumn content element
-     * @param    integer $sysLanguageUid sys language uid
+     * @param    int $colPos
+     * @param    int $pid page id
+     * @param    int $mulitColumnParentId parent id of multicolumn content element
+     * @param    int $sysLanguageUid sys language uid
      *
      * @return string
      */
@@ -230,7 +228,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Builds the lost content elements container
      *
-     * @param    integer $lastColumnNumber last visible columnNumber
+     * @param    int $lastColumnNumber last visible columnNumber
      *
      * @return    string            $column markup
      */
@@ -248,9 +246,9 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
             $view->assignMultiple([
                 'title' => $this->getLanguageService()->getLLL('cms_layout.lostElements.title', $this->LL),
                 'message' => $this->getLanguageService()->getLLL('cms_layout.lostElements.message', $this->LL),
-                'state' => InfoboxViewHelper::STATE_WARNING
+                'state' => InfoboxViewHelper::STATE_WARNING,
             ]);
-            $markup .=  $view->render();
+            $markup .= $view->render();
             $markup .= $this->renderContentElements($elements, 'lostContentElements', true);
             $markup .= '</div>';
         }
@@ -261,9 +259,9 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Render content elements like class.tx_cms_layout.php
      *
-     * @param    array $rowArr records form tt_content table
-     * @param    string $additionalClasses to append to <ul>
-     * @param    string $additionalClasses to append to <ul>
+     * @param array $rowArr records form tt_content table
+     * @param string $additionalClasses to append to <ul>
+     * @param bool $lostElements
      */
     protected function renderContentElements(array $rowArr, $additionalClasses = null, $lostElements = false)
     {
@@ -314,7 +312,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Adds tx_multicolumn_parentid to default db_new_content_el.php? query string
      *
-     * @param    string
+     * @param string $headerContent
      *
      * @return    string        Substituted content
      */
@@ -326,14 +324,14 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Generates the url for the insertRecord links. Special value tx_multicolumn is considered here...
      *
-     * @param    integer $pid record id
-     * @param    integer $colPos Column position value.
-     * @param    integer $mulitColumnParentId content id, reference where this content element belongs to
-     * @param    integer $sysLanguageUid System language
+     * @param    int $pid record id
+     * @param    int $colPos Column position value.
+     * @param    int $mulitColumnParentId content id, reference where this content element belongs to
+     * @param    int $sysLanguageUid System language
      *
      * @return    string
      */
-    function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0)
+    public function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0)
     {
         $params = '&id=' . (int)$pid;
         $params .= '&colPos=' . (int)$colPos;
@@ -355,5 +353,3 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
         return $GLOBALS['LANG'];
     }
 }
-
-?>

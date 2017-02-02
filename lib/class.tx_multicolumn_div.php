@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class tx_multicolumn_div
 {
-
     /**
      * Start index of colpos
      **/
@@ -106,7 +105,6 @@ final class tx_multicolumn_div
             unset($config['defaultOptions']);
 
             $config = GeneralUtility::array_merge($config, $flexConfig);
-
         }
 
         return $config;
@@ -116,6 +114,7 @@ final class tx_multicolumn_div
      * Get preset layout configuration from tsconfig
      *
      * @param int $pageUid
+     * @param string $tsConfigKey
      *
      * @return array Preset layout configuration
      */
@@ -214,6 +213,7 @@ final class tx_multicolumn_div
     /**
      * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
      *
+     * @param string|null $llFile
      * @return array
      */
     public static function includeBeLocalLang($llFile = null)
@@ -226,7 +226,7 @@ final class tx_multicolumn_div
     /**
      * Checks if backend user has the rights to see multicolumn container
      *
-     * @return boolean true if it has access false if not
+     * @return bool true if it has access false if not
      */
     public static function beUserHasRightToSeeMultiColumnContainer()
     {
@@ -268,7 +268,7 @@ final class tx_multicolumn_div
      *
      * @return array
      */
-    static public function readLLfile($filePath, $language)
+    public static function readLLfile($filePath, $language)
     {
         if (is_object($GLOBALS['typo3CacheManager'])) {
             $cacheIdentifier = 'EXT-multicolumn-readLLfile-' . sha1($filePath);
@@ -298,5 +298,3 @@ final class tx_multicolumn_div
         return $labels;
     }
 }
-
-?>

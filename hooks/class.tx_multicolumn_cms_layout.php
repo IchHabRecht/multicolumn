@@ -24,12 +24,12 @@
  ***************************************************************/
 class tx_multicolumn_cms_layout
 {
-
     /**
      * Expands the delete warning with "(This multicolumn container has X content elements(s)...)
      * before you delete a records
+     * @param array $params
      */
-    public function addDeleteWarning($params, $pObj)
+    public function addDeleteWarning(array $params)
     {
         if (!$params[0] == 'tt_content') {
             return;
@@ -81,7 +81,6 @@ class tx_multicolumn_cms_layout
 
             unset($llGlobal);
         }
-
     }
 
     protected function restoreOrginalDeleteWarning(array $LL)
@@ -93,5 +92,3 @@ class tx_multicolumn_cms_layout
         }
     }
 }
-
-?>
