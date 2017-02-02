@@ -24,7 +24,6 @@
  ***************************************************************/
 class tx_multicolumn_tcemain
 {
-
     /** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
     protected $pObj;
 
@@ -81,7 +80,6 @@ class tx_multicolumn_tcemain
                             $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $newUid);
 
                             if (is_array($row)) {
-
                                 $elementBeforeData = [
                                     'tx_multicolumn_parentid' => 0,
                                     'colPos' => 0,
@@ -134,8 +132,8 @@ class tx_multicolumn_tcemain
      * Paste an element into multicolumn container
      *
      * @param    string $action : copy or move
-     * @param    integer $updateId : content element to update
-     * @param    integer $orginalId : orginal id of content element (copy from)
+     * @param    int $updateId : content element to update
+     * @param    int $orginalId : orginal id of content element (copy from)
      */
     protected function pasteIntoMulticolumnContainer($action, $updateId, $orginalId = null)
     {
@@ -329,7 +327,7 @@ class tx_multicolumn_tcemain
                 $this->moveContainerChildren($containerChildren, $destPid);
             }
             // if element is moved as first element on page ? set multicolumn_parentid and colPos to 0
-        } else if ($row['tx_multicolumn_parentid']) {
+        } elseif ($row['tx_multicolumn_parentid']) {
             $multicolumnContainerExists = tx_multicolumn_db::getContentElement($row['tx_multicolumn_parentid'], 'uid', 'AND pid=' . $row['pid']);
             if (!$multicolumnContainerExists) {
                 $updateRecordFields = [
@@ -456,5 +454,3 @@ class tx_multicolumn_tcemain
         return is_array($gpVars) && isset($gpVars['action']) ? $gpVars['action'] : '';
     }
 }
-
-?>

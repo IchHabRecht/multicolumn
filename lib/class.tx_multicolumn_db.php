@@ -30,28 +30,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_db
 {
-
     /**
      * This function is deprecated. Do not use.
      *
-     * @return boolean
+     * @return bool
      * @deprecated
      */
     public static function isBackend()
     {
         GeneralUtility::logDeprecatedFunction();
 
-        return (TYPO3_MODE == 'BE');
+        return TYPO3_MODE == 'BE';
     }
 
     /**
      * Is the user in a workspace ?
      *
-     * @return    boolean        ture if the user is an a workspace
+     * @return    bool        ture if the user is an a workspace
      */
     public static function isWorkspaceActive()
     {
-        return (!empty($GLOBALS['BE_USER']->workspace) || !empty($GLOBALS['TSFE']->sys_page->versioningPreview));
+        return !empty($GLOBALS['BE_USER']->workspace) || !empty($GLOBALS['TSFE']->sys_page->versioningPreview);
     }
 
     /**
@@ -61,7 +60,7 @@ class tx_multicolumn_db
      * @param int $pid
      * @param int $mulitColumnParentId
      * @param int $sysLanguageUid
-     * @param boolean $showHidden
+     * @param bool $showHidden
      * @param string $additionalWhere
      * @param PageLayoutView $cmsLayout
      *
@@ -159,7 +158,7 @@ class tx_multicolumn_db
     /**
      * Get number of content elements inside a multicolumn container
      *
-     * @param int $mulitColumnParentId
+     * @param int $mulitColumnId
      *
      * @return int
      */
@@ -199,10 +198,10 @@ class tx_multicolumn_db
     /**
      * Get a single content element
      *
-     * @param integer $uid
+     * @param int $uid
      * @param string $selectFields
      * @param string $additionalWhere
-     * @param boolean $useDeleteClause
+     * @param bool $useDeleteClause
      *
      * @return array Element fields
      */
@@ -249,6 +248,7 @@ class tx_multicolumn_db
      *
      * @param int $uid
      * @param int $selectFields
+     * @param bool $enableFields
      *
      * @return array|null
      */
@@ -271,7 +271,7 @@ class tx_multicolumn_db
      *
      * @param int $uid
      *
-     * @return boolean
+     * @return bool
      */
     public static function contentElementHasAMulticolumnParentContainer($uid)
     {
@@ -322,10 +322,10 @@ class tx_multicolumn_db
     /**
      * This function is deprecated. Do not use it.
      *
-     * @param integer $containerUid
+     * @param int $containerUid
      * @param string $showHidden
      *
-     * @return boolean
+     * @return bool
      * @deprecated Use tx_multicolumn_db::getContainerChildren() instead
      */
     public static function containerHasChildren($containerUid, $showHidden = true)
@@ -339,7 +339,7 @@ class tx_multicolumn_db
      * Get enableFields frontend / backend
      *
      * @param string $table table name
-     * @param boolean $showHidden
+     * @param bool $showHidden
      * @param array $ignoreFields
      *
      * @return string
@@ -358,5 +358,3 @@ class tx_multicolumn_db
         return $enableFields;
     }
 }
-
-?>

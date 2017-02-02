@@ -124,5 +124,3 @@ class tx_multicolumn_wizardItemsHook implements \TYPO3\CMS\Backend\Wizard\NewCon
         }
     }
 }
-
-?>

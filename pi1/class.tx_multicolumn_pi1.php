@@ -78,14 +78,14 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
     /**
      * multicolumn uid
      *
-     * @var        integer
+     * @var        int
      */
     protected $multicolumnContainerUid;
 
     /**
      * Is effect box
      *
-     * @var        integer
+     * @var        int
      */
     protected $isEffectBox;
 
@@ -99,7 +99,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
     /**
      * maxWidth before
      *
-     * @var        integer
+     * @var        int
      */
     protected $TSFEmaxWidthBefore;
 
@@ -130,8 +130,8 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
     /**
      * Initalizes the plugin.
      *
-     * @param    String $content : Content sent to plugin
-     * @param    String[] $conf : Typoscript configuration array
+     * @param    string $content : Content sent to plugin
+     * @param    string[] $conf : Typoscript configuration array
      */
     protected function init($content, $conf)
     {
@@ -237,8 +237,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
         $contentElements = tx_multicolumn_db::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
         if (is_array($contentElements)) {
             $listeItemsArray = [
-                'effect' => $this->effectConfiguration['effect']
-                ,
+                'effect' => $this->effectConfiguration['effect'],
                 'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : null,
             ];
             $listeItemsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listeItemsArray, $this->llPrefixed);
@@ -288,11 +287,11 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
                     $columnData['columnWidthPixel'] = round($conf['containerWidth'] / $numberOfColumns);
 
                     // if columnWidth and column measure is set
-                } else if ($conf['columnMeasure'] == 'px' && $conf['columnWidth']) {
+                } elseif ($conf['columnMeasure'] == 'px' && $conf['columnWidth']) {
                     $columnData['columnWidthPixel'] = $conf['columnWidth'];
 
                     // if container width is set in percent (default 100%)
-                } else if ($colPosMaxImageWidth) {
+                } elseif ($colPosMaxImageWidth) {
                     $columnData['columnWidthPixel'] = tx_multicolumn_div::calculateMaxColumnWidth($columnData['columnWidth'], $colPosMaxImageWidth, $numberOfColumns);
                 }
 
@@ -302,7 +301,6 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
                 }
                 // do auto scale if requested
                 $maxImageWidth = $disableImageShrink ? null : (isset($columnData['columnWidthPixel']) ? ($columnData['columnWidthPixel'] - $columnData['columnPaddingTotalWidthPixel']) : null);
-
             } else {
                 $maxImageWidth = $colPosMaxImageWidth;
             }
@@ -329,11 +327,11 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
     /**
      * Evaluates the maxwidth of current column
      *
-     * @param    String $confName Path to typoscript to render each element with
-     * @param    Array $recordsArray Array which contains elements (array) for typoscript rendering
-     * @param    Array $appendData Additinal data
+     * @param    string $confName Path to typoscript to render each element with
+     * @param    array $recordsArray Array which contains elements (array) for typoscript rendering
+     * @param    array $appendData Additinal data
      *
-     * @return    String        All items rendered as a string
+     * @return    string        All items rendered as a string
      */
     protected function renderColumnWidth()
     {
@@ -350,4 +348,3 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 if (defined('TYPO3_MODE') && isset($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php'])) {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php']);
 }
-?>

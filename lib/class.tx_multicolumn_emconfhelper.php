@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
@@ -33,7 +32,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
  */
 class tx_multicolumn_emconfhelper
 {
-
     /**
      * Checks if cms layout is xclassed
      *
@@ -63,7 +61,7 @@ class tx_multicolumn_emconfhelper
      *
      * @param string $XCLASS Absolute path to XCLASS file
      *
-     * @return boolean true if tx_cms_layout_tt_content_drawItemHook exists
+     * @return bool true if tx_cms_layout_tt_content_drawItemHook exists
      */
     protected function checkIfDrawItemHookExists($XCLASS)
     {
@@ -96,7 +94,7 @@ class tx_multicolumn_emconfhelper
         $view->assignMultiple([
             'title' => $title,
             'message' => $message,
-            'state' => $type
+            'state' => $type,
         ]);
 
         return $view->render();
@@ -105,6 +103,7 @@ class tx_multicolumn_emconfhelper
     /**
      * Builds uninstall link for XCLASS extension
      *
+     * @param string $extKey
      * @return string Flash message content
      */
     protected function buildUninstallLink($extKey)
@@ -117,6 +116,7 @@ class tx_multicolumn_emconfhelper
     /**
      * Filters out ext key from the XCLASS string
      *
+     * @param string $XCLASS
      * @return string Extension key from xclass
      */
     protected function getExtKeyByXCLASS($XCLASS)
@@ -127,5 +127,3 @@ class tx_multicolumn_emconfhelper
         return $extKey;
     }
 }
-
-?>

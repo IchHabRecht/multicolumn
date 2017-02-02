@@ -24,7 +24,6 @@
  ***************************************************************/
 class tx_multicolumn_tce_eval
 {
-
     /**
      * Returns input value
      *
@@ -38,9 +37,10 @@ class tx_multicolumn_tce_eval
     /**
      * Checks if input value of advanced layout column is greater than $returnValue
      *
-     * @return    mixed        max column value
+     * @param int $inputValue
+     * @return    int|null        max column value
      */
-    public function evaluateFieldValue($inputValue, $is_in, &$set)
+    public function evaluateFieldValue($inputValue)
     {
         if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popViewId')) {
             $conf = tx_multicolumn_div::getTSConfig($id, 'config');
@@ -52,5 +52,3 @@ class tx_multicolumn_tce_eval
         return $returnValue ? $returnValue : ($inputValue ? $inputValue : null);
     }
 }
-
-?>

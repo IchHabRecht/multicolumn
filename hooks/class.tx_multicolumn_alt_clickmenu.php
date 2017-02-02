@@ -161,5 +161,3 @@ class tx_multicolumn_alt_clickmenu
         $newItem[3] = str_replace('new', 'new&defVals[tt_content][tx_multicolumn_parentid]=' . intval($multicolumnParentId), $newItem[3]);
     }
 }
-
-?>

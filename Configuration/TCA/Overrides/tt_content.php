@@ -1,6 +1,6 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
@@ -8,7 +8,7 @@ $iconRegistry->registerIcon(
     'mimetypes-x-content-multicolumn',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     [
-        'source' => 'EXT:multicolumn/Resources/Public/Icons/tt_content_multicolumn.gif'
+        'source' => 'EXT:multicolumn/Resources/Public/Icons/tt_content_multicolumn.gif',
     ]
 );
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['multicolumn'] = 'mimetypes-x-content-multicolumn';
