@@ -27,4 +27,28 @@
 		<sys_language_uid>0</sys_language_uid>
 		<tx_multicolumn_parentid>0</tx_multicolumn_parentid>
 	</tt_content>
+	<tt_content>
+		<uid>10</uid>
+		<pid>1</pid>
+		<CType>multicolumn</CType>
+		<header>Multicolumn Container with three columns</header>
+		<colPos>2</colPos>
+		<sys_language_uid>0</sys_language_uid>
+		<pi_flexform>
+			<![CDATA[
+			<T3FlexForms>
+				<data>
+					<sheet index="preSetLayout">
+						<language index="lDEF">
+							<field index="layoutKey">
+								<value index="vDEF">2.</value>
+							</field>
+						</language>
+					</sheet>
+				</data>
+			</T3FlexForms>
+			]]>
+		</pi_flexform>
+		<tx_multicolumn_parentid>0</tx_multicolumn_parentid>
+	</tt_content>
 </dataset>
