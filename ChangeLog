@@ -1,3 +1,16 @@
+2017-02-06         [RELEASE] Release of multicolumn 3.2.2 (Nicole Cordes)
+2017-02-06 444ee56 [TASK] Require correct typo3/cms dependency (Nicole Cordes)
+2017-02-06 8e7171a [FEATURE] Assert no errors in DataHandler after processing (Nicole Cordes)
+2017-02-03 f47cdec [TASK] Add tests to ensure clickmenu paste handling (Nicole Cordes)
+2017-02-03 39fcc0a [BUGFIX] Fix clickmenu item generation for paste into columns (Nicole Cordes)
+2017-02-02 ac10f59 [TASK] Fix coding style according to php-cs-fixer (Nicole Cordes)
+2017-02-02 7e1f962 [FEATURE] Add StyleCI Coding Style Service (Nicole Cordes)
+2017-02-02 cd8e4a5 [FEATURE] Add friendsofphp/php-cs-fixer as dev requirement (Nicole Cordes)
+2017-02-02 5a6d186 [TASK] Exclude local .php_cs files in .gitignore (Nicole Cordes)
+2017-02-02 3acece7 [TASK] Support new testing_framework (Nicole Cordes)
+2017-02-02 c067b36 [TASK] Optimize Travis CI configuration (Nicole Cordes)
+2017-02-02 58cd223 [TASK] Allow failing tests for TYPO3 dev-master (Nicole Cordes)
+
 2016-12-22         [RELEASE] Release of multicolumn 3.2.1 (Nicole Cordes)
 2016-12-22 f26093f [TASK] Raise compatibility to TYPO3 8.5 (Nicole Cordes)
 
