@@ -29,7 +29,6 @@ use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
@@ -94,6 +93,8 @@ class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',

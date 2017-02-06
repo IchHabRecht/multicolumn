@@ -24,7 +24,10 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Tests\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
 {
@@ -52,5 +55,17 @@ abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::getInstance()->initializeLanguageObject();
+    }
+
+    /**
+     * @param DataHandler $dataHandler
+     */
+    protected function assertNoProssesingErrorsInDataHandler(DataHandler $dataHandler)
+    {
+        $dataHandler->printLogErrorMessages('');
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+
+        $this->assertSame(0, count($flashMessageQueue->getAllMessages()));
     }
 }

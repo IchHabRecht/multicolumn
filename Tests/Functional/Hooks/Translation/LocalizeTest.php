@@ -48,6 +48,8 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
@@ -99,6 +101,8 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         $dataHandler = new DataHandler();
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
