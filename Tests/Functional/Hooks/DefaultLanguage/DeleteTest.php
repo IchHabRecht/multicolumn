@@ -48,6 +48,8 @@ class tx_multicolumn_tcemainDeleteTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,

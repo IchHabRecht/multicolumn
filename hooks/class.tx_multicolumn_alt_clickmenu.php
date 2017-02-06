@@ -24,6 +24,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_alt_clickmenu
 {
@@ -115,7 +116,11 @@ class tx_multicolumn_alt_clickmenu
             // set correct title
             $item[1] .= ' ' . $GLOBALS['LANG']->getLLL('multicolumColumn.clickmenu', $LL) . ' ' . ($columnIndex + 1);
             // add colPos
-            $item[3] = str_replace('pasteInto', 'pasteInto&colPos=' . (tx_multicolumn_div::colPosStart + $columnIndex), $item[3]);
+            $item[3] = str_replace(
+                trim(GeneralUtility::quoteJSvalue('tx_multicolumn[action]=pasteInto'), '\''),
+                trim(GeneralUtility::quoteJSvalue('tx_multicolumn[action]=pasteInto&colPos=' . (tx_multicolumn_div::colPosStart + $columnIndex)), '\''),
+                $item[3]
+            );
 
             $multicolumnMenuItems['multicolumn-pasteinto-' . $columnIndex] = $item;
 
@@ -143,9 +148,13 @@ class tx_multicolumn_alt_clickmenu
             $this->pObj->clipObj->currentMode(),
         ];
 
-        $item = $this->pObj->DB_paste('tt_content', $multicolumnUid, 'into', $elInfo);
-        $item[3] = str_replace('tt_content%7C', 'tt_content%7C-', $item[3]);
-        $item[3] = str_replace('&uPT=1', '&uPT=1&tx_multicolumn[action]=pasteInto&tx_multicolumn_parentid=' . intval($multicolumnUid), $item[3]);
+        $item = $this->pObj->DB_paste('tt_content', -$multicolumnUid, 'into', $elInfo);
+        $pasteUrl = $this->pObj->clipObj->pasteUrl('tt_content', -$multicolumnUid, 0);
+        $item[3] = str_replace(
+            \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($pasteUrl . '&redirect='),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($pasteUrl . '&tx_multicolumn[action]=pasteInto&tx_multicolumn_parentid=' . (int)$multicolumnUid . '&redirect='),
+            $item[3]
+        );
 
         return $item;
     }

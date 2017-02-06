@@ -55,6 +55,8 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler->start($dataMap, []);
         $dataHandler->process_datamap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
@@ -91,6 +93,8 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start($dataMap, []);
         $dataHandler->process_datamap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
@@ -129,6 +133,8 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler->start($dataMap, []);
         $dataHandler->process_datamap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
@@ -165,6 +171,8 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start($dataMap, []);
         $dataHandler->process_datamap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',

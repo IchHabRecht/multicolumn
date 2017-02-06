@@ -55,6 +55,8 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 

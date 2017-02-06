@@ -55,6 +55,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
@@ -108,6 +110,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
@@ -163,6 +167,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
 
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $copiedUID = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
@@ -196,6 +202,9 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
+
         $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
@@ -227,6 +236,8 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $dataHandler = new DataHandler();
         $dataHandler->start([], $cmdMap);
         $dataHandler->process_cmdmap();
+
+        $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
