@@ -23,10 +23,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Tests\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
@@ -46,9 +46,9 @@ abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/sys_language.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages_language_overlay.xml');
+        $this->importDataSet('ntf://Database/pages.xml');
+        $this->importDataSet('ntf://Database/sys_language.xml');
+        $this->importDataSet('ntf://Database/pages_language_overlay.xml');
 
         $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
         $this->importDataSet($fixturePath . 'tt_content.xml');
