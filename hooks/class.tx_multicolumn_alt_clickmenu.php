@@ -39,9 +39,9 @@ class tx_multicolumn_alt_clickmenu
      * Adding tx_multicolumn_parentid on new context menu
      *
      * @param ClickMenu $backRef The calling object. Value by reference.
-     * @param array $menuItems Array with the currently collected menu items to show.
-     * @param string $table Table name of clicked item.
-     * @param int $uid UID of clicked item.
+     * @param array $menuItems array with the currently collected menu items to show
+     * @param string $table table name of clicked item
+     * @param int $uid uID of clicked item
      *
      * @return array Modified $menuItems array
      */

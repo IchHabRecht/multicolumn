@@ -325,7 +325,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
      * Generates the url for the insertRecord links. Special value tx_multicolumn is considered here...
      *
      * @param    int $pid record id
-     * @param    int $colPos Column position value.
+     * @param    int $colPos column position value
      * @param    int $mulitColumnParentId content id, reference where this content element belongs to
      * @param    int $sysLanguageUid System language
      *
