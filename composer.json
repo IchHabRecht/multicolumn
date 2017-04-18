@@ -28,8 +28,10 @@
     "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
   },
   "autoload": {
+    "psr-4": {
+      "CPSIT\\Multicolumn\\": "Classes/"
+    },
     "classmap": [
-      "Classes/",
       "hooks/",
       "lib/",
       "pi1/",
