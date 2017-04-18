@@ -58,4 +58,5 @@ script:
     echo "Running php lint";
     echo;
     echo;
+    if [ "$TYPO3" == "^7.6" ]; then rm -f Classes/ContextMenu/ItemProvider.php; fi;
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
