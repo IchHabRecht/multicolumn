@@ -18,7 +18,7 @@
   ],
   "license": "GPL-2.0+",
   "require": {
-    "typo3/cms-core": ">=7.6.0,<8.6.0"
+    "typo3/cms-core": ">=7.6.0,<8.8.0"
   },
   "require-dev": {
     "nimut/testing-framework": "1.x-dev",
@@ -28,8 +28,10 @@
     "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
   },
   "autoload": {
+    "psr-4": {
+      "CPSIT\\Multicolumn\\": "Classes/"
+    },
     "classmap": [
-      "Classes/",
       "hooks/",
       "lib/",
       "pi1/",
