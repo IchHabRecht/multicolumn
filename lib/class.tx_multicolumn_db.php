@@ -177,19 +177,19 @@ class tx_multicolumn_db
      * Get number of columns in the container
      *
      * @param int $mulitColumnId
-     *
+     * @param array $row
      * @return int
      */
-    public static function getNumberOfColumnsFromContainer($mulitColumnId)
+    public static function getNumberOfColumnsFromContainer($mulitColumnId, array $row = null)
     {
         $result = 0;
-        $row = self::getContentElement($mulitColumnId);
-        if ($row['pi_flexform']) {
+        if ($row === null || !isset($row['pi_flexform'])) {
+            $row = self::getContentElement($mulitColumnId);
+        }
+        if (!empty($row['pi_flexform'])) {
             $flexObj = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
-            /** @var tx_multicolumn_flexform $flexObj */
             $layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
-
-            $result = intval($layoutConfiguration['columns']);
+            $result = (int)$layoutConfiguration['columns'];
         }
 
         return $result;
