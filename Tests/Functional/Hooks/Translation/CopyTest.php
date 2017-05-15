@@ -48,7 +48,7 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -61,7 +61,7 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
         );
         $this->assertSame(1, $count);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid

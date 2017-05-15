@@ -48,7 +48,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -60,7 +60,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         );
         $this->assertSame(1, $count);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
@@ -104,7 +104,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -116,7 +116,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         );
         $this->assertSame(1, $count);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
@@ -159,7 +159,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
 
         $copiedUID = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $copiedUID
@@ -193,7 +193,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
 
         $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'pid=1'
@@ -230,7 +230,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -242,7 +242,7 @@ class tx_multicolumn_tcemainCopyTest extends tx_multicolumn_tcemainBaseTest
         );
         $this->assertSame(1, $count);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
