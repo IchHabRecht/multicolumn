@@ -5,7 +5,6 @@ if (!defined('TYPO3_MODE')) {
 
 // define multicolumn path
 define('PATH_tx_multicolumn', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn'));
-define('PATH_tx_multicolumn_rel', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn'));
 
 //hooks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'tx_multicolumn_tcemain';
