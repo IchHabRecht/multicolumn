@@ -1,4 +1,3 @@
-# add multicolumn default configuration
 tx_multicolumn {
     config {
         advancedLayouts {
