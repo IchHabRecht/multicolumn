@@ -1,6 +1,3 @@
-# include contentWizard settings
-<INCLUDE_TYPOSCRIPT: source="FILE:./ContentWizard/_wizard.ts">
-
 # add multicolumn default configuration
 tx_multicolumn {
     config {
