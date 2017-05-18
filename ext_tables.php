@@ -13,6 +13,14 @@ if (TYPO3_MODE == 'BE') {
     $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1492078309] = \CPSIT\Multicolumn\ContextMenu\ItemProvider::class;
 }
 
+// register wizard icon
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+    'tx-multicolumn-wizard-icon',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:' . $_EXTKEY . '/pi1/ce_wiz.gif']
+);
+
 // Add typoscript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'pi1/static/', 'Multicolumn');
 
