@@ -6,10 +6,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WizardItemsHook implements NewContentElementWizardHookInterface
 {
-    /**
-     * @var int
-     */
-    protected $multiColumnParentId;
 
     /**
      * modifies WizardItems array
@@ -21,26 +17,17 @@ class WizardItemsHook implements NewContentElementWizardHookInterface
      */
     public function manipulateWizardItems(&$wizardItems, &$parentObject)
     {
-        $this->multiColumnParentId = (int)GeneralUtility::_GP('tx_multicolumn_parentid');
-        if ($this->multiColumnParentId > 0) {
-            $this->addMulticolumnParentId($wizardItems);
+        $multiColumnParentId = (int)GeneralUtility::_GP('tx_multicolumn_parentid');
+        if (empty($multiColumnParentId)) {
+            return;
         }
-    }
 
-    /**
-     * add mulitcolumn parentid to wizard params
-     *
-     * @param    array                    array of Wizard Items
-     *
-     * @return    void
-     */
-    protected function addMulticolumnParentId(array &$wizardItems)
-    {
         foreach ($wizardItems as &$wizardItem) {
-            if ($wizardItem['params']) {
-                //add mulitcolumn parent id
-                $wizardItem['params'] .= '&defVals[tt_content][tx_multicolumn_parentid]=' . $this->multiColumnParentId;
+            if (empty($wizardItem['tt_content_defValues'])) {
+                $wizardItem['tt_content_defValues'] = [];
             }
+            $wizardItem['tt_content_defValues']['tx_multicolumn_parentid'] = $multiColumnParentId;
+            $wizardItem['params'] = GeneralUtility::implodeArrayForUrl('', $wizardItem['tt_content_defValues']);
         }
     }
 }
