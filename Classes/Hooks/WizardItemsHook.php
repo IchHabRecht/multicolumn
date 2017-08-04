@@ -26,7 +26,7 @@ class WizardItemsHook implements NewContentElementWizardHookInterface
                 $wizardItem['tt_content_defValues'] = [];
             }
             $wizardItem['tt_content_defValues']['tx_multicolumn_parentid'] = $multiColumnParentId;
-            $wizardItem['params'] = GeneralUtility::implodeArrayForUrl('', $wizardItem['tt_content_defValues']);
+            $wizardItem['params'] = GeneralUtility::implodeArrayForUrl('defVals[tt_content]', $wizardItem['tt_content_defValues']);
         }
     }
 }
