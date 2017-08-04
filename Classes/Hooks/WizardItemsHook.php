@@ -6,7 +6,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WizardItemsHook implements NewContentElementWizardHookInterface
 {
-
     /**
      * modifies WizardItems array
      *
