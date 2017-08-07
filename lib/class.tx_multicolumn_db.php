@@ -79,6 +79,10 @@ class tx_multicolumn_db
             if ($isWorkspace) {
                 $queryBuilder->getRestrictions()->add(BackendWorkspaceRestriction::class);
             }
+
+            if ($showHidden) {
+                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+            }
             $queryBuilder->select($selectFields)
                 ->from($fromTable)
                 ->where(
