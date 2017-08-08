@@ -29,7 +29,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CPSIT\\Multicolumn\\": "Classes/"
+      "IchHabRecht\\Multicolumn\\": "Classes/"
     },
     "classmap": [
       "hooks/",
@@ -41,10 +41,7 @@
   "autoload-dev": {
     "classmap": [
       "Tests/"
-    ],
-    "psr-4": {
-      "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
-    }
+    ]
   },
   "replace": {
     "multicolumn": "self.version",
