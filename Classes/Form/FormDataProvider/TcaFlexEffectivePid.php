@@ -1,5 +1,5 @@
 <?php
-namespace CPSIT\Multicolumn\Form\FormDataProvider;
+namespace IchHabRecht\Multicolumn\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

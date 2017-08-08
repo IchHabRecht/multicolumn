@@ -10,7 +10,7 @@ if (TYPO3_MODE == 'BE') {
         'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn') . 'hooks/class.tx_multicolumn_alt_clickmenu.php',
     ];
 
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1492078309] = \CPSIT\Multicolumn\ContextMenu\ItemProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1492078309] = \IchHabRecht\Multicolumn\ContextMenu\ItemProvider::class;
 }
 
 // Add typoscript

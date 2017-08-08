@@ -1,5 +1,5 @@
 <?php
-namespace CPSIT\Multicolumn\ContextMenu;
+namespace IchHabRecht\Multicolumn\ContextMenu;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Lang\LanguageService;

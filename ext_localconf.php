@@ -11,7 +11,7 @@ define('PATH_tx_multicolumn_rel', \TYPO3\CMS\Core\Utility\ExtensionManagementUti
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'tx_multicolumn_tcemain';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'tx_multicolumn_tcemain';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][] = 'tx_multicolumn_tcemain';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][] = \CPSIT\Multicolumn\Hooks\WizardItemsHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][] = \IchHabRecht\Multicolumn\Hooks\WizardItemsHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'][] = 'tx_multicolumn_cms_layout->addDeleteWarning';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'][] = 'tx_multicolumn_t3lib_befunc';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list.inc']['makeQueryArray']['multicolumn'] = 'tx_multicolumn_db_list';
@@ -35,7 +35,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_multicolumn_tce_eval'] = 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_sitemap/class.tx_multicolumn_pi_sitemap.php', '_pi_sitemap', 'list_type', 1);
 
 // Add dataProvider for FormEngine
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'][\CPSIT\Multicolumn\Form\FormDataProvider\TcaFlexEffectivePid::class] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'][\IchHabRecht\Multicolumn\Form\FormDataProvider\TcaFlexEffectivePid::class] = [
     'depends' => [
         \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
     ],

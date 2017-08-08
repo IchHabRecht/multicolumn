@@ -1,5 +1,5 @@
 <?php
-namespace CPSIT\Multicolumn\Hooks;
+namespace IchHabRecht\Multicolumn\Hooks;
 
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
