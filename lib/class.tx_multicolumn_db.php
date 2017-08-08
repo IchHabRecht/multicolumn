@@ -14,6 +14,7 @@
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_db
@@ -66,6 +67,10 @@ class tx_multicolumn_db
                 ->getQueryBuilderForTable('tt_content');
             if ($isWorkspace) {
                 $queryBuilder->getRestrictions()->add(BackendWorkspaceRestriction::class);
+            }
+
+            if ($showHidden) {
+                $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
             }
             $queryBuilder->select($selectFields)
                 ->from($fromTable)
