@@ -1,3 +1,11 @@
+2017-08-08         [RELEASE] Release of master 4.0.0 (Nicole Cordes)
+2017-08-08 1e7ba94 [BUGFIX] Show restricted records in backend page module (Nicole Cordes)
+2017-08-08 0d77ae3 [TASK] Prevent $_EXTKEY usage (Nicole Cordes)
+2017-08-08 3593599 [TASK] Add and streamline header comments (Nicole Cordes)
+2017-08-08 19c2daf [TASK] Remove superfluous autoload-dev namespace (Nicole Cordes)
+2017-08-08 37fd6ea [TASK] Change namespace according to package name (Nicole Cordes)
+2017-08-08 c5ecb4a [TASK] refactor content wizard include (#37) (Kjeld Schumacher)
+
 2017-04-19         [RELEASE] Release of master 3.2.3 (Nicole Cordes)
 2017-04-19 08c3151 [BUGFIX] Remove file reference prefix in hook registrations (Nicole Cordes)
 2017-04-18 897f2df [BUGFIX] Remove ItemProvider from linting with lower PHP versions (Nicole Cordes)
