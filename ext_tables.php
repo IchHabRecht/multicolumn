@@ -14,7 +14,7 @@ if (TYPO3_MODE == 'BE') {
 }
 
 // Add typoscript
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'pi1/static/', 'Multicolumn');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('multicolumn', 'pi1/static/', 'Multicolumn');
 
 // Add configuration flexform
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:multicolumn/flexform_ds.xml', 'multicolumn');

@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 // define multicolumn path
 define('PATH_tx_multicolumn', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn'));
-define('PATH_tx_multicolumn_rel', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY));
+define('PATH_tx_multicolumn_rel', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn'));
 
 //hooks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'tx_multicolumn_tcemain';
@@ -31,8 +31,8 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_multicolumn_tce_eval'] = 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('multicolumn', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/pi_sitemap/static/setup.txt">', 43);
 
 // Add frontend plugin
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi1/class.tx_multicolumn_pi1.php', '_pi1', 'list_type', 1);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'pi_sitemap/class.tx_multicolumn_pi_sitemap.php', '_pi_sitemap', 'list_type', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('multicolumn', 'pi1/class.tx_multicolumn_pi1.php', '_pi1', 'list_type', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('multicolumn', 'pi_sitemap/class.tx_multicolumn_pi_sitemap.php', '_pi_sitemap', 'list_type', 1);
 
 // Add dataProvider for FormEngine
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'][\IchHabRecht\Multicolumn\Form\FormDataProvider\TcaFlexEffectivePid::class] = [
@@ -49,5 +49,7 @@ $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\
 $iconRegistry->registerIcon(
     'tx-multicolumn-wizard-icon',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    ['source' => 'EXT:' . $_EXTKEY . '/pi1/ce_wiz.gif']
+    [
+        'source' => 'EXT:multicolumn/pi1/ce_wiz.gif',
+    ]
 );
