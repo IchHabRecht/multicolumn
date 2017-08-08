@@ -21,7 +21,10 @@ class WizardItemsHook implements NewContentElementWizardHookInterface
             return;
         }
 
-        foreach ($wizardItems as &$wizardItem) {
+        foreach ($wizardItems as $key => &$wizardItem) {
+            if (strpos($key, '_') === false) {
+                continue;
+            }
             if (empty($wizardItem['tt_content_defValues'])) {
                 $wizardItem['tt_content_defValues'] = [];
             }
