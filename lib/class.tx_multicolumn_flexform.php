@@ -11,6 +11,9 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 class tx_multicolumn_flexform
 {
     /**
@@ -86,7 +89,23 @@ class tx_multicolumn_flexform
     public function addFieldsToFlexForm(&$params)
     {
         $type = $params['config']['txMulitcolumnField'];
-        $pid = $params['flexParentDatabaseRow']['pid'];
+        if (isset($params['flexParentDatabaseRow'])) {
+            $pid = $params['flexParentDatabaseRow']['pid'];
+        } elseif (MathUtility::canBeInterpretedAsInteger($params['row']['uid'])) {
+            $currentRecord = BackendUtility::getRecord('tt_content', (int)$params['row']['uid'], 'pid');
+            $pid = $currentRecord['pid'];
+        } elseif (!empty($_GET['edit']['tt_content'])) {
+            $uidArray = array_keys($_GET['edit']['tt_content']);
+            $uid = array_shift($uidArray);
+            if ($uid > 0) {
+                $pid = $uid;
+            } else {
+                $currentRecord = BackendUtility::getRecord('tt_content', abs($uid), 'pid');
+                $pid = $currentRecord['pid'];
+            }
+        } else {
+            $pid = 0;
+        }
         $tsConfig = tx_multicolumn_div::getTSConfig($pid, null);
 
         switch ($type) {
