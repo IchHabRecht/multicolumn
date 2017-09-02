@@ -24,7 +24,7 @@ if (is_array($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'
             $sortedItems[] = [
                 'LLL:EXT:multicolumn/locallang_db.xml:tx_multicolumn_multicolumn',
                 'multicolumn',
-                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'tt_content_multicolumn.gif',
+                'EXT:multicolumn/tt_content_multicolumn.gif',
             ];
             $multicolumnAdded = true;
         }
@@ -45,7 +45,7 @@ $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = [
         '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime, fe_group',
 ];
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['multicolumn'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('multicolumn') . 'tt_content_multicolumn.gif';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['multicolumn'] = 'EXT:multicolumn/tt_content_multicolumn.gif';
 
 // Add tx_multicolumn_parentid to tt_content table
 $tempColumns = [

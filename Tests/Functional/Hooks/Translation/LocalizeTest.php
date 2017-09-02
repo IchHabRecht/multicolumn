@@ -41,7 +41,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
         $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -54,7 +54,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         );
         $this->assertSame(1, $count);
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
@@ -97,7 +97,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         $nestedContainerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][4];
         $nestedChildUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][5];
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
@@ -110,7 +110,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         );
         $this->assertSame(1, $count, 'Container was not found');
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
@@ -123,7 +123,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         );
         $this->assertSame(1, $count, 'Child was not found');
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $nestedContainerUid
@@ -136,7 +136,7 @@ class tx_multicolumn_tcemainTranslationLocalizeTest extends tx_multicolumn_tcema
         );
         $this->assertSame(1, $count, 'Nested container was not found');
 
-        $count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+        $count = $this->getDatabaseConnection()->selectCount(
             '*',
             tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
             'uid=' . $nestedChildUid
