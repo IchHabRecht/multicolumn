@@ -1,4 +1,13 @@
-2017-08-08         [RELEASE] Release of master 4.0.0 (Nicole Cordes)
+2017-09-20         [RELEASE] Release of multicolumn 4.0.1 (Nicole Cordes)
+2017-05-15 ddd64f6 [BUGFIX] Remove deprecated function ExtensionManagementUtility::extRelPath (Nicole Cordes)
+2017-05-15 175d964 [BUGFIX] Remove unused constant PATH_tx_multicolumn_rel (Nicole Cordes)
+2017-05-15 148e2a6 [TASK] Use new database abstraction in functional tests (Nicole Cordes)
+2017-05-15 f61bce7 [TASK] Raise nimut/testing-framework dependency (Nicole Cordes)
+2017-09-02 9c4e332 [TASK] Exclude composer.lock file in .gitignore (Nicole Cordes)
+2017-09-02 b14cc3c [TASK] Exclude .Build folder in .gitignore (Nicole Cordes)
+2017-08-09 484dd3a [BUGFIX] Resolve page id in FlexForm items provider (Nicole Cordes)
+
+2017-08-08         [RELEASE] Release of multicolumn 4.0.0 (Nicole Cordes)
 2017-08-08 1e7ba94 [BUGFIX] Show restricted records in backend page module (Nicole Cordes)
 2017-08-08 0d77ae3 [TASK] Prevent $_EXTKEY usage (Nicole Cordes)
 2017-08-08 3593599 [TASK] Add and streamline header comments (Nicole Cordes)
@@ -6,7 +15,7 @@
 2017-08-08 37fd6ea [TASK] Change namespace according to package name (Nicole Cordes)
 2017-08-08 c5ecb4a [TASK] refactor content wizard include (#37) (Kjeld Schumacher)
 
-2017-04-19         [RELEASE] Release of master 3.2.3 (Nicole Cordes)
+2017-04-19         [RELEASE] Release of multicolumn 3.2.3 (Nicole Cordes)
 2017-04-19 08c3151 [BUGFIX] Remove file reference prefix in hook registrations (Nicole Cordes)
 2017-04-18 897f2df [BUGFIX] Remove ItemProvider from linting with lower PHP versions (Nicole Cordes)
 2017-04-18 fa18bfb [TASK] Modify PasteTest to respect new ContextMenu API (Nicole Cordes)
