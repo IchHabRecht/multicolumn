@@ -12,6 +12,7 @@
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
@@ -118,7 +119,12 @@ class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $resolved = $file;
 
                 if (file_exists($resolved)) {
-                    ($mediaTypeSplit == '.js') ? $GLOBALS['TSFE']->getPageRenderer()->addJsFooterFile($resolved) : $GLOBALS['TSFE']->getPageRenderer()->addCssFile($resolved);
+                    $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+                    if ($mediaTypeSplit === '.js') {
+                        $pageRenderer->addJsFooterFile($resolved);
+                    } else {
+                        $pageRenderer->addCssFile($resolved);
+                    }
                 }
             }
         }
