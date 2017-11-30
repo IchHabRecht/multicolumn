@@ -204,7 +204,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
         $listData['content'] = $this->renderListItems('_NO_TABLE', 'column', $listItemData, $this->llPrefixed);
         $listData['makeEqualElementBoxHeight'] = $this->layoutConfiguration['makeEqualElementBoxHeight'];
         $listData['makeEqualElementColumnHeight'] = $this->layoutConfiguration['makeEqualElementColumnHeight'];
-        $listData['uid'] = $this->multicolumnContainerUid;
+        $listData['containerUid'] = $this->multicolumnContainerUid;
 
         return $this->renderItem('columnContainer', $listData);
     }
