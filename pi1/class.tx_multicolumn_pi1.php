@@ -11,6 +11,9 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 {
     public $prefixId = 'tx_multicolumn_pi1';        // Same as class name
@@ -156,7 +159,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
             if (!empty($this->effectConfiguration['options'])) {
                 $name = 'mullticolumnEffectBox_' . $this->cObj->data['uid'];
                 $code = 'var ' . $name . ' ={' . $this->effectConfiguration['options'] . '};';
-                $GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($name, $code);
+                GeneralUtility::makeInstance(PageRenderer::class)->addJsInlineCode($name, $code);
             }
             // js files
             if (is_array($this->effectConfiguration['jsFiles.'])) {
