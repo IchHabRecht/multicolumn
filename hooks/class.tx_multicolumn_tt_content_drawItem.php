@@ -15,6 +15,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
@@ -104,7 +105,8 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
         // return if not multicolumn
         if ($row['CType'] == 'multicolumn') {
             $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-            $pageRenderer->addCssFile('EXT:multicolumn/' . $this->cssFile, 'stylesheet', 'screen');
+            $cssFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:multicolumn/' . $this->cssFile));
+            $pageRenderer->addCssFile($cssFile, 'stylesheet', 'screen');
 
             $this->flex = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
             $this->pObj = $parentObject;
