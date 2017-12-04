@@ -37,7 +37,7 @@ script:
     echo "Running php lint";
     echo;
     echo;
-    if [ "$TYPO3" == "^7.6" ]; then rm -f Classes/ContextMenu/ItemProvider.php; fi;
+    if [ "$TYPO3" == "^7.6" ] || [ "$TYPO3" == "7.x-dev as 7.6.0" ]; then rm -f Classes/ContextMenu/ItemProvider.php; fi;
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
 
 jobs:
@@ -48,37 +48,61 @@ jobs:
   include:
     - stage: test
       php: 7.2
-      env: TYPO3="dev-master as 8.7.0"
-    - stage: test
-      php: 7.2
       env: TYPO3=^8.0
     - stage: test
       php: 7.2
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.2
       env: TYPO3=^7.6
     - stage: test
-      php: 7.1
-      env: TYPO3="dev-master as 8.7.0"
+      php: 7.2
+      env: TYPO3="7.x-dev as 7.6.0"
     - stage: test
       php: 7.1
       env: TYPO3=^8.0
     - stage: test
       php: 7.1
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.1
       env: TYPO3=^7.6
     - stage: test
-      php: 7.0
-      env: TYPO3="dev-master as 8.7.0"
+      php: 7.1
+      env: TYPO3="7.x-dev as 7.6.0"
     - stage: test
       php: 7.0
       env: TYPO3=^8.0
     - stage: test
       php: 7.0
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.0
       env: TYPO3=^7.6
+    - stage: test
+      php: 7.0
+      env: TYPO3="7.x-dev as 7.6.0"
     - stage: test
       php: 5.6
       env: TYPO3=^7.6
     - stage: test
+      php: 5.6
+      env: TYPO3="7.x-dev as 7.6.0"
+    - stage: test
       php: 5.5
       env: TYPO3=^7.6
+    - stage: test
+      php: 5.5
+      env: TYPO3="7.x-dev as 7.6.0"
 
     - stage: publish to ter
       if: tag IS present
