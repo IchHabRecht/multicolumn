@@ -32,6 +32,10 @@ table.multicolumn .t3-icon-document-new {
 	margin: 12px 0 0 16px;
 }
 
+table.multicolumn .t3-page-column-header-icons {
+	right: 10px;
+}
+
 ul.contentElements {
 	margin: 0;
 	padding: 0;
