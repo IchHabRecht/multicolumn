@@ -12,6 +12,7 @@
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,9 +49,14 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     protected $flex;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Reference of tx_cms_layout Object
      *
-     * @var        tx_cms_layout
+     * @var PageLayoutView
      */
     protected $pObj;
 
@@ -88,6 +94,14 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
      * @var        bool
      */
     protected $isEffectBox;
+
+    /**
+     * @param IconFactory $iconFactory
+     */
+    public function __construct(IconFactory $iconFactory = null)
+    {
+        $this->iconFactory = $iconFactory !== null ? $iconFactory : GeneralUtility::makeInstance(IconFactory::class);
+    }
 
     /**
      * Preprocesses the preview rendering of a content element.
@@ -184,31 +198,34 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
      */
     protected function buildColumn($columnWidth, $columnIndex, $colPos, &$markup)
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $markup .= '<td id="column_' . (int)$this->multiColCe['uid'] . '_' . (int)$colPos . '" '
             . 'class="t3-page-column t3-page-column-' . (int)$columnIndex . ' column column' . (int)$columnIndex . '" '
             . 'style="width: ' . $columnWidth . '%">'
             . '<div class="innerContent">';
 
         $newParams = $this->getNewRecordParams($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
-        $columnNumber = $columnIndex + 1;
-        /** @noinspection PhpUndefinedMethodInspection */
+        $pasteParams = [
+            'colPos' => $colPos,
+            'sys_language_uid' => $this->multiColCe['sys_language_uid'],
+            'tx_multicolumn_parentid' => $this->multiColCe['uid'],
+        ];
         $columnLabel = $this->isEffectBox
             ? $this->getLanguageService()->getLLL('cms_layout.effectBox', $this->LL)
-            : $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . $columnNumber;
+            : $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . ($columnIndex + 1);
 
-        $markup .= $this->pObj->tt_content_drawColHeader($columnLabel, null, $newParams);
+        $markup .= $this->pObj->tt_content_drawColHeader($columnLabel, '', $newParams, $pasteParams);
 
-        $markup .= '<div class="t3-page-ce t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] .
-            '-' . StringUtility::getUniqueId() . '">';
+        $markup .= '<div class="t3-page-ce" data-page="' . $this->multiColCe['pid'] . '">';
+        $markup .= '<div class="t3js-page-new-ce" id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] .
+            '-' . StringUtility::getUniqueId() . '" data-page="' . $this->multiColCe['pid'] . '">';
         $markup .= '<a href="#" '
             . 'onclick="' . htmlspecialchars($newParams) . '" '
             . 'title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" '
             . 'class="btn btn-default btn-sm">'
-            . $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+            . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
             . ' '
             . $this->getLanguageService()->getLL('content', true) . '</a>';
-        $markup .= '</div>';
+        $markup .= '</div></div>';
 
         $markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 
@@ -310,7 +327,20 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
                 }
 
                 $content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
-                $content .= '</div></div></li>';
+                $content .= '</div></div>';
+
+                $newParams = $this->getNewRecordParams($this->multiColCe['pid'], $row['colPos'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid'], $row['uid']);
+                $content .= '<div class="t3-page-ce t3js-page-new-ce" id="colpos-' . (int)$row['colPos'] . '-' . 'tt-content-' . (int)$row['uid'] .
+                    '-' . StringUtility::getUniqueId() . '">';
+                $content .= '<a href="#" '
+                    . 'onclick="' . htmlspecialchars($newParams) . '" '
+                    . 'title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" '
+                    . 'class="btn btn-default btn-sm">'
+                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
+                    . ' '
+                    . $this->getLanguageService()->getLL('content', true) . '</a>';
+
+                $content .= '</div></li>';
                 $item++;
             } else {
                 unset($rowArr[$rKey]);
@@ -337,25 +367,25 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     /**
      * Generates the url for the insertRecord links. Special value tx_multicolumn is considered here...
      *
-     * @param    int $pid record id
-     * @param    int $colPos column position value
-     * @param    int $mulitColumnParentId content id, reference where this content element belongs to
-     * @param    int $sysLanguageUid System language
-     *
+     * @param int $pid record id
+     * @param int $colPos column position value
+     * @param int $mulitColumnParentId content id, reference where this content element belongs to
+     * @param int $sysLanguageUid System language
+     * @param null $uid_pid uid of previous content element
      * @return    string
      */
-    public function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0)
+    public function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0, $uid_pid = null)
     {
         $params = '&id=' . (int)$pid;
         $params .= '&colPos=' . (int)$colPos;
         $params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
         $params .= '&sys_language_uid=' . (int)$sysLanguageUid;
-        $params .= '&uid_pid=' . (int)$pid;
+        $params .= '&uid_pid=' . ($uid_pid !== null ? -(int)$uid_pid : (int)$pid);
         $params .= '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 
         return 'window.location.href=' . GeneralUtility::quoteJSvalue(
-            BackendUtility::getModuleUrl('new_content_element') . $params
-        ) . ';';
+                BackendUtility::getModuleUrl('new_content_element') . $params
+            ) . ';';
     }
 
     /**
