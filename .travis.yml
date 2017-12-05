@@ -1,26 +1,6 @@
 language: php
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.1
-      env: TYPO3="dev-master as 8.7.0"
-    - php: 7.1
-      env: TYPO3=^8.0
-    - php: 7.1
-      env: TYPO3=^7.6
-    - php: 7.0
-      env: TYPO3="dev-master as 8.7.0"
-    - php: 7.0
-      env: TYPO3=^8.0
-    - php: 7.0
-      env: TYPO3=^7.6
-    - php: 5.6
-      env: TYPO3=^7.6
-    - php: 5.5
-      env: TYPO3=^7.6
-  allow_failures:
-    - env: TYPO3="dev-master as 8.7.0"
+sudo: false
 
 addons:
   apt:
@@ -31,12 +11,11 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-sudo: false
-
 before_install:
   - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
 
-before_script:
+install:
+  - if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then composer config platform.php 7.1; fi;
   - composer require typo3/cms="$TYPO3"
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
@@ -58,5 +37,98 @@ script:
     echo "Running php lint";
     echo;
     echo;
-    if [ "$TYPO3" == "^7.6" ]; then rm -f Classes/ContextMenu/ItemProvider.php; fi;
+    if [ "$TYPO3" == "^7.6" ] || [ "$TYPO3" == "7.x-dev as 7.6.0" ]; then rm -f Classes/ContextMenu/ItemProvider.php; fi;
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
+
+jobs:
+  fast_finish: true
+  allow_failures:
+    - php: 7.2
+    - env: TYPO3="dev-master as 8.7.0"
+  include:
+    - stage: test
+      php: 7.2
+      env: TYPO3=^8.0
+    - stage: test
+      php: 7.2
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.2
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.2
+      env: TYPO3="7.x-dev as 7.6.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3=^8.0
+    - stage: test
+      php: 7.1
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.1
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.1
+      env: TYPO3="7.x-dev as 7.6.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3=^8.0
+    - stage: test
+      php: 7.0
+      env: TYPO3="8.x-dev as 8.7.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3="dev-master as 8.7.0"
+    - stage: test
+      php: 7.0
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.0
+      env: TYPO3="7.x-dev as 7.6.0"
+    - stage: test
+      php: 5.6
+      env: TYPO3=^7.6
+    - stage: test
+      php: 5.6
+      env: TYPO3="7.x-dev as 7.6.0"
+    - stage: test
+      php: 5.5
+      env: TYPO3=^7.6
+    - stage: test
+      php: 5.5
+      env: TYPO3="7.x-dev as 7.6.0"
+
+    - stage: publish to ter
+      if: tag IS present
+      php: 7.1
+      before_install: skip
+      install: skip
+      before_script: skip
+      script:
+        - |
+          if [ -n "$TRAVIS_TAG" ] && [ -n "$TYPO3_ORG_USERNAME" ] && [ -n "$TYPO3_ORG_PASSWORD" ]; then
+            # Install requirements
+            echo
+            echo "Preparing upload of release ${TRAVIS_TAG} to TER"
+            echo
+            echo
+            composer install
+            composer require --dev helhum/ter-client dev-master
+
+            # Cleanup before we upload
+            git reset --hard HEAD && git clean -fx
+
+            # Upload
+            TAG_MESSAGE=`git tag -n10 -l $TRAVIS_TAG | sed 's/^[0-9.]*[ ]*//g'`
+            echo
+            echo "Uploading release ${TRAVIS_TAG} to TER"
+            echo
+            echo
+            .Build/bin/ter-client upload compatibility6 . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE"
+          fi;
