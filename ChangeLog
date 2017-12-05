@@ -1,3 +1,13 @@
+2017-12-05         [RELEASE] Release of multicolumn 4.0.2 (Nicole Cordes)
+2017-12-04 b530d52 [FEATURE] Include current TYPO3 dev-branches in Travis CI configuration (Nicole Cordes)
+2017-12-04 5f31dfe [FEATURE] Include PHP 7.2 in Travis CI configuration (Nicole Cordes)
+2017-12-04 c9728fc [FEATURE] Add stages to Travis CI configuration (Nicole Cordes)
+2017-12-04 9361ae2 [BUGFIX] Remove paste icons in TYPO3 8.7 (Nicole Cordes)
+2017-12-04 8f61508 [BUGFIX] Correctly include backend stylesheet (Nicole Cordes)
+2017-11-30 481289b [TASK] Rename key from uid to containerUid (Nicole Cordes)
+2017-10-05 6cfce46 Adding the multicolumn container uid for optional use in the template (Jonas Emde)
+2017-10-05 4d88608 [BUGFIX] Prevent call of deprecated getPageRenderer() on TSFE (Nicole Cordes)
+
 2017-09-20         [RELEASE] Release of multicolumn 4.0.1 (Nicole Cordes)
 2017-05-15 ddd64f6 [BUGFIX] Remove deprecated function ExtensionManagementUtility::extRelPath (Nicole Cordes)
 2017-05-15 175d964 [BUGFIX] Remove unused constant PATH_tx_multicolumn_rel (Nicole Cordes)

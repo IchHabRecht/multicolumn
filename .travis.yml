@@ -130,5 +130,5 @@ jobs:
             echo "Uploading release ${TRAVIS_TAG} to TER"
             echo
             echo
-            .Build/bin/ter-client upload compatibility6 . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE"
+            .Build/bin/ter-client upload multicolumn . -u "$TYPO3_ORG_USERNAME" -p "$TYPO3_ORG_PASSWORD" -m "$TAG_MESSAGE"
           fi;
