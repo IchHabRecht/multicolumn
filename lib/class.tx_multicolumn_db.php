@@ -15,7 +15,7 @@ use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_db
@@ -50,65 +50,31 @@ class tx_multicolumn_db
         $selectFields = '*';
         $fromTable = 'tt_content';
 
-        if (version_compare(TYPO3_version, '8', '>=') && $cmsLayout) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('tt_content');
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            if (!$showHidden) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            }
-            if ($isWorkspace) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-            }
-            $queryBuilder->select($selectFields)
-                ->from($fromTable)
-                ->where(
-                    $queryBuilder->expr()->eq('tx_multicolumn_parentid', (int)$mulitColumnParentId),
-                    $queryBuilder->expr()->eq('sys_language_uid', (int)$sysLanguageUid)
-                )
-                ->orderBy('sorting');
-            if (!empty($additionalWhere)) {
-                $queryBuilder->andWhere($additionalWhere);
-            }
-            if ($colPos) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('colPos', (int)$colPos));
-            }
-            if ($pid && !$isWorkspace) {
-                $queryBuilder->andWhere($queryBuilder->expr()->eq('pid', (int)$pid));
-            }
-            $res = $queryBuilder->execute();
-            $output = $cmsLayout->getResult($res, 'tt_content', 1);
-        } else {
-            $whereClause = ($additionalWhere ? $additionalWhere : '1=1');
-            if ($colPos) {
-                $whereClause .= ' AND colPos=' . intval($colPos);
-            }
-            if ($pid && !$isWorkspace) {
-                $whereClause .= ' AND pid=' . intval($pid);
-            }
-
-            $whereClause .= ' AND tx_multicolumn_parentid=' . intval($mulitColumnParentId);
-            $whereClause .= ' AND sys_language_uid=' . intval($sysLanguageUid);
-
-            // enable fields
-            $whereClause .= self::enableFields($fromTable, $showHidden);
-            if ($isWorkspace) {
-                $whereClause = self::getWorkspaceClause($whereClause);
-            }
-
-            $orderBy = 'sorting ASC';
-
-            if ($cmsLayout) {
-                // use cms layout object for correct icons
-                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $fromTable, $whereClause, '', $orderBy);
-                $output = $cmsLayout->getResult($res, 'tt_content', 1);
-                $GLOBALS['TYPO3_DB']->sql_free_result($res);
-            } else {
-                $output = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause, '', $orderBy);
-            }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        if ($isWorkspace) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
         }
+        $queryBuilder->select($selectFields)
+            ->from($fromTable)
+            ->where(
+                $queryBuilder->expr()->eq('tx_multicolumn_parentid', (int)$mulitColumnParentId),
+                $queryBuilder->expr()->eq('sys_language_uid', (int)$sysLanguageUid)
+            )
+            ->andWhere(self::enableFields($fromTable, $showHidden))
+            ->orderBy('sorting');
+        if (!empty($additionalWhere)) {
+            $queryBuilder->andWhere($additionalWhere);
+        }
+        if ($colPos) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('colPos', (int)$colPos));
+        }
+        if ($pid && !$isWorkspace) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('pid', (int)$pid));
+        }
+        $res = $queryBuilder->execute();
 
-        return $output;
+        return $cmsLayout === null ? $res->fetchAll() : $cmsLayout->getResult($res, 'tt_content');
     }
 
     /**
@@ -145,13 +111,20 @@ class tx_multicolumn_db
      */
     public static function getNumberOfContentElementsFromContainer($mulitColumnId)
     {
-        $selectFields = 'COUNT(*) AS counter';
-        $fromTable = 'tt_content';
-        $whereClause = 'tt_content.tx_multicolumn_parentId=' . intval($mulitColumnId) . self::enableFields($fromTable);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
-
-        return is_array($row) ? $row['counter'] : 0;
+        return $queryBuilder->count('*')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_multicolumn_parentId',
+                    $queryBuilder->createNamedParameter($mulitColumnId, \PDO::PARAM_INT)
+                )
+            )
+            ->andWhere(self::enableFields('tt_content'))
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
@@ -192,15 +165,23 @@ class tx_multicolumn_db
             return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $uid, $selectFields, $additionalWhere, $useDeleteClause);
         }
 
-        $fromTable = 'tt_content';
-        $whereClause = ' uid=' . intval($uid);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $queryBuilder->select(...GeneralUtility::trimExplode(',', $selectFields, true))
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1);
         if ($additionalWhere) {
-            $whereClause .= ' ' . $additionalWhere;
+            $queryBuilder->andWhere($additionalWhere);
         }
 
-        list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
-
-        return $row;
+        return $queryBuilder->execute()
+            ->fetchAll();
     }
 
     /**
@@ -214,14 +195,29 @@ class tx_multicolumn_db
      */
     public static function getContainersFromPid($pid, $sysLanguageUid = 0, $selectFields = 'uid,header')
     {
-        $fromTable = 'tt_content';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $whereClause = ' pid=' . intval($pid) . ' AND CType=\'multicolumn\'';
-        $whereClause .= ' AND sys_language_uid = ' . intval($sysLanguageUid);
-        $whereClause .= self::enableFields('tt_content');
-        $orderBy = 'sorting';
-
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause, '', $orderBy);
+        return $queryBuilder->select(...GeneralUtility::trimExplode(',', $selectFields, true))
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'CType',
+                    $queryBuilder->createNamedParameter('multicolumn', \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($sysLanguageUid, \PDO::PARAM_INT)
+                )
+            )
+            ->andWhere(self::enableFields('tt_content'))
+            ->orderBy('sorting')
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -235,16 +231,25 @@ class tx_multicolumn_db
      */
     public static function getContainerFromUid($uid, $selectFields = 'uid,header', $enableFields = false)
     {
-        $fromTable = 'tt_content';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $whereClause = 'uid=' . intval($uid) . ' AND CType=\'multicolumn\'';
-        if ($enableFields) {
-            $whereClause .= self::enableFields('tt_content');
-        }
-
-        list($container) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
-
-        return $container;
+        return $queryBuilder->select(...GeneralUtility::trimExplode(',', $selectFields, true))
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'CType',
+                    $queryBuilder->createNamedParameter('multicolumn', \PDO::PARAM_STR)
+                )
+            )
+            ->andWhere(self::enableFields('tt_content'))
+            ->setMaxResults(1)
+            ->execute()
+            ->fetchColumn(0);
     }
 
     /**
@@ -256,14 +261,25 @@ class tx_multicolumn_db
      */
     public static function contentElementHasAMulticolumnParentContainer($uid)
     {
-        $fromTable = 'tt_content';
-        $selectFields = 'COUNT(*) AS counter';
-        $whereClause = 'uid=' . intval($uid) . ' AND tx_multicolumn_parentid<>0';
-        $whereClause .= self::enableFields('tt_content');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $count = $queryBuilder->count('*')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->neq(
+                    'tx_multicolumn_parentid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )
+            ->andWhere(self::enableFields('tt_content'))
+            ->execute()
+            ->fetchColumn(0);
 
-        list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
-
-        return $row['counter'] > 0;
+        return $count > 0;
     }
 
     /**
@@ -276,28 +292,46 @@ class tx_multicolumn_db
      */
     public static function updateContentElement($uid, array $fieldValues)
     {
-        $table = 'tt_content';
-        $where = 'tt_content.uid=' . intval($uid);
+        $updateQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $updateQueryBuilder->update('tt_content')
+            ->where(
+                $updateQueryBuilder->expr()->eq(
+                    'uid',
+                    $updateQueryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            );
 
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, $where, $fieldValues);
+        foreach ($fieldValues as $field => $value) {
+            $updateQueryBuilder->set($field, $value);
+        }
+
+        $updateQueryBuilder->execute();
     }
 
     /**
      * Obtains children content elements for the multicolumn container
      *
      * @param int $containerUid
-     * @param string $showHidden
+     * @param bool $showHidden
      *
      * @return array
      */
     public static function getContainerChildren($containerUid, $showHidden = true)
     {
-        $fromTable = 'tt_content';
-        $selectFields = 'uid,pid,sys_language_uid,CType';
-        $whereClause = 'tx_multicolumn_parentid=' . intval($containerUid);
-        $whereClause .= self::enableFields($fromTable, $showHidden);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
+        return $queryBuilder->select('uid', 'pid', 'sys_language_uid', 'CType')
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_multicolumn_parentid',
+                    $queryBuilder->createNamedParameter($containerUid, \PDO::PARAM_INT)
+                )
+            )
+            ->andWhere(self::enableFields('tt_content', $showHidden))
+            ->execute()
+            ->fetchAll();
     }
 
     /**
@@ -305,19 +339,16 @@ class tx_multicolumn_db
      *
      * @param string $table table name
      * @param bool $showHidden
-     * @param array $ignoreFields
      *
      * @return string
      */
-    protected static function enableFields($table, $showHidden = false, $ignoreFields = [])
+    protected static function enableFields($table, $showHidden = false)
     {
-        if (TYPO3_MODE == 'BE') {
-            $enableFields = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . ' AND ' . $table . '.pid>0';
-            if (!$showHidden) {
-                $enableFields .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
-            }
-        } else {
-            $enableFields = $GLOBALS['TSFE']->sys_page->enableFields($table, $showHidden, $ignoreFields);
+        $enableFields = '1=1';
+        if (TYPO3_MODE === 'FE') {
+            $enableFields .= $GLOBALS['TSFE']->sys_page->enableFields($table, $showHidden);
+        } elseif (!$showHidden) {
+            $enableFields .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
         }
 
         return $enableFields;
