@@ -21,19 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class tx_multicolumn_db
 {
     /**
-     * This function is deprecated. Do not use.
-     *
-     * @return bool
-     * @deprecated
-     */
-    public static function isBackend()
-    {
-        GeneralUtility::logDeprecatedFunction();
-
-        return TYPO3_MODE == 'BE';
-    }
-
-    /**
      * Is the user in a workspace ?
      *
      * @return    bool        ture if the user is an a workspace
@@ -311,22 +298,6 @@ class tx_multicolumn_db
         $whereClause .= self::enableFields($fromTable, $showHidden);
 
         return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selectFields, $fromTable, $whereClause);
-    }
-
-    /**
-     * This function is deprecated. Do not use it.
-     *
-     * @param int $containerUid
-     * @param string $showHidden
-     *
-     * @return bool
-     * @deprecated Use tx_multicolumn_db::getContainerChildren() instead
-     */
-    public static function containerHasChildren($containerUid, $showHidden = true)
-    {
-        GeneralUtility::logDeprecatedFunction();
-
-        return self::getContainerChildren($containerUid, $showHidden);
     }
 
     /**
