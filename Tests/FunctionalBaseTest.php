@@ -43,6 +43,9 @@ abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::getInstance()->initializeLanguageObject();
+
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService->getMessageQueueByIdentifier()->clear();
     }
 
     /**
