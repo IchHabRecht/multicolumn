@@ -12,6 +12,7 @@
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
@@ -195,7 +196,8 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
             }
 
             // do option split
-            $this->layoutConfigurationSplited = $GLOBALS['TSFE']->tmpl->splitConfArray($this->layoutConfiguration, $this->layoutConfiguration['columns']);
+            $this->layoutConfigurationSplited = GeneralUtility::makeInstance(TypoScriptService::class)
+                ->explodeConfigurationForOptionSplit($this->layoutConfiguration, (int)$this->layoutConfiguration['columns']);
         }
     }
 

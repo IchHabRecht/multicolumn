@@ -15,6 +15,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -135,7 +136,8 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
 
             if ($this->layoutConfiguration['columns']) {
                 // do option split
-                $this->layoutConfigurationSplited = $this->tmpl->splitConfArray($this->layoutConfiguration, $this->layoutConfiguration['columns']);
+                $this->layoutConfigurationSplited = GeneralUtility::makeInstance(TypoScriptService::class)
+                    ->explodeConfigurationForOptionSplit($this->layoutConfiguration, (int)$this->layoutConfiguration['columns']);
                 $itemContent .= $this->buildColumns($this->layoutConfiguration['columns']);
             }
         }
