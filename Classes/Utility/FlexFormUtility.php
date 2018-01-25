@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Utility;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -11,11 +12,10 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-class tx_multicolumn_flexform
+class FlexFormUtility
 {
     /**
      * Flexform configuration

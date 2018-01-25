@@ -13,6 +13,7 @@ namespace IchHabRecht\Multicolumn\Hooks;
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -47,9 +48,9 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     protected $multiColUid;
 
     /**
-     * Instance of tx_multicolumn_flexform
+     * Instance of \IchHabRecht\Multicolumn\Utility\FlexFormUtility
      *
-     * @var \tx_multicolumn_flexform
+     * @var FlexFormUtility
      */
     protected $flex;
 
@@ -127,7 +128,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $cssFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:multicolumn/' . $this->cssFile));
             $pageRenderer->addCssFile($cssFile, 'stylesheet', 'screen');
 
-            $this->flex = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+            $this->flex = GeneralUtility::makeInstance(FlexFormUtility::class, $row['pi_flexform']);
             $this->pObj = $parentObject;
             $this->tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
             $this->LL = MulticolumnUtility::includeBeLocalLang();

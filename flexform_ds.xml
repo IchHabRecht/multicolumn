@@ -24,7 +24,7 @@
 									</numIndex>
 								</items>
 								<txMulitcolumnField>preSetLayout</txMulitcolumnField>
-								<itemsProcFunc>tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
+								<itemsProcFunc>IchHabRecht\Multicolumn\Utility\FlexFormUtility->addFieldsToFlexForm</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</layoutKey>
@@ -45,7 +45,7 @@
 							<config>
 								<type>input</type>
 								<size>2</size>
-								<eval>trim,int,tx_multicolumn_tce_eval</eval>
+								<eval>trim,int,IchHabRecht\Multicolumn\Evaluation\AdvancedLayoutEvaluator</eval>
 							</config>
 						</TCEforms>
 					</columns>
@@ -201,7 +201,7 @@
 										<numIndex index="1"></numIndex>
 									</numIndex>
 								</items>
-								<itemsProcFunc>tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
+								<itemsProcFunc>IchHabRecht\Multicolumn\Utility\FlexFormUtility->addFieldsToFlexForm</itemsProcFunc>
 								<maxitems>1</maxitems>
 								<size>1</size>
 								<txMulitcolumnField>effect</txMulitcolumnField>

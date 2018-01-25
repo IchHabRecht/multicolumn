@@ -142,7 +142,7 @@ class DatabaseUtility
             $row = self::getContentElement($mulitColumnId);
         }
         if (!empty($row['pi_flexform'])) {
-            $flexObj = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
+            $flexObj = GeneralUtility::makeInstance(FlexFormUtility::class, $row['pi_flexform']);
             $layoutConfiguration = MulticolumnUtility::getLayoutConfiguration($row['pid'], $flexObj);
             $result = (int)$layoutConfiguration['columns'];
         }

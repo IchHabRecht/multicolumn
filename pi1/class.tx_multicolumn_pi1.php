@@ -12,6 +12,7 @@
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -50,9 +51,9 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
     protected $currentCobjParentRecordNumber;
 
     /**
-     * Instance of tx_multicolumn_flexform
+     * Instance of \IchHabRecht\Multicolumn\Utility\FlexFormUtility
      *
-     * @var        tx_multicolumn_flexform
+     * @var FlexFormUtility
      */
     protected $flex;
 
@@ -151,7 +152,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
             $this->multicolumnContainerUid = $this->cObj->data['uid'];
         }
 
-        $this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_multicolumn_flexform', $this->cObj->data['pi_flexform']);
+        $this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlexFormUtility::class, $this->cObj->data['pi_flexform']);
         $this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.') ? true : false;
         // store current max width
         $this->TSFEmaxWidthBefore = isset($GLOBALS['TSFE']->register['maxImageWidth']) ? $GLOBALS['TSFE']->register['maxImageWidth'] : null;

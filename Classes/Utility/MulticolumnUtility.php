@@ -26,11 +26,11 @@ final class MulticolumnUtility
      * Get layout configuration options merged between typoscript and flexform options
      *
      * @param int $pageUid
-     * @param \tx_multicolumn_flexform $flex
+     * @param FlexFormUtility $flex
      *
      * @return array
      */
-    public static function getLayoutConfiguration($pageUid, \tx_multicolumn_flexform $flex)
+    public static function getLayoutConfiguration($pageUid, FlexFormUtility $flex)
     {
         // load default config
         $config = self::getDefaultLayoutConfiguration();
@@ -64,11 +64,11 @@ final class MulticolumnUtility
      * Get layout configuration options merged between typoscript and flexform options
      *
      * @param int $pageUid
-     * @param \tx_multicolumn_flexform $flex
+     * @param FlexFormUtility $flex
      *
      * @return array|null
      */
-    public static function getEffectConfiguration($pageUid, \tx_multicolumn_flexform $flex)
+    public static function getEffectConfiguration($pageUid, FlexFormUtility $flex)
     {
         $config = null;
         $effect = substr($flex->getFlexValue('effectBox', 'effect'), 0, -1);
