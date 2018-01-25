@@ -11,6 +11,8 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 class tx_multicolumn_tceform
 {
     /**
@@ -83,7 +85,13 @@ class tx_multicolumn_tceform
      */
     protected function buildMulticolumnList()
     {
-        if ($containers = tx_multicolumn_db::getContainersFromPid($this->row['pid'], $this->row['sys_language_uid'][0])) {
+        if ($this->row['pid'] > 0) {
+            $pid = $this->row['pid'];
+        } else {
+            $record = BackendUtility::getRecord('tt_content', abs($this->row['pid']), 'pid');
+            $pid = $record['pid'] ?? 0;
+        }
+        if ($containers = tx_multicolumn_db::getContainersFromPid($pid, $this->row['sys_language_uid'][0])) {
             if ($this->items) {
                 $itemsUidList = $this->getItemsUidList();
             }
