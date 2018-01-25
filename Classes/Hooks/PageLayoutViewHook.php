@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Hooks;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -11,7 +12,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-class tx_multicolumn_cms_layout
+class PageLayoutViewHook
 {
     /**
      * Expands the delete warning with "(This multicolumn container has X content elements(s)...)
