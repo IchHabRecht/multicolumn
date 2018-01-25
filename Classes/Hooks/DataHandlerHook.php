@@ -12,6 +12,8 @@ namespace IchHabRecht\Multicolumn\Hooks;
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+
 class DataHandlerHook
 {
     /** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
@@ -48,7 +50,7 @@ class DataHandlerHook
 
             $this->pasteIntoMulticolumnContainer($moveOrCopy, $updateId, $id);
         } else {
-            $containerChildren = \tx_multicolumn_db::getContainerChildren($id);
+            $containerChildren = DatabaseUtility::getContainerChildren($id);
 
             switch ($command) {
                 case 'copy':
@@ -69,7 +71,7 @@ class DataHandlerHook
                         } elseif (isset($pasteDatamap[$table][$copyId]['sys_language_uid'])) {
                             $sysLanguageUid = $pasteDatamap[$table][$copyId]['sys_language_uid'];
                         } else {
-                            $contentElement = \tx_multicolumn_db::getContentElement($copyId, 'sys_language_uid');
+                            $contentElement = DatabaseUtility::getContentElement($copyId, 'sys_language_uid');
                             $sysLanguageUid = $contentElement['sys_language_uid'];
                         }
 
@@ -87,7 +89,7 @@ class DataHandlerHook
                             if ($pObj->cmdmap['tt_content'][$id]['copy'] < 0) {
                                 // Copying after another element
                                 $elementBeforeUid = abs($pObj->cmdmap['tt_content'][$id]['copy']);
-                                $elementBeforeData = \tx_multicolumn_db::getContentElement($elementBeforeUid, 'uid,tx_multicolumn_parentid,colPos');
+                                $elementBeforeData = DatabaseUtility::getContentElement($elementBeforeUid, 'uid,tx_multicolumn_parentid,colPos');
                             }
 
                             if ($row['tx_multicolumn_parentid'] || $elementBeforeData['tx_multicolumn_parentid']) {
@@ -99,7 +101,7 @@ class DataHandlerHook
                                     'tx_multicolumn_parentid' => $elementBeforeData['tx_multicolumn_parentid'],
                                     'colPos' => $elementBeforeData['colPos'],
                                 ];
-                                \tx_multicolumn_db::updateContentElement($newUid, $updateRecordFields);
+                                DatabaseUtility::updateContentElement($newUid, $updateRecordFields);
                             }
                         }
                     }
@@ -146,9 +148,9 @@ class DataHandlerHook
             'tx_multicolumn_parentid' => $multicolumnId,
         ];
 
-        \tx_multicolumn_db::updateContentElement($updateId, $updateRecordFields);
+        DatabaseUtility::updateContentElement($updateId, $updateRecordFields);
 
-        $containerChildren = \tx_multicolumn_db::getContainerChildren($orginalId);
+        $containerChildren = DatabaseUtility::getContainerChildren($orginalId);
         // copy children too
         if ($containerChildren) {
             $pid = $this->pObj->pageCache ? key($this->pObj->pageCache) : key($this->pObj->cachedTSconfig);
@@ -172,7 +174,7 @@ class DataHandlerHook
 
             // if is element a multicolumn element ? delete children too (recursive)
             if ($child['CType'] == 'multicolumn') {
-                $containerChildrenChildren = \tx_multicolumn_db::getContainerChildren($child['uid']);
+                $containerChildrenChildren = DatabaseUtility::getContainerChildren($child['uid']);
                 if ($containerChildrenChildren) {
                     $this->deleteMulticolumnContainer($containerChildrenChildren);
                 }
@@ -199,11 +201,11 @@ class DataHandlerHook
                     'tx_multicolumn_parentid' => $multicolumnParentId,
                 ];
 
-                \tx_multicolumn_db::updateContentElement($newUid, $fields_values);
+                DatabaseUtility::updateContentElement($newUid, $fields_values);
 
                 // if is element a multicolumn element ? localize children too (recursive)
                 if ($element['CType'] == 'multicolumn') {
-                    $containerChildrenChildren = \tx_multicolumn_db::getContainerChildren($element['uid']);
+                    $containerChildrenChildren = DatabaseUtility::getContainerChildren($element['uid']);
                     if (!empty($containerChildrenChildren)) {
                         $this->localizeMulticolumnChildren($containerChildrenChildren, $newUid, $sysLanguageUid);
                     }
@@ -251,21 +253,21 @@ class DataHandlerHook
     public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj)
     {
         // check if we must update the move record
-        if ($table == 'tt_content' && ($this->isMulticolumnContainer($uid) || \tx_multicolumn_db::contentElementHasAMulticolumnParentContainer($uid) || (($origDestPid < 0) && \tx_multicolumn_db::contentElementHasAMulticolumnParentContainer(abs($origDestPid))))) {
+        if ($table == 'tt_content' && ($this->isMulticolumnContainer($uid) || DatabaseUtility::contentElementHasAMulticolumnParentContainer($uid) || (($origDestPid < 0) && DatabaseUtility::contentElementHasAMulticolumnParentContainer(abs($origDestPid))))) {
             if (!$this->getMulticolumnGetAction() == 'pasteInto') {
                 $updateRecordFields = [];
                 $updateRecordFields = $this->checkIfElementGetsCopiedOrMovedInsideOrOutsideAMulticolumnContainer($origDestPid, $updateRecordFields);
 
-                \tx_multicolumn_db::updateContentElement($uid, $updateRecordFields);
+                DatabaseUtility::updateContentElement($uid, $updateRecordFields);
 
                 // check language
                 if ($origDestPid < 0) {
                     $recordBeforeUid = abs($origDestPid);
 
-                    $row = \tx_multicolumn_db::getContentElement($recordBeforeUid, 'sys_language_uid');
+                    $row = DatabaseUtility::getContentElement($recordBeforeUid, 'sys_language_uid');
                     $sysLanguageUid = $row['sys_language_uid'];
 
-                    $containerChildren = \tx_multicolumn_db::getContainerChildren($uid);
+                    $containerChildren = DatabaseUtility::getContainerChildren($uid);
                     if (is_array($containerChildren)) {
                         $firstElement = $containerChildren[0];
                         // update only if destination has a diffrent langauge
@@ -320,19 +322,19 @@ class DataHandlerHook
 
         $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
         if ($row['CType'] == 'multicolumn') {
-            $containerChildren = \tx_multicolumn_db::getContainerChildren($row['uid']);
+            $containerChildren = DatabaseUtility::getContainerChildren($row['uid']);
             if ($containerChildren) {
                 $this->moveContainerChildren($containerChildren, $destPid);
             }
             // if element is moved as first element on page ? set multicolumn_parentid and colPos to 0
         } elseif ($row['tx_multicolumn_parentid']) {
-            $multicolumnContainerExists = \tx_multicolumn_db::getContentElement($row['tx_multicolumn_parentid'], 'uid', 'AND pid=' . $row['pid']);
+            $multicolumnContainerExists = DatabaseUtility::getContentElement($row['tx_multicolumn_parentid'], 'uid', 'AND pid=' . $row['pid']);
             if (!$multicolumnContainerExists) {
                 $updateRecordFields = [
                     'tx_multicolumn_parentid' => 0,
                     'colPos' => 0,
                 ];
-                \tx_multicolumn_db::updateContentElement($row['uid'], $updateRecordFields);
+                DatabaseUtility::updateContentElement($row['uid'], $updateRecordFields);
             }
         }
     }
@@ -364,7 +366,7 @@ class DataHandlerHook
             $updateRecordFields = [
                 'sys_language_uid' => $sysLanguageUid,
             ];
-            \tx_multicolumn_db::updateContentElement($child['uid'], $updateRecordFields);
+            DatabaseUtility::updateContentElement($child['uid'], $updateRecordFields);
         }
     }
 
@@ -390,10 +392,10 @@ class DataHandlerHook
 
             // if is element a multicolumn element ? copy children too (recursive)
             if ($element['CType'] == 'multicolumn') {
-                $containerChildren = \tx_multicolumn_db::getContainerChildren($element['uid']);
+                $containerChildren = DatabaseUtility::getContainerChildren($element['uid']);
 
                 if ($containerChildren) {
-                    $copiedMulticolumncontainer = \tx_multicolumn_db::getContentElement($newUid, 'uid,pid');
+                    $copiedMulticolumncontainer = DatabaseUtility::getContentElement($newUid, 'uid,pid');
 
                     $this->copyMulticolumnContainer($newUid, $containerChildren, $copiedMulticolumncontainer['pid'], $sysLanguageUid);
                 }
@@ -436,7 +438,7 @@ class DataHandlerHook
      */
     protected function isMulticolumnContainer($uid)
     {
-        return is_array(\tx_multicolumn_db::getContainerFromUid($uid, 'uid'));
+        return is_array(DatabaseUtility::getContainerFromUid($uid, 'uid'));
     }
 
     /**

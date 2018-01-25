@@ -11,6 +11,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class tx_multicolumn_tceform
@@ -91,7 +92,7 @@ class tx_multicolumn_tceform
             $record = BackendUtility::getRecord('tt_content', abs($this->row['pid']), 'pid');
             $pid = $record['pid'] ?? 0;
         }
-        if ($containers = tx_multicolumn_db::getContainersFromPid($pid, $this->row['sys_language_uid'][0])) {
+        if ($containers = DatabaseUtility::getContainersFromPid($pid, $this->row['sys_language_uid'][0])) {
             if ($this->items) {
                 $itemsUidList = $this->getItemsUidList();
             }
@@ -143,7 +144,7 @@ class tx_multicolumn_tceform
             return;
         }
 
-        $numberOfColumns = tx_multicolumn_db::getNumberOfColumnsFromContainer($this->row['tx_multicolumn_parentid']);
+        $numberOfColumns = DatabaseUtility::getNumberOfColumnsFromContainer($this->row['tx_multicolumn_parentid']);
 
         $columnIndex = 0;
         $columnTitle = $GLOBALS['LANG']->getLLL('multicolumColumn', $this->LL) . ' ' . $GLOBALS['LANG']->getLLL('cms_layout.columnTitle', $this->LL);

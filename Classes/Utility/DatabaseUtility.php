@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Utility;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -18,7 +19,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class tx_multicolumn_db
+class DatabaseUtility
 {
     /**
      * Is the user in a workspace ?
@@ -142,7 +143,7 @@ class tx_multicolumn_db
         }
         if (!empty($row['pi_flexform'])) {
             $flexObj = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
-            $layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
+            $layoutConfiguration = \tx_multicolumn_div::getLayoutConfiguration($row['pid'], $flexObj);
             $result = (int)$layoutConfiguration['columns'];
         }
 

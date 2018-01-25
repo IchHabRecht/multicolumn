@@ -12,6 +12,7 @@ namespace IchHabRecht\Multicolumn\Hooks;
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
@@ -304,7 +305,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         $result = '';
         $showHidden = $this->pObj->tt_contentConfig['showHidden'] ? true : false;
 
-        $elements = \tx_multicolumn_db::getContentElementsFromContainer($colPos, $pid, $mulitColumnParentId, $sysLanguageUid, $showHidden, null, $this->pObj);
+        $elements = DatabaseUtility::getContentElementsFromContainer($colPos, $pid, $mulitColumnParentId, $sysLanguageUid, $showHidden, null, $this->pObj);
         if ($elements) {
             $result = $this->renderContentElements($elements);
         }
@@ -324,7 +325,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         $markup = '';
         $additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . \tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
 
-        $elements = \tx_multicolumn_db::getContentElementsFromContainer(null, null, $this->multiColUid, $this->multiColCe['sys_language_uid'], true, $additionalWhere, $this->pObj);
+        $elements = DatabaseUtility::getContentElementsFromContainer(null, null, $this->multiColUid, $this->multiColCe['sys_language_uid'], true, $additionalWhere, $this->pObj);
 
         if ($elements) {
             $markup = '<div class="lostContentElementContainer">';

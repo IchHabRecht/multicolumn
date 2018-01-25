@@ -11,6 +11,8 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+
 class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base
 {
     public $prefixId = 'tx_multicolumn_pi_sitemap';        // Same as class name
@@ -44,7 +46,7 @@ class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base
 
         $uid = intval($this->cObj->stdWrap($this->conf['multicolumnContainerUid'], $this->conf['multicolumnContainerUid.']));
         if (!empty($uid)) {
-            $elements = tx_multicolumn_db::getContentElementsFromContainer(null, null, $uid, 0, false, 'sectionIndex=1');
+            $elements = DatabaseUtility::getContentElementsFromContainer(null, null, $uid, 0, false, 'sectionIndex=1');
             if (count($elements)) {
                 $listData = [
                     'sitemapItem' => $this->renderListItems('tt_content', 'sitemapItem', $elements),

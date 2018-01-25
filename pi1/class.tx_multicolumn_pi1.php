@@ -11,6 +11,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -229,7 +230,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 
         $GLOBALS['TSFE']->register['maxImageWidth'] = !empty($columnWidth) ? $columnWidth : $GLOBALS['TSFE']->register['maxImageWidth'];
 
-        $contentElements = tx_multicolumn_db::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
+        $contentElements = DatabaseUtility::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
         if (is_array($contentElements)) {
             $listeItemsArray = [
                 'effect' => $this->effectConfiguration['effect'],
@@ -299,7 +300,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
             }
 
             $columnData['colPos'] = $multicolumnColPos;
-            $contentElements = tx_multicolumn_db::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
+            $contentElements = DatabaseUtility::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
             if ($contentElements) {
                 $GLOBALS['TSFE']->register['maxImageWidth'] = $maxImageWidth;
                 $GLOBALS['TSFE']->register['maxImageWidthInText'] = $maxImageWidth;

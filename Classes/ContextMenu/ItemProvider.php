@@ -12,6 +12,7 @@ namespace IchHabRecht\Multicolumn\ContextMenu;
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -33,7 +34,7 @@ class ItemProvider extends RecordProvider
         $languageService = $this->getLanguageService();
 
         $newItems = [];
-        $columns = \tx_multicolumn_db::getNumberOfColumnsFromContainer($this->record['uid'], $this->record);
+        $columns = DatabaseUtility::getNumberOfColumnsFromContainer($this->record['uid'], $this->record);
         for ($i = 0; $i < $columns; $i++) {
             $newItems['multicolumn-pasteinto-' . $i] = [
                 'label' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto')
