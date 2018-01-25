@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional\Hooks\DefaultLanguage;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -13,9 +14,10 @@
 
 require_once __DIR__ . '/../../../FunctionalBaseTest.php';
 
+use IchHabRecht\Multicolumn\Tests\Functional\FunctionalBaseTest;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
-class tx_multicolumn_tcemainDeleteTest extends tx_multicolumn_tcemainBaseTest
+class DeleteTest extends FunctionalBaseTest
 {
     /**
      * Delete a container and its children
@@ -25,7 +27,7 @@ class tx_multicolumn_tcemainDeleteTest extends tx_multicolumn_tcemainBaseTest
     public function deleteContainerDeletesChildrenInDefaultLanguage()
     {
         $cmdMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 1 => [
                     'delete' => 1,
                 ],
@@ -40,7 +42,7 @@ class tx_multicolumn_tcemainDeleteTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'uid IN (1,2)'
             . ' AND deleted=1'
             . ' AND sys_language_uid=0'

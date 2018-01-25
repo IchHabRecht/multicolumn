@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional\Hooks\Translation;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -13,9 +14,10 @@
 
 require_once __DIR__ . '/../../../FunctionalBaseTest.php';
 
+use IchHabRecht\Multicolumn\Tests\Functional\FunctionalBaseTest;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
-class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBaseTest
+class CopyTest extends FunctionalBaseTest
 {
     /**
      * Copy a multicolumn container to another column
@@ -25,7 +27,7 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
     public function copyContainerAndChildrenToOtherColumnInOtherLanguage()
     {
         $cmdMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 1 => [
                     'copy' => [
                         'action' => 'paste',
@@ -45,16 +47,16 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
 
         $this->assertNoProssesingErrorsInDataHandler($dataHandler);
 
-        $containerUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][1];
-        $childUid = $dataHandler->copyMappingArray[tx_multicolumn_tcemainBaseTest::CONTENT_TABLE][2];
+        $containerUid = $dataHandler->copyMappingArray[FunctionalBaseTest::CONTENT_TABLE][1];
+        $childUid = $dataHandler->copyMappingArray[FunctionalBaseTest::CONTENT_TABLE][2];
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'uid=' . $containerUid
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN . '\''
+            . ' AND CType=\'' . FunctionalBaseTest::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=2'
             . ' AND sys_language_uid=1'
             . ' AND tx_multicolumn_parentid=0'
@@ -63,11 +65,11 @@ class tx_multicolumn_tcemainTranslationCopyTest extends tx_multicolumn_tcemainBa
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'uid=' . $childUid
             . ' AND pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_TEXTPIC . '\''
+            . ' AND CType=\'' . FunctionalBaseTest::CTYPE_TEXTPIC . '\''
             . ' AND colPos=10'
             . ' AND sys_language_uid=1'
             . ' AND tx_multicolumn_parentid=' . $containerUid

@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -17,7 +18,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
+abstract class FunctionalBaseTest extends FunctionalTestCase
 {
     const CONTENT_TABLE = 'tt_content';
     const CTYPE_MULTICOLUMN = 'multicolumn';

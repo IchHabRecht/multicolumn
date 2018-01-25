@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional\Hooks\DefaultLanguage;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -13,10 +14,11 @@
 
 require_once __DIR__ . '/../../../FunctionalBaseTest.php';
 
+use IchHabRecht\Multicolumn\Tests\Functional\FunctionalBaseTest;
 use TYPO3\CMS\Backend\ContextMenu\ContextMenu;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
-class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
+class PasteTest extends FunctionalBaseTest
 {
     /**
      * Ensure multicolumn containers in clickmenu items with record in clipboard
@@ -25,7 +27,7 @@ class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
      */
     public function findMulticolumnColumnsInClickmenuInDefaultLanguage()
     {
-        $table = tx_multicolumn_tcemainBaseTest::CONTENT_TABLE;
+        $table = FunctionalBaseTest::CONTENT_TABLE;
         $uid = 10;
 
         $expectedSubset = [
@@ -81,7 +83,7 @@ class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
     public function pasteRecordIntoContainerInDefaultLanguage()
     {
         $cmdMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 3 => [
                     'move' => -10,
                 ],
@@ -104,7 +106,7 @@ class tx_multicolumn_alt_clickmenuTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'uid=3'
             . ' AND pid=1'
             . ' AND colPos=12'
