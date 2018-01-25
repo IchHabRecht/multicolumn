@@ -11,6 +11,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -205,7 +206,6 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
             . 'style="width: ' . $columnWidth . '%">'
             . '<div class="innerContent">';
 
-        $newParams = $this->getNewRecordParams($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
         $pasteParams = [
             'colPos' => $colPos,
             'sys_language_uid' => $this->multiColCe['sys_language_uid'],
@@ -220,13 +220,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
         $markup .= '<div class="t3-page-ce" data-page="' . $this->multiColCe['pid'] . '">';
         $markup .= '<div class="t3js-page-new-ce" id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] .
             '-' . StringUtility::getUniqueId() . '" data-page="' . $this->multiColCe['pid'] . '">';
-        $markup .= '<a href="#" '
-            . 'onclick="' . htmlspecialchars($newParams) . '" '
-            . 'title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" '
-            . 'class="btn btn-default btn-sm">'
-            . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
-            . ' '
-            . $this->getLanguageService()->getLL('content', true) . '</a>';
+        $markup .= $this->getNewContentElementButton($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
         $markup .= '</div></div>';
 
         $markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
@@ -331,16 +325,9 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
                 $content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
                 $content .= '</div></div>';
 
-                $newParams = $this->getNewRecordParams($this->multiColCe['pid'], $row['colPos'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid'], $row['uid']);
                 $content .= '<div class="t3-page-ce t3js-page-new-ce" id="colpos-' . (int)$row['colPos'] . '-' . 'tt-content-' . (int)$row['uid'] .
                     '-' . StringUtility::getUniqueId() . '">';
-                $content .= '<a href="#" '
-                    . 'onclick="' . htmlspecialchars($newParams) . '" '
-                    . 'title="' . $this->getLanguageService()->getLL('newContentElement', true) . '" '
-                    . 'class="btn btn-default btn-sm">'
-                    . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
-                    . ' '
-                    . $this->getLanguageService()->getLL('content', true) . '</a>';
+                $content .= $this->getNewContentElementButton($this->multiColCe['pid'], $row['colPos'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid'], $row['uid']);
 
                 $content .= '</div></li>';
                 $item++;
@@ -367,7 +354,7 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
     }
 
     /**
-     * Generates the url for the insertRecord links. Special value tx_multicolumn is considered here...
+     * This function is deprecated. Do not use it.
      *
      * @param int $pid record id
      * @param int $colPos column position value
@@ -375,9 +362,11 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
      * @param int $sysLanguageUid System language
      * @param null $uid_pid uid of previous content element
      * @return    string
+     * @deprecated
      */
     public function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0, $uid_pid = null)
     {
+        GeneralUtility::logDeprecatedFunction();
         $params = '&id=' . (int)$pid;
         $params .= '&colPos=' . (int)$colPos;
         $params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
@@ -388,6 +377,40 @@ class tx_multicolumn_tt_content_drawItem implements \TYPO3\CMS\Backend\View\Page
         return 'window.location.href=' . GeneralUtility::quoteJSvalue(
                 BackendUtility::getModuleUrl('new_content_element') . $params
             ) . ';';
+    }
+
+    protected function getNewContentElementButton(int $pid, int $colPos, int $mulitColumnParentId, int $sysLanguageUid = 0, int $uid_pid = null): string
+    {
+        $urlParameters = [
+            'id' => $pid,
+            'colPos' => $colPos,
+            'tx_multicolumn_parentid' => $mulitColumnParentId,
+            'sys_language_uid' => $sysLanguageUid,
+            'uid_pid' => ($uid_pid !== null ? -$uid_pid : $pid),
+            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+        ];
+        $tsConfig = BackendUtility::getModTSconfig($pid, 'mod');
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
+            $href = BackendUtility::getModuleUrl($moduleName, $urlParameters);
+            $url = '';
+        } else {
+            $routeName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $href = '#';
+            $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+        }
+        $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
+        $button = '<a href="' . htmlspecialchars($href) . '"'
+            . ' data-url="' . htmlspecialchars($url) . '"'
+            . ' title="' . $title . '"'
+            . ' data-title="' . $title . '"'
+            . ' class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
+            . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
+            . ' '
+            . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
+
+        return $button;
     }
 
     /**
