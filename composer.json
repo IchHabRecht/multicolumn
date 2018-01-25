@@ -23,6 +23,13 @@
   "require-dev": {
     "nimut/testing-framework": "3.x-dev"
   },
+  "conflict": {
+    "schnitzler/templavoila": "*",
+    "templavoila/templavoila": "*",
+    "templavoilaplus/templavoilaplus": "*",
+    "typo3-ter/templavoila": "*",
+    "typo3-ter/templavoilaplus": "*"
+  },
   "suggest": {
     "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
   },

@@ -19,8 +19,6 @@
 			<label index="emconfhelper.xclass.message">uses a XCLASS to overwrite TYPO3 core functions. In order to use the Multicolumn extension please deactivate the XCLASS or uninstall</label>
 			<label index="emconfhelper.ok.title">Ready to go</label>
 			<label index="emconfhelper.ok.message">The compatibility check was successfully. Your TYPO3 installation is ready for the Multicolumn extension.</label>
-			<label index="emconfhelper.templavoila.title">Multicolumn doesn't work with Templavoila</label>
-			<label index="emconfhelper.templavoila.message">You can't use the multicolumn content element with Templavoila. Use the classic page module instead.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">Mehrspalten Container</label>

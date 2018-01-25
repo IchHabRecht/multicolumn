@@ -30,6 +30,8 @@ $EM_CONF[$_EXTKEY] = array (
     ),
     'conflicts' => 
     array (
+        'templavoila' => '0.0.0-0.0.0',
+        'templavoilaplus' => '0.0.0-0.0.0',
     ),
     'suggests' => 
     array (
