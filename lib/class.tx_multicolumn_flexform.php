@@ -11,6 +11,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -106,7 +107,7 @@ class tx_multicolumn_flexform
         } else {
             $pid = 0;
         }
-        $tsConfig = tx_multicolumn_div::getTSConfig($pid, null);
+        $tsConfig = MulticolumnUtility::getTSConfig($pid, null);
 
         switch ($type) {
             case 'preSetLayout':

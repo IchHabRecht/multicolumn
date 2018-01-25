@@ -12,6 +12,7 @@
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -139,7 +140,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 
         //fallback to default
         $LLkey = (!empty($this->LOCAL_LANG[$this->LLkey])) ? $this->LLkey : 'default';
-        $this->llPrefixed = tx_multicolumn_div::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
+        $this->llPrefixed = MulticolumnUtility::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
         $this->pi_setPiVarDefaults();
 
         // Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
@@ -157,7 +158,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 
         // effect view
         if ($this->isEffectBox) {
-            $this->effectConfiguration = tx_multicolumn_div::getEffectConfiguration(null, $this->flex);
+            $this->effectConfiguration = MulticolumnUtility::getEffectConfiguration(null, $this->flex);
             if (!empty($this->effectConfiguration['options'])) {
                 $name = 'mullticolumnEffectBox_' . $this->cObj->data['uid'];
                 $code = 'var ' . $name . ' ={' . $this->effectConfiguration['options'] . '};';
@@ -174,7 +175,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 
             // default multicolumn view
         } else {
-            $this->layoutConfiguration = tx_multicolumn_div::getLayoutConfiguration(null, $this->flex);
+            $this->layoutConfiguration = MulticolumnUtility::getLayoutConfiguration(null, $this->flex);
 
             //include layout css
             if (!empty($this->layoutConfiguration['layoutCss']) || !empty($this->layoutConfiguration['layoutCss.'])) {
@@ -183,7 +184,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
             }
 
             // force equal height ?
-            $config = tx_multicolumn_div::getTSConfig($GLOBALS['TSFE']->id, 'config');
+            $config = MulticolumnUtility::getTSConfig($GLOBALS['TSFE']->id, 'config');
             if (!empty($this->layoutConfiguration['makeEqualElementBoxHeight'])) {
                 if (is_array($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.'])) {
                     $this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.']);
@@ -267,7 +268,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
 
         $columnNumber = 0;
         while ($columnNumber < $numberOfColumns) {
-            $multicolumnColPos = tx_multicolumn_div::colPosStart + $columnNumber;
+            $multicolumnColPos = MulticolumnUtility::colPosStart + $columnNumber;
 
             $splitedColumnConf = $this->layoutConfigurationSplited[$columnNumber];
             $conf = array_merge($this->layoutConfiguration, $splitedColumnConf);
@@ -286,12 +287,12 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
                     $columnData['columnWidthPixel'] = $conf['columnWidth'];
                 } elseif ($colPosMaxImageWidth) {
                     // if container width is set in percent (default 100%)
-                    $columnData['columnWidthPixel'] = tx_multicolumn_div::calculateMaxColumnWidth($columnData['columnWidth'], $colPosMaxImageWidth, $numberOfColumns);
+                    $columnData['columnWidthPixel'] = MulticolumnUtility::calculateMaxColumnWidth($columnData['columnWidth'], $colPosMaxImageWidth, $numberOfColumns);
                 }
 
                 // calculate total column padding width
                 if ($columnData['columnPadding']) {
-                    $columnData['columnPaddingTotalWidthPixel'] = tx_multicolumn_div::getPaddingTotalWidth($columnData['columnPadding']);
+                    $columnData['columnPaddingTotalWidthPixel'] = MulticolumnUtility::getPaddingTotalWidth($columnData['columnPadding']);
                 }
                 // do auto scale if requested
                 $maxImageWidth = $disableImageShrink ? null : (isset($columnData['columnWidthPixel']) ? ($columnData['columnWidthPixel'] - $columnData['columnPaddingTotalWidthPixel']) : null);

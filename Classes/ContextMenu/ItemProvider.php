@@ -13,6 +13,7 @@ namespace IchHabRecht\Multicolumn\ContextMenu;
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -85,7 +86,7 @@ class ItemProvider extends RecordProvider
 
         return [
             'data-callback-module' => 'TYPO3/CMS/Multicolumn/ContextMenuActions',
-            'data-colpos' => (\tx_multicolumn_div::colPosStart + $column),
+            'data-colpos' => (MulticolumnUtility::colPosStart + $column),
         ];
     }
 

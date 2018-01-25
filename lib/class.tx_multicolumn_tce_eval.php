@@ -11,6 +11,8 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
+
 class tx_multicolumn_tce_eval
 {
     /**
@@ -32,7 +34,7 @@ class tx_multicolumn_tce_eval
     public function evaluateFieldValue($inputValue)
     {
         if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popViewId')) {
-            $conf = tx_multicolumn_div::getTSConfig($id, 'config');
+            $conf = MulticolumnUtility::getTSConfig($id, 'config');
             $maxNumberOfColumns = $conf['advancedLayouts.']['maxNumberOfColumns'];
 
             $returnValue = ($inputValue > $maxNumberOfColumns) ? $maxNumberOfColumns : $inputValue;

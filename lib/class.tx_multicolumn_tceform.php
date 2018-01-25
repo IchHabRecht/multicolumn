@@ -12,6 +12,7 @@
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class tx_multicolumn_tceform
@@ -73,7 +74,7 @@ class tx_multicolumn_tceform
         $this->itemsCount = count($this->items);
         $this->config = $itemsProc['config'];
         $this->row = $itemsProc['row'];
-        $this->LL = tx_multicolumn_div::includeBeLocalLang($this->config['multicolumnLL']);
+        $this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
 
         call_user_func([
             'tx_multicolumn_tceform',
@@ -152,7 +153,7 @@ class tx_multicolumn_tceform
         while ($columnIndex < $numberOfColumns) {
             $this->items[] = [
                 0 => $columnTitle . ' ' . ($columnIndex + 1),
-                1 => tx_multicolumn_div::colPosStart + $columnIndex,
+                1 => MulticolumnUtility::colPosStart + $columnIndex,
                 2 => null,
             ];
 

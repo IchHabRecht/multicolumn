@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Utility;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -14,7 +15,7 @@
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final class tx_multicolumn_div
+final class MulticolumnUtility
 {
     /**
      * Start index of colpos
@@ -25,11 +26,11 @@ final class tx_multicolumn_div
      * Get layout configuration options merged between typoscript and flexform options
      *
      * @param int $pageUid
-     * @param tx_multicolumn_flexform $flex
+     * @param \tx_multicolumn_flexform $flex
      *
      * @return array
      */
-    public static function getLayoutConfiguration($pageUid, tx_multicolumn_flexform $flex)
+    public static function getLayoutConfiguration($pageUid, \tx_multicolumn_flexform $flex)
     {
         // load default config
         $config = self::getDefaultLayoutConfiguration();
@@ -63,11 +64,11 @@ final class tx_multicolumn_div
      * Get layout configuration options merged between typoscript and flexform options
      *
      * @param int $pageUid
-     * @param tx_multicolumn_flexform $flex
+     * @param \tx_multicolumn_flexform $flex
      *
      * @return array|null
      */
-    public static function getEffectConfiguration($pageUid, tx_multicolumn_flexform $flex)
+    public static function getEffectConfiguration($pageUid, \tx_multicolumn_flexform $flex)
     {
         $config = null;
         $effect = substr($flex->getFlexValue('effectBox', 'effect'), 0, -1);

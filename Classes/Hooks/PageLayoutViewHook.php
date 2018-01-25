@@ -13,6 +13,7 @@ namespace IchHabRecht\Multicolumn\Hooks;
  */
 
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
+use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
@@ -129,13 +130,13 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $this->flex = GeneralUtility::makeInstance('tx_multicolumn_flexform', $row['pi_flexform']);
             $this->pObj = $parentObject;
             $this->tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
-            $this->LL = \tx_multicolumn_div::includeBeLocalLang();
+            $this->LL = MulticolumnUtility::includeBeLocalLang();
             $this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
             $this->multiColCe = $row;
             $this->multiColUid = intval($row['uid']);
 
-            $this->layoutConfiguration = \tx_multicolumn_div::getLayoutConfiguration($this->multiColCe['pid'], $this->flex);
+            $this->layoutConfiguration = MulticolumnUtility::getLayoutConfiguration($this->multiColCe['pid'], $this->flex);
 
             if ($this->layoutConfiguration['columns']) {
                 // do option split
@@ -162,7 +163,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         if ($params['2']['CType'] == 'multicolumn') {
             $numberOfContentElements = DatabaseUtility::getNumberOfContentElementsFromContainer($params['2']['uid']);
 
-            $LL = \tx_multicolumn_div::includeBeLocalLang();
+            $LL = MulticolumnUtility::includeBeLocalLang();
 
             // no children found? return!
             if (!$numberOfContentElements) {
@@ -228,7 +229,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         }
 
         while ($columnIndex < $numberOfColumns) {
-            $multicolumnColPos = \tx_multicolumn_div::colPosStart + $columnIndex;
+            $multicolumnColPos = MulticolumnUtility::colPosStart + $columnIndex;
 
             $splitedColumnConf = $this->layoutConfigurationSplited[$columnIndex];
             if ($splitedColumnConf['columnMeasure'] == '%') {
@@ -323,7 +324,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     protected function buildLostContentElementsRow($lastColumnNumber)
     {
         $markup = '';
-        $additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . \tx_multicolumn_div::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
+        $additionalWhere = ' deleted = 0 AND (colPos >' . intval($lastColumnNumber) . ' OR colPos < ' . MulticolumnUtility::colPosStart . ') AND tx_multicolumn_parentid = ' . $this->multiColUid;
 
         $elements = DatabaseUtility::getContentElementsFromContainer(null, null, $this->multiColUid, $this->multiColCe['sys_language_uid'], true, $additionalWhere, $this->pObj);
 
