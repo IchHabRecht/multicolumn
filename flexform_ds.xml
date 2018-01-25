@@ -15,6 +15,7 @@
 							<label>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_layout</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<requestUpdate>1</requestUpdate>
 								<items type="array">
 									<numIndex index="0" type="array">
@@ -23,7 +24,7 @@
 									</numIndex>
 								</items>
 								<txMulitcolumnField>preSetLayout</txMulitcolumnField>
-								<itemsProcFunc>EXT:multicolumn/lib/class.tx_multicolumn_flexform.php:tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
+								<itemsProcFunc>tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</layoutKey>
@@ -53,6 +54,7 @@
 							<label>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_dimensionmeasure.container</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -96,6 +98,7 @@
 							<label>LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_dimensionmeasure.column</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -191,13 +194,14 @@
 							<label>LLL:EXT:multicolumn/res/effects/locallang.xml:effectBox.effect</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
 										<numIndex index="1"></numIndex>
 									</numIndex>
 								</items>
-								<itemsProcFunc>EXT:multicolumn/lib/class.tx_multicolumn_flexform.php:tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
+								<itemsProcFunc>tx_multicolumn_flexform->addFieldsToFlexForm</itemsProcFunc>
 								<maxitems>1</maxitems>
 								<size>1</size>
 								<txMulitcolumnField>effect</txMulitcolumnField>
