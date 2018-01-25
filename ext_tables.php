@@ -4,12 +4,6 @@ if (!defined('TYPO3_MODE')) {
 }
 
 if (TYPO3_MODE == 'BE') {
-    // Add clickmenu expansion
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = [
-        'name' => 'tx_multicolumn_alt_clickmenu',
-        'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn') . 'hooks/class.tx_multicolumn_alt_clickmenu.php',
-    ];
-
     $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1492078309] = \IchHabRecht\Multicolumn\ContextMenu\ItemProvider::class;
 }
 
