@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Controller;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -11,7 +12,6 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use IchHabRecht\Multicolumn\Controller\AbstractController;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
@@ -19,11 +19,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class tx_multicolumn_pi1 extends AbstractController
+class ContainerController extends AbstractController
 {
     public $prefixId = 'tx_multicolumn_pi1';        // Same as class name
-
-    public $scriptRelPath = 'pi1/class.tx_multicolumn_pi1.php';    // Path to this script relative to the extension dir.
 
     public $extKey = 'multicolumn';    // The extension key.
 
@@ -134,7 +132,7 @@ class tx_multicolumn_pi1 extends AbstractController
     {
         $this->content = $content;
         $this->conf = $conf;
-        $this->pi_loadLL();
+        $this->pi_loadLL('EXT:multicolumn/Resources/Private/Language/locallang_pi1.xlf');
 
         $this->currentCobjData = $this->cObj->data;
         $this->currentCobjParentRecordNumber = $this->cObj->parentRecordNumber;
@@ -340,8 +338,4 @@ class tx_multicolumn_pi1 extends AbstractController
 
         return intval($this->renderItem('columnWidth', $colPosData));
     }
-}
-
-if (defined('TYPO3_MODE') && isset($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php'])) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/multicolumn/pi1/class.tx_multicolumn_pi1.php']);
 }

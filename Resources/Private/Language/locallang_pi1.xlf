@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T16:38:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="error.typoscript.title">
+                <source>Multicolumn-Typoscript is missing!</source>
+            </trans-unit>
+            <trans-unit id="error.typoscript.message">
+                <source>Please include Multicolumn Typoscript in the Web&gt;Templates module under "Include static (from extensions)".</source>
+            </trans-unit>
+            <trans-unit id="prev">
+                <source>Previous</source>
+            </trans-unit>
+            <trans-unit id="next">
+                <source>Next</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

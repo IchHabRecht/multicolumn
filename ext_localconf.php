@@ -27,13 +27,17 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Eval
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.ts">');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/NewContentElementWizard.ts">');
 
-//add default TypoScript
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('multicolumn', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/pi1/static/defaultTS.txt">', 43);
 //add sitemap TypoScript
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('multicolumn', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/pi_sitemap/static/setup.txt">', 43);
 
 // Add frontend plugin
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('multicolumn', 'pi1/class.tx_multicolumn_pi1.php', '_pi1', 'list_type', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
+    'multicolumn',
+    'Classes/Controller/ContainerController.php',
+    '_pi1',
+    'CType',
+    true
+);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('multicolumn', 'pi_sitemap/class.tx_multicolumn_pi_sitemap.php', '_pi_sitemap', 'list_type', 1);
 
 // Add dataProvider for FormEngine
@@ -52,6 +56,6 @@ $iconRegistry->registerIcon(
     'tx-multicolumn-wizard-icon',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     [
-        'source' => 'EXT:multicolumn/pi1/ce_wiz.gif',
+        'source' => 'EXT:multicolumn/Resources/Resources/Public/Icons/multicolumn.gif',
     ]
 );
