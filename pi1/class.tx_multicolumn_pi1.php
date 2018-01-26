@@ -11,6 +11,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Controller\AbstractController;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
@@ -18,7 +19,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
+class tx_multicolumn_pi1 extends AbstractController
 {
     public $prefixId = 'tx_multicolumn_pi1';        // Same as class name
 

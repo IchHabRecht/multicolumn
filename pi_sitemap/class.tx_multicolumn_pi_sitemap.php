@@ -11,9 +11,10 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use IchHabRecht\Multicolumn\Controller\AbstractController;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 
-class tx_multicolumn_pi_sitemap extends tx_multicolumn_pi_base
+class tx_multicolumn_pi_sitemap extends AbstractController
 {
     public $prefixId = 'tx_multicolumn_pi_sitemap';        // Same as class name
 

@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Controller;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -15,7 +16,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class tx_multicolumn_pi_base extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
     /**
      * Render an array with data element with $confName
