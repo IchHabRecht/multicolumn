@@ -200,16 +200,16 @@ final class MulticolumnUtility
     }
 
     /**
-     * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
+     * Reads EXT:multicolumn/Resources/Private/Language/locallang.xlf and returns the $LOCAL_LANG array found in that file.
      *
      * @param string|null $llFile
      * @return array
      */
     public static function includeBeLocalLang($llFile = null)
     {
-        $llFile = $llFile ? $llFile : 'locallang.xml';
+        $llFile = GeneralUtility::getFileAbsFileName('EXT:multicolumn/' . ($llFile ?? 'Resources/Private/Language/locallang.xlf'));
 
-        return self::readLLfile(PATH_tx_multicolumn . $llFile, $GLOBALS['LANG']->lang);
+        return self::readLLfile($llFile, $GLOBALS['LANG']->lang);
     }
 
     /**
@@ -259,18 +259,6 @@ final class MulticolumnUtility
      */
     public static function readLLfile($filePath, $language)
     {
-        if (is_object($GLOBALS['typo3CacheManager'])) {
-            $cacheIdentifier = 'EXT-multicolumn-readLLfile-' . sha1($filePath);
-            try {
-                $runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
-                $cacheEntry = $runtimeCache->get($cacheIdentifier);
-                if ($cacheEntry) {
-                    return $cacheEntry;
-                }
-            } catch (Exception $e) {
-                // No such cache (old TYPO3). Ignore.
-            }
-        }
         $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
         $labels = $languageFactory->getParsedData($filePath, $language);
         // We need to flatten labels

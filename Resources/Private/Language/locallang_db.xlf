@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T22:04:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="tx_multicolumn_multicolumn">
+                <source>Multicolumn</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_parentid">
+                <source>Multicolumn Container</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_tab.config">
+                <source>Configuration</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_preSetLayout">
+                <source>Preset Layouts</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columns">
+                <source>Number of Columns</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_advanced">
+                <source>Advanced Layouts</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_containerwidth">
+                <source>Total width of container</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnwidth">
+                <source>Column width</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.container">
+                <source>Measure for container</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.column">
+                <source>Measure for column</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.percent">
+                <source>Percent</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.pixel">
+                <source>Pixel</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnmargin">
+                <source>Column margin</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnpadding">
+                <source>Column padding</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_containerClass">
+                <source>CSS class of container</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_layout">
+                <source>Layout</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_disableimageshrink">
+                <source>Disable automatic image shrink</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_makeEqualElementBoxHeight">
+                <source>Force equal height for each multicolumn item</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_makeEqualElementColumnHeight">
+                <source>Force equal height for each multicolumn column</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_disableDefaultStyles">
+                <source>Disable default styles</source>
+            </trans-unit>
+            <trans-unit id="pi1_title">
+                <source>Multicolumn Container</source>
+            </trans-unit>
+            <trans-unit id="pi1_plus_wiz_description">
+                <source>This content element allows you to create dynamic columns.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

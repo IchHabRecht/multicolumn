@@ -39,7 +39,7 @@ class ItemProvider extends RecordProvider
         for ($i = 0; $i < $columns; $i++) {
             $newItems['multicolumn-pasteinto-' . $i] = [
                 'label' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto')
-                    . ' ' . $languageService->sL('LLL:EXT:multicolumn/locallang.xml:multicolumColumn.clickmenu')
+                    . ' ' . $languageService->sL('LLL:EXT:multicolumn/Resources/Private/Language/locallang.xlf:multicolumColumn.clickmenu')
                     . ' ' . ($i + 1),
                 'iconIdentifier' => 'actions-document-paste-into',
                 'callbackAction' => 'pasteIntoColumn',

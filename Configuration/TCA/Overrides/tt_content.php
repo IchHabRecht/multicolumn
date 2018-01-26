@@ -22,7 +22,7 @@ if (is_array($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'
     foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $key => $item) {
         if ($item[1] == '--div--' && $firstDivChecked & !$multicolumnAdded) {
             $sortedItems[] = [
-                'LLL:EXT:multicolumn/locallang_db.xml:tx_multicolumn_multicolumn',
+                'LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tx_multicolumn_multicolumn',
                 'multicolumn',
                 'EXT:multicolumn/tt_content_multicolumn.gif',
             ];
@@ -40,8 +40,8 @@ if (is_array($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'
 // Add CType multicolumn
 $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = [
     'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;general, --palette--;;headers,'
-        . ' --div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.content, tx_multicolumn_items,'
-        . ' --div--;LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_tab.config, pi_flexform,'
+        . ' --div--;LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tt_content.tx_multicolumn_tab.content, tx_multicolumn_items,'
+        . ' --div--;LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tt_content.tx_multicolumn_tab.config, pi_flexform,'
         . ' --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;appearanceLinks, --palette--;;hidden, --palette--;;access',
 ];
 
@@ -51,7 +51,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['multicolumn'] = 'EXT:multico
 $tempColumns = [
     'tx_multicolumn_parentid' => [
         'exclude' => 1,
-        'label' => 'LLL:EXT:multicolumn/locallang_db.xml:tt_content.tx_multicolumn_parentid',
+        'label' => 'LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tt_content.tx_multicolumn_parentid',
         'config' => [
             'type' => 'select',
             'renderType' => 'selectSingle',

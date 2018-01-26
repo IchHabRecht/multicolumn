@@ -3,9 +3,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-// define multicolumn path
-define('PATH_tx_multicolumn', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('multicolumn'));
-
 //hooks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['multicolumn'] =
     \IchHabRecht\Multicolumn\Hooks\DataHandlerHook::class;
