@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Evaluation;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -13,7 +14,7 @@
 
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 
-class tx_multicolumn_tce_eval
+class MaxColumnsEvaluator
 {
     /**
      * Returns input value

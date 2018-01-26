@@ -21,7 +21,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']['multico
     \IchHabRecht\Multicolumn\Hooks\PageLayoutViewHook::class . '->addDeleteWarning';
 
 // special eval
-$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_multicolumn_tce_eval'] = '';
+$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator::class] = '';
 
 //add page TSconfig
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.ts">');

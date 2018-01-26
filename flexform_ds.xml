@@ -45,7 +45,7 @@
 							<config>
 								<type>input</type>
 								<size>2</size>
-								<eval>trim,int,IchHabRecht\Multicolumn\Evaluation\AdvancedLayoutEvaluator</eval>
+								<eval>trim,int,IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator</eval>
 							</config>
 						</TCEforms>
 					</columns>
