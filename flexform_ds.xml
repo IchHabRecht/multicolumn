@@ -184,14 +184,14 @@
 		<effectBox>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:multicolumn/res/effects/locallang.xml:effectBox</sheetTitle>
+					<sheetTitle>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox</sheetTitle>
 					<cshFile>LLL:EXT:multicolumn/locallang_csh_flexform.xml</cshFile>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<effect>
 						<TCEforms>
-							<label>LLL:EXT:multicolumn/res/effects/locallang.xml:effectBox.effect</label>
+							<label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.effect</label>
 							<config>
 								<type>select</type>
 								<renderType>selectSingle</renderType>
@@ -210,7 +210,7 @@
 					</effect>
 					<effectOptions>
 						<TCEforms>
-							<label>LLL:EXT:multicolumn/res/effects/locallang.xml:effectBox.effectOptions</label>
+							<label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.effectOptions</label>
 							<config>
 								<type>text</type>
 								<cols>48</cols>
@@ -220,7 +220,7 @@
 					</effectOptions>
 					<effectBoxWidth>
 						<TCEforms>
-							<label>LLL:EXT:multicolumn/res/effects/locallang.xml:effectBox.width</label>
+							<label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.width</label>
 							<config>
 								<type>input</type>
 								<size>40</size>

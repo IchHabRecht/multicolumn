@@ -35,7 +35,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
      *
      * @var string
      */
-    protected $cssFile = 'res/backend/style.css';
+    protected $cssFile = 'Resources/Public/Css/backend.css';
 
     /**
      * Mulitcolumn content element

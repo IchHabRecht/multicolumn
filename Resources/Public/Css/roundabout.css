@@ -146,7 +146,7 @@
 	width: 44px;
 	height: 44px;
 	display: block;
-	background-image: url(sprites.png);
+	background-image: url('../Images/roundabout.png');
 	background-repeat: no-repeat;
 }
 
@@ -177,7 +177,7 @@
 	height: 13px;
 	margin-right: 4px;
 
-	background: url(sprites.png) no-repeat -14px -127px;
+	background: url('../Images/roundabout.png') no-repeat -14px -127px;
 }
 
 .ie7 .effectBoxNavigationroundabout .pointNav li {
