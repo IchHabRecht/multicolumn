@@ -36,10 +36,7 @@
   "autoload": {
     "psr-4": {
       "IchHabRecht\\Multicolumn\\": "Classes/"
-    },
-    "classmap": [
-      "pi_sitemap/"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {

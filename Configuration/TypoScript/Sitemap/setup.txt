@@ -1,0 +1,25 @@
+tt_content.menu_section {
+    templateRootPaths.42 = EXT:multicolumn/Resources/Private/Templates/ContentElements/
+    dataProcessing.10.dataProcessing {
+        20.where.stdWrap.noTrimWrap = | | AND tx_multicolumn_parentid=0 |
+        20.where.stdWrap.required = 1
+
+        999 = IchHabRecht\Multicolumn\DataProcessing\ContainerSectionProcessor
+        999 {
+            as < tt_content.menu_section.dataProcessing.10.dataProcessing.20.as
+        }
+    }
+}
+
+tt_content.menu_section_pages {
+    templateRootPaths.42 = EXT:multicolumn/Resources/Private/Templates/ContentElements/
+    dataProcessing.10.dataProcessing {
+        20.where.stdWrap.noTrimWrap = | | AND tx_multicolumn_parentid=0 |
+        20.where.stdWrap.required = 1
+
+        999 = IchHabRecht\Multicolumn\DataProcessing\ContainerSectionProcessor
+        999 {
+            as < tt_content.menu_section.dataProcessing.10.dataProcessing.20.as
+        }
+    }
+}

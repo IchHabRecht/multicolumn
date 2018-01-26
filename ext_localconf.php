@@ -27,9 +27,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Eval
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.ts">');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/NewContentElementWizard.ts">');
 
-//add sitemap TypoScript
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('multicolumn', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/pi_sitemap/static/setup.txt">', 43);
-
 // Add frontend plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
     'multicolumn',
@@ -38,7 +35,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Eval
     'CType',
     true
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('multicolumn', 'pi_sitemap/class.tx_multicolumn_pi_sitemap.php', '_pi_sitemap', 'list_type', 1);
 
 // Add dataProvider for FormEngine
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'][\IchHabRecht\Multicolumn\Form\FormDataProvider\TcaFlexEffectivePid::class] = [
