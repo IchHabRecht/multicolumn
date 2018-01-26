@@ -92,3 +92,10 @@ $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunctions
 $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['multicolumnProc'] = 'buildDynamicCols';
 $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunc'] =
     \IchHabRecht\Multicolumn\Form\FormDataProvider\ContainerItemsProvider::class . '->init';
+
+// Add configuration flexform
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    '*',
+    'FILE:EXT:multicolumn/Configuration/FlexForm/flexform_ds.xml',
+    'multicolumn'
+);
