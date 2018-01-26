@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -15,7 +16,7 @@ use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-class tx_multicolumn_tceform
+class ContainerItemsProvider
 {
     /**
      * Current items
@@ -77,7 +78,7 @@ class tx_multicolumn_tceform
         $this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
 
         call_user_func([
-            'tx_multicolumn_tceform',
+            self::class,
             $this->config['multicolumnProc'],
         ]);
     }

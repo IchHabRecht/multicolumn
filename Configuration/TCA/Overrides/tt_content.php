@@ -57,7 +57,7 @@ $tempColumns = [
             'renderType' => 'selectSingle',
             'foreign_table' => 'tt_content',
             'foreign_table_where' => 'AND tt_content.uid=###REC_FIELD_tx_multicolumn_parentid###',
-            'itemsProcFunc' => 'tx_multicolumn_tceform->init',
+            'itemsProcFunc' => \IchHabRecht\Multicolumn\Form\FormDataProvider\ContainerItemsProvider::class . '->init',
             'multicolumnProc' => 'buildMulticolumnList',
             'items' => [
                 ['', 0],
@@ -90,4 +90,5 @@ $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunctions
     'default' => $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunc'],
 ];
 $GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['multicolumnProc'] = 'buildDynamicCols';
-$GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunc'] = 'tx_multicolumn_tceform->init';
+$GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['itemsProcFunc'] =
+    \IchHabRecht\Multicolumn\Form\FormDataProvider\ContainerItemsProvider::class . '->init';
