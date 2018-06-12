@@ -92,7 +92,7 @@ final class tx_multicolumn_div
             unset($flexConfig['effectOptions'], $flexConfig['effect']);
             unset($config['defaultOptions']);
 
-            $config = GeneralUtility::array_merge($config, $flexConfig);
+            $config = array_merge($config, $flexConfig);
         }
 
         return $config;

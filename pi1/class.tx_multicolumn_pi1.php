@@ -233,7 +233,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
                 'effect' => $this->effectConfiguration['effect'],
                 'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : null,
             ];
-            $listeItemsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listeItemsArray, $this->llPrefixed);
+            $listeItemsArray = array_merge($listeItemsArray, $this->llPrefixed);
             $listItemContent = $this->renderListItems('tt_content', 'effectBoxItems', $contentElements, $listeItemsArray);
         } else {
             $listItemContent = '';
@@ -243,7 +243,7 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
         $listData['effect'] = $this->effectConfiguration['effect'];
         $listData['effectBoxClass'] = $this->effectConfiguration['effectBoxClass'];
         $listData['effectBoxItems'] = $listItemContent;
-        $listData = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listData, $this->llPrefixed);
+        $listData = array_merge($listData, $this->llPrefixed);
 
         $content = $this->renderItem('effectBox', $listData);
         $GLOBALS['TSFE']->register['maxImageWidth'] = $this->TSFEmaxWidthBefore;
