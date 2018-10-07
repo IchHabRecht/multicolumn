@@ -22,18 +22,18 @@ $EM_CONF[$_EXTKEY] = array (
   'author' => 'Nicole Cordes (developed by snowflake productions gmbh)',
   'author_email' => 'cordes@cps-it.de',
   'author_company' => 'CPS-IT GmbH',
-  'constraints' => 
+  'constraints' =>
   array (
-    'depends' => 
+    'depends' =>
     array (
-      'typo3' => '8.7.0-9.0.99',
+      'typo3' => '8.7.0-9.5.99',
     ),
-    'conflicts' => 
+    'conflicts' =>
     array (
         'templavoila' => '0.0.0-0.0.0',
         'templavoilaplus' => '0.0.0-0.0.0',
     ),
-    'suggests' => 
+    'suggests' =>
     array (
     ),
   ),

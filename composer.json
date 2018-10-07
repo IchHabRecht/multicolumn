@@ -18,10 +18,10 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "typo3/cms-core": ">=8.7 <9.1"
+    "typo3/cms-core": "^8.7 || ^9.5"
   },
   "require-dev": {
-    "nimut/testing-framework": "3.x-dev"
+    "nimut/testing-framework": "4.x-dev"
   },
   "conflict": {
     "schnitzler/templavoila": "*",

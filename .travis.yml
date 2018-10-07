@@ -56,22 +56,22 @@ jobs:
       env: TYPO3="dev-master"
     - stage: test
       php: 7.2
-      env: TYPO3=^9.0
+      env: TYPO3=^9.5
     - stage: test
       php: 7.2
-      env: TYPO3=^8.0
+      env: TYPO3=^8.7
     - stage: test
       php: 7.2
       env: TYPO3="8.7.x-dev"
     - stage: test
       php: 7.1
-      env: TYPO3=^8.0
+      env: TYPO3=^8.7
     - stage: test
       php: 7.1
       env: TYPO3="8.7.x-dev"
     - stage: test
       php: 7.0
-      env: TYPO3=^8.0
+      env: TYPO3=^8.7
     - stage: test
       php: 7.0
       env: TYPO3="8.7.x-dev"
