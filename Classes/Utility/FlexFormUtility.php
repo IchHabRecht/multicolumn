@@ -146,8 +146,7 @@ class FlexFormUtility
             $params['items'][] = [
                 $GLOBALS['LANG']->sL($item['label']),
                 $key,
-                //replace absolute with relative path
-                str_replace(PATH_site, '../', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($item['icon'])),
+                $item['icon'],
             ];
         }
     }

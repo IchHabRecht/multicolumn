@@ -21,8 +21,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']['multico
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator::class] = '';
 
 //add page TSconfig
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.ts">');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/NewContentElementWizard.ts">');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.typoscript">');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/NewContentElementWizard.typoscript">');
 
 // Add frontend plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
