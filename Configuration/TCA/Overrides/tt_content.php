@@ -3,39 +3,20 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-$iconRegistry->registerIcon(
-    'mimetypes-x-content-multicolumn',
-    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    [
-        'source' => 'EXT:multicolumn/Resources/Public/Icons/tt_content_multicolumn.gif',
-    ]
-);
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['multicolumn'] = 'mimetypes-x-content-multicolumn';
 
 // Add multicolumn to CType
-if (is_array($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'])) {
-    $multicolumnAdded = false;
-    $firstDivChecked = false;
-    $sortedItems = [];
-
-    foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $key => $item) {
-        if ($item[1] == '--div--' && $firstDivChecked & !$multicolumnAdded) {
-            $sortedItems[] = [
-                'LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tx_multicolumn_multicolumn',
-                'multicolumn',
-                'EXT:multicolumn/tt_content_multicolumn.gif',
-            ];
-            $multicolumnAdded = true;
-        }
-
-        $firstDivChecked = true;
-        $sortedItems[] = $item;
-    }
-
-    $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = $sortedItems;
-    unset($sortedItems, $firstDivChecked, $multicolumnAdded);
-}
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'CType',
+    [
+        'LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tx_multicolumn_multicolumn',
+        'multicolumn',
+        'mimetypes-x-content-multicolumn',
+    ],
+    'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.lists',
+    'before'
+);
 
 // Add CType multicolumn
 $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = [
@@ -44,8 +25,6 @@ $GLOBALS['TCA']['tt_content']['types']['multicolumn'] = [
         . ' --div--;LLL:EXT:multicolumn/Resources/Private/Language/locallang_db.xlf:tt_content.tx_multicolumn_tab.config, pi_flexform,'
         . ' --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, --palette--;;appearanceLinks, --palette--;;hidden, --palette--;;access',
 ];
-
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['multicolumn'] = 'EXT:multicolumn/tt_content_multicolumn.gif';
 
 // Add tx_multicolumn_parentid to tt_content table
 $tempColumns = [

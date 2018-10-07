@@ -18,7 +18,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']['multico
     \IchHabRecht\Multicolumn\Hooks\PageLayoutViewHook::class . '->addDeleteWarning';
 
 // special eval
-$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator::class] = '';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator::class] = '';
 
 //add page TSconfig
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:multicolumn/Configuration/TSconfig/multicolumn.ts">');
@@ -52,6 +52,13 @@ $iconRegistry->registerIcon(
     'tx-multicolumn-wizard-icon',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     [
-        'source' => 'EXT:multicolumn/Resources/Resources/Public/Icons/multicolumn.gif',
+        'source' => 'EXT:multicolumn/Resources/Public/Icons/multicolumn.gif',
+    ]
+);
+$iconRegistry->registerIcon(
+    'mimetypes-x-content-multicolumn',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    [
+        'source' => 'EXT:multicolumn/Resources/Public/Icons/tt_content_multicolumn.gif',
     ]
 );
