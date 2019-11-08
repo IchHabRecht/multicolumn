@@ -456,8 +456,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         $tsConfig = BackendUtility::getModTSconfig($pid, 'mod');
         if (version_compare(TYPO3_version, '9.0', '<')) {
             $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
-            $href = BackendUtility::getModuleUrl($moduleName, $urlParameters);
-            $url = '';
+            $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
         } else {
             $routeName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -465,8 +464,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
         }
         $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
-        $button = '<a href="' . htmlspecialchars($href) . '"'
-            . ' data-url="' . htmlspecialchars($url) . '"'
+        $button = '<a href="' . htmlspecialchars($url) . '"'
             . ' title="' . $title . '"'
             . ' data-title="' . $title . '"'
             . ' class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
