@@ -1,66 +1,57 @@
 {
-  "name": "ichhabrecht/multicolumn",
-  "type": "typo3-cms-extension",
-  "description": "The Multicolumn extension expands TYPO3 with a new content element called Multicolumn. With the Multicolumn content element it has never been easier to do multicolumn layouts with TYPO3.",
-  "keywords": [
-    "TYPO3",
-    "multicolumn",
-    "layout"
-  ],
-  "homepage": "https://github.com/IchHabRecht/TYPO3-multicolumn",
-  "authors": [
-    {
-      "name": "Nicole Cordes",
-      "email": "cordes@cps-it.de",
-      "role": "Developer",
-      "homepage": "http://www.cps-it.de"
-    }
-  ],
-  "license": "GPL-2.0+",
-  "require": {
-    "typo3/cms-core": ">=7.6.0,<8.8.0"
-  },
-  "require-dev": {
-    "nimut/testing-framework": "2.x-dev",
-    "phpunit/phpunit": "^4.8"
-  },
-  "suggest": {
-    "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
-  },
-  "autoload": {
-    "psr-4": {
-      "IchHabRecht\\Multicolumn\\": "Classes/"
+    "name": "ichhabrecht/multicolumn",
+    "description": "The Multicolumn extension expands TYPO3 with a new content element called Multicolumn. With the Multicolumn content element it has never been easier to do multicolumn layouts with TYPO3.",
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "TYPO3",
+        "multicolumn",
+        "layout"
+    ],
+    "homepage": "https://github.com/IchHabRecht/TYPO3-multicolumn",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Nicole Cordes",
+            "email": "typo3@cordes.co",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">= 5.5, < 7.4",
+        "typo3/cms-core": "^7.6 || ^8.7"
     },
-    "classmap": [
-      "hooks/",
-      "lib/",
-      "pi1/",
-      "pi_sitemap/"
-    ]
-  },
-  "autoload-dev": {
-    "classmap": [
-      "Tests/"
-    ]
-  },
-  "replace": {
-    "multicolumn": "self.version",
-    "typo3-ter/multicolumn": "self.version"
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "mkdir -p .Build/Web/typo3conf/ext/",
-      "[ -L .Build/Web/typo3conf/ext/multicolumn ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/multicolumn"
-    ]
-  },
-  "extra": {
-    "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
+    "require-dev": {
+        "nimut/testing-framework": "2.x-dev || 4.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "IchHabRecht\\Multicolumn\\": "Classes/"
+        },
+        "classmap": [
+            "hooks/",
+            "lib/",
+            "pi1/",
+            "pi_sitemap/"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "Tests/"
+        ]
+    },
+    "replace": {
+        "typo3-ter/multicolumn": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "multicolumn",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "app-dir": ".Build",
+            "web-dir": ".Build/public"
+        }
     }
-  }
 }

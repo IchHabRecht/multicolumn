@@ -143,8 +143,8 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
         // Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
         if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TSFE']->sys_language_uid && $this->cObj->data['_LOCALIZED_UID']) {
             $this->multicolumnContainerUid = $this->cObj->data['_LOCALIZED_UID'];
-            // take default uid from cObj->data
         } else {
+            // take default uid from cObj->data
             $this->multicolumnContainerUid = $this->cObj->data['uid'];
         }
 
@@ -278,13 +278,11 @@ class tx_multicolumn_pi1 extends tx_multicolumn_pi_base
                 // evaluate columnWidth in pixels
                 if ($conf['containerMeasure'] == 'px' && $conf['containerWidth']) {
                     $columnData['columnWidthPixel'] = round($conf['containerWidth'] / $numberOfColumns);
-
-                    // if columnWidth and column measure is set
                 } elseif ($conf['columnMeasure'] == 'px' && $conf['columnWidth']) {
+                    // if columnWidth and column measure is set
                     $columnData['columnWidthPixel'] = $conf['columnWidth'];
-
-                    // if container width is set in percent (default 100%)
                 } elseif ($colPosMaxImageWidth) {
+                    // if container width is set in percent (default 100%)
                     $columnData['columnWidthPixel'] = tx_multicolumn_div::calculateMaxColumnWidth($columnData['columnWidth'], $colPosMaxImageWidth, $numberOfColumns);
                 }
 

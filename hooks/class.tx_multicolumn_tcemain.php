@@ -64,8 +64,8 @@ class tx_multicolumn_tcemain
                             }
 
                             $this->copyMulticolumnContainer($id, $containerChildren, $destinationPid, $sysLanguageUid);
-                            // check if content element has a seedy relation to multicolumncontainer?
                         } elseif (($newUid = $copyId)) {
+                            // check if content element has a seedy relation to multicolumncontainer?
                             $row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('tt_content', $newUid);
 
                             if (is_array($row)) {
@@ -275,7 +275,7 @@ class tx_multicolumn_tcemain
     }
 
     /**
-     * If an elements get moved – move child records from multicolumn container too
+     * If an elements get moved - move child records from multicolumn container too
      *
      * @param string $table
      * @param int $uid The record uid currently processing
@@ -296,7 +296,7 @@ class tx_multicolumn_tcemain
     }
 
     /**
-     * If an elements get moved – move child records from multicolumn container too
+     * If an elements get moved - move child records from multicolumn container too
      *
      * @param string $table The table currently processing data for
      * @param int $uid The record uid currently processing
