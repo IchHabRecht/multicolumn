@@ -35,12 +35,17 @@ abstract class FunctionalBaseTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
+
         $this->importDataSet('ntf://Database/pages.xml');
         $this->importDataSet('ntf://Database/sys_language.xml');
-        $this->importDataSet('ntf://Database/pages_language_overlay.xml');
-
-        $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
         $this->importDataSet($fixturePath . 'tt_content.xml');
+
+        if (version_compare(TYPO3_version, '9.5', '>=')) {
+            $this->importDataSet($fixturePath . 'pages_overlay.xml');
+        } else {
+            $this->importDataSet('ntf://Database/pages_language_overlay.xml');
+        }
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::getInstance()->initializeLanguageObject();
