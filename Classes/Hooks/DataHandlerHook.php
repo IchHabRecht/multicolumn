@@ -237,7 +237,7 @@ class DataHandlerHook
     }
 
     /**
-     * If an elements get moved outside from a multicontainer inside to a multicolumncontainer
+     * If an element gets moved outside from a multicontainer inside to a multicolumncontainer
      * add tx_multicolumn_parentid to moved record
      *
      * @param string $table
@@ -286,7 +286,7 @@ class DataHandlerHook
     }
 
     /**
-     * If an elements get moved – move child records from multicolumn container too
+     * If an element gets moved - move child records from multicolumn container too
      *
      * @param string $table
      * @param int $uid The record uid currently processing
@@ -307,7 +307,7 @@ class DataHandlerHook
     }
 
     /**
-     * If an elements get moved – move child records from multicolumn container too
+     * If an element gets moved - move child records from multicolumn container too
      *
      * @param string $table The table currently processing data for
      * @param int $uid The record uid currently processing
