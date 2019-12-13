@@ -60,6 +60,7 @@ class PasteTest extends FunctionalBaseTest
             ],
         ];
 
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= LF . '[GLOBAL]' . LF . 'TCEMAIN.previewDomain = http://www.example.com';
         $GLOBALS['BE_USER']->pushModuleData(
             'clipboard',
             [
