@@ -86,17 +86,16 @@ class PasteTest extends FunctionalBaseTest
         $cmdMap = [
             FunctionalBaseTest::CONTENT_TABLE => [
                 3 => [
-                    'move' => -10,
+                    'move' => [
+                        'action' => 'paste',
+                        'target' => -10,
+                        'update' => [
+                            'colPos' => '12',
+                            'sys_language_uid' => '0',
+                        ],
+                    ],
                 ],
             ],
-        ];
-
-        $_GET = [
-            'colPos' => 12,
-            'tx_multicolumn' => [
-                'action' => 'pasteInto',
-            ],
-            'tx_multicolumn_parentid' => 10,
         ];
 
         $dataHandler = new DataHandler();

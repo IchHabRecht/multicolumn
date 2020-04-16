@@ -15,8 +15,9 @@ define(['TYPO3/CMS/Backend/ContextMenuActions'], function(ContextMenuActions) {
         var performPaste = function() {
             var url = '&CB[paste]=' + table + '%7C-' + uid
                 + '&CB[pad]=normal&prErr=1&uPT=1'
-                + '&tx_multicolumn[action]=pasteInto&tx_multicolumn_parentid=' + uid
-                + '&colPos=' + $this.data('colpos')
+                + '&CB[update][tx_multicolumn_parentid]=' + uid
+                + '&CB[update][colPos]=' + $this.data('colpos')
+                + '&CB[update][sys_language_uid]=' + $this.data('language-uid')
                 + '&redirect=' + ContextMenuActions.getReturnUrl();
 
             top.TYPO3.Backend.ContentContainer.setUrl(

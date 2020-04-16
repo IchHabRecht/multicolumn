@@ -250,7 +250,7 @@ class DatabaseUtility
             ->andWhere(self::enableFields('tt_content'))
             ->setMaxResults(1)
             ->execute()
-            ->fetchColumn(0);
+            ->fetchAll();
     }
 
     /**

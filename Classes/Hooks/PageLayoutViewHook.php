@@ -265,27 +265,24 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
      */
     protected function buildColumn($columnWidth, $columnIndex, $colPos, &$markup)
     {
+        $columnLabel = $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . ($columnIndex + 1);
+        $language = $this->multiColCe['sys_language_uid'];
+
         $markup .= '<td id="column_' . (int)$this->multiColCe['uid'] . '_' . (int)$colPos . '" '
             . 'class="t3-page-column t3-page-column-' . (int)$columnIndex . ' column column' . (int)$columnIndex . '" '
             . 'style="width: ' . $columnWidth . '%">'
-            . '<div class="innerContent">';
+            . '<div class="innerContent" data-colpos="' . $colPos . '" data-language-uid="' . $language . '">';
 
-        $pasteParams = [
-            'colPos' => $colPos,
-            'sys_language_uid' => $this->multiColCe['sys_language_uid'],
-            'tx_multicolumn_parentid' => $this->multiColCe['uid'],
-        ];
-        $columnLabel = $this->isEffectBox
-            ? $this->getLanguageService()->getLLL('cms_layout.effectBox', $this->LL)
-            : $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . ($columnIndex + 1);
+        $markup .= $this->pObj->tt_content_drawColHeader($columnLabel);
 
-        $markup .= $this->pObj->tt_content_drawColHeader($columnLabel, '', $newParams, $pasteParams);
+        $markup .= '<div class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $language . ' t3-page-ce-wrapper">';
 
-        $markup .= '<div class="t3-page-ce" data-page="' . $this->multiColCe['pid'] . '">';
-        $markup .= '<div class="t3js-page-new-ce" id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] .
-            '-' . StringUtility::getUniqueId() . '" data-page="' . $this->multiColCe['pid'] . '">';
+        $markup .= '<div class="t3-page-ce"data-page="' . $this->multiColCe['pid'] . '">';
+        $markup .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce"'
+            . ' id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] . '-' . StringUtility::getUniqueId() . '"'
+            . ' data-page="' . $this->multiColCe['pid'] . '">';
         $markup .= $this->getNewContentElementButton($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
-        $markup .= '</div></div>';
+        $markup .= '</div></div></div>';
 
         $markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 
@@ -363,7 +360,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
                 $statusHidden = ($this->pObj->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
 
                 $ceClass = 't3-page-ce' . $statusHidden;
-                $content .= '<li id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '" class="contentElement item' . $item . '"><div class="' . $ceClass . '">';
+                $content .= '<li id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '" class="t3js-page-ce contentElement item' . $item . '" data-uid="' . $row['uid'] . '"><div class="' . $ceClass . '">';
 
                 $space = $this->pObj->tt_contentConfig['showInfo'] ? 15 : 5;
 
@@ -389,7 +386,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
                 $content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
                 $content .= '</div></div>';
 
-                $content .= '<div class="t3-page-ce t3js-page-new-ce" id="colpos-' . (int)$row['colPos'] . '-' . 'tt-content-' . (int)$row['uid'] .
+                $content .= '<div class="t3-page-ce t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . (int)$row['colPos'] . '-' . 'tt-content-' . (int)$row['uid'] .
                     '-' . StringUtility::getUniqueId() . '">';
                 $content .= $this->getNewContentElementButton($this->multiColCe['pid'], $row['colPos'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid'], $row['uid']);
 
@@ -468,7 +465,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             . ' title="' . $title . '"'
             . ' data-title="' . $title . '"'
             . ' class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">'
-            . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render()
+            . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
             . ' '
             . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
 
