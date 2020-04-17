@@ -266,6 +266,10 @@ class DatabaseUtility
      */
     public static function updateContentElement($uid, array $fieldValues)
     {
+        if (empty($fieldValues)) {
+            return;
+        }
+
         $updateQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $updateQueryBuilder->update('tt_content')
             ->where(
@@ -321,8 +325,6 @@ class DatabaseUtility
         $enableFields = '1=1';
         if (TYPO3_MODE === 'FE') {
             $enableFields .= $GLOBALS['TSFE']->sys_page->enableFields($table, $showHidden);
-        } elseif (!$showHidden) {
-            $enableFields .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
         }
 
         return $enableFields;

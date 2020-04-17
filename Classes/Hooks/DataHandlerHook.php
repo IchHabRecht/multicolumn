@@ -136,7 +136,7 @@ class DataHandlerHook
         }
 
         $updateRecordFields = [
-            'colPos' => (int)($this->pObj->cmdmap['tt_content'][$orginalId][$action]['update']['colPos'] ?? 0),
+            'colPos' => (int)($this->pObj->cmdmap['tt_content'][$orginalId][$action]['update']['colPos'] ?? $this->pObj->datamap['tt_content'][$orginalId]['colPos'] ?? 0),
             'tx_multicolumn_parentid' => $multicolumnId,
         ];
 
@@ -289,7 +289,11 @@ class DataHandlerHook
      */
     public function moveRecord_firstElementPostProcess($table, $uid, $destPid, array $moveRec, array $updateFields, \TYPO3\CMS\Core\DataHandling\DataHandler $pObj)
     {
-        if ($table == 'tt_content' && $this->isMulticolumnContainer($uid)) {
+        if ($table !== 'tt_content') {
+            return;
+        }
+
+        if ($this->isMulticolumnContainer($uid)) {
             $this->checkIfContainerHasChilds($table, $uid, $destPid, $pObj);
         } elseif (
             $destPid > 0

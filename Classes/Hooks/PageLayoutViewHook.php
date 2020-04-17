@@ -269,12 +269,14 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
 
         $markup .= '<div class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $language . ' t3-page-ce-wrapper">';
 
-        $markup .= '<div class="t3-page-ce"data-page="' . $this->multiColCe['pid'] . '">';
+        $markup .= '<div class="t3-page-ce" data-page="' . $this->multiColCe['pid'] . '">';
         $markup .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce"'
             . ' id="colpos-' . (int)$colPos . '-' . 'tt-content-' . (int)$this->multiColCe['uid'] . '-' . StringUtility::getUniqueId() . '"'
             . ' data-page="' . $this->multiColCe['pid'] . '">';
         $markup .= $this->getNewContentElementButton($this->multiColCe['pid'], $colPos, $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
-        $markup .= '</div></div></div>';
+        $markup .= '</div>';
+        $markup .= '<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>';
+        $markup .= '</div></div>';
 
         $markup .= $this->buildColumnContentElements($colPos, $this->multiColCe['pid'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid']);
 
@@ -344,15 +346,16 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
      */
     protected function renderContentElements(array $rowArr, $additionalClasses = null, $lostElements = false)
     {
-        $content = '<ul class="contentElements ' . $additionalClasses . '">';
+        $content = '<div class="t3-page-ce-wrapper contentElements ' . $additionalClasses . '">';
 
         $item = 0;
         foreach ($rowArr as $rKey => $row) {
             if (is_array($row) && (int)$row['t3ver_state'] != 2) {
                 $statusHidden = ($this->pObj->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
 
-                $ceClass = 't3-page-ce' . $statusHidden;
-                $content .= '<li id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '" class="t3js-page-ce contentElement item' . $item . '" data-uid="' . $row['uid'] . '"><div class="' . $ceClass . '">';
+                $content .= '<div'
+                    . ' id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '"'
+                    . ' class="t3-page-ce t3js-page-ce contentElement item' . $item . $statusHidden . '" data-uid="' . $row['uid'] . '">';
 
                 $space = $this->pObj->tt_contentConfig['showInfo'] ? 15 : 5;
 
@@ -376,20 +379,23 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
                 }
 
                 $content .= '<div class="t3-page-ce-body-inner" ' . (isset($row['_ORIG_uid']) ? ' class="ver-element"' : '') . '>' . $this->pObj->tt_content_drawItem($row) . '</div>';
-                $content .= '</div></div>';
+                $content .= '</div>';
 
                 $content .= '<div class="t3-page-ce t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . (int)$row['colPos'] . '-' . 'tt-content-' . (int)$row['uid'] .
                     '-' . StringUtility::getUniqueId() . '">';
                 $content .= $this->getNewContentElementButton($this->multiColCe['pid'], $row['colPos'], $this->multiColCe['uid'], $this->multiColCe['sys_language_uid'], $row['uid']);
 
-                $content .= '</div></li>';
+                $content .= '<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>';
+
+                $content .= '</div></div>';
+
                 $item++;
             } else {
                 unset($rowArr[$rKey]);
             }
         }
 
-        $content .= '</ul>';
+        $content .= '</div>';
 
         return $content;
     }
