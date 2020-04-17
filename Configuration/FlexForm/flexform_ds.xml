@@ -181,54 +181,5 @@
                 </el>
             </ROOT>
         </advancedLayout>
-        <effectBox>
-            <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox</sheetTitle>
-                    <cshFile>LLL:EXT:multicolumn/Resources/Private/Language/locallang_csh_flexform.xml</cshFile>
-                </TCEforms>
-                <type>array</type>
-                <el>
-                    <effect>
-                        <TCEforms>
-                            <label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.effect</label>
-                            <config>
-                                <type>select</type>
-                                <renderType>selectSingle</renderType>
-                                <items type="array">
-                                    <numIndex index="0" type="array">
-                                        <numIndex index="0"></numIndex>
-                                        <numIndex index="1"></numIndex>
-                                    </numIndex>
-                                </items>
-                                <itemsProcFunc>IchHabRecht\Multicolumn\Utility\FlexFormUtility->addFieldsToFlexForm</itemsProcFunc>
-                                <maxitems>1</maxitems>
-                                <size>1</size>
-                                <txMulitcolumnField>effect</txMulitcolumnField>
-                            </config>
-                        </TCEforms>
-                    </effect>
-                    <effectOptions>
-                        <TCEforms>
-                            <label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.effectOptions</label>
-                            <config>
-                                <type>text</type>
-                                <cols>48</cols>
-                                <rows>5</rows>
-                            </config>
-                        </TCEforms>
-                    </effectOptions>
-                    <effectBoxWidth>
-                        <TCEforms>
-                            <label>LLL:EXT:multicolumn/Resources/Private/Language/locallang_effects.xlf:effectBox.width</label>
-                            <config>
-                                <type>input</type>
-                                <size>40</size>
-                            </config>
-                        </TCEforms>
-                    </effectBoxWidth>
-                </el>
-            </ROOT>
-        </effectBox>
     </sheets>
 </T3DataStructure>

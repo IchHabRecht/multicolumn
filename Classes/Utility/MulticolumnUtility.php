@@ -61,45 +61,6 @@ final class MulticolumnUtility
     }
 
     /**
-     * Get layout configuration options merged between typoscript and flexform options
-     *
-     * @param int $pageUid
-     * @param FlexFormUtility $flex
-     *
-     * @return array|null
-     */
-    public static function getEffectConfiguration($pageUid, FlexFormUtility $flex)
-    {
-        $config = null;
-        $effect = substr($flex->getFlexValue('effectBox', 'effect'), 0, -1);
-        $flexConfig = $flex->getFlexArray('effectBox');
-        $tsConfig = self::getTSConfig($pageUid, 'effectBox');
-
-        if (!empty($tsConfig[$effect . '.']['config.'])) {
-            $config = $tsConfig[$effect . '.']['config.'];
-            $config['effect'] = $effect;
-            $tsConfigOptions = (!empty($config['defaultOptions'])) ? $config['defaultOptions'] : null;
-
-            // check for options
-            if (!empty($flexConfig['effectOptions'])) {
-                $addComma = (strpos($flexConfig['effectOptions'], ',') === 0 && $tsConfigOptions) ? null : ',';
-                $config['options'] = $tsConfigOptions . $addComma . $flexConfig['effectOptions'];
-            } else {
-                $config['options'] = $tsConfigOptions;
-            }
-
-            $config['options'] = GeneralUtility::minifyJavaScript($config['options']);
-
-            unset($flexConfig['effectOptions'], $flexConfig['effect']);
-            unset($config['defaultOptions']);
-
-            $config = GeneralUtility::array_merge($config, $flexConfig);
-        }
-
-        return $config;
-    }
-
-    /**
      * Get preset layout configuration from tsconfig
      *
      * @param int $pageUid
@@ -120,11 +81,9 @@ final class MulticolumnUtility
      *
      * @param int $columnWidth
      * @param int $colPosMaxWidth
-     * @param int $numberOfColumns Unused
-     *
      * @return int
      */
-    public static function calculateMaxColumnWidth($columnWidth, $colPosMaxWidth, $numberOfColumns)
+    public static function calculateMaxColumnWidth($columnWidth, $colPosMaxWidth)
     {
         return floor(($colPosMaxWidth / 100) * $columnWidth);
     }
@@ -210,41 +169,6 @@ final class MulticolumnUtility
         $llFile = GeneralUtility::getFileAbsFileName('EXT:multicolumn/' . ($llFile ?? 'Resources/Private/Language/locallang.xlf'));
 
         return self::readLLfile($llFile, $GLOBALS['LANG']->lang);
-    }
-
-    /**
-     * Checks if backend user has the rights to see multicolumn container
-     *
-     * @return bool true if it has access false if not
-     */
-    public static function beUserHasRightToSeeMultiColumnContainer()
-    {
-        // FIXME Too many returns, refactor this mess.
-
-        $hasAccess = true;
-        $TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($GLOBALS['SOBE']->id);
-
-        // check remove items
-        if (!empty($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'])) {
-            $hasAccess = GeneralUtility::inList($TSconfig['TCEFORM.']['tt_content.']['CType.']['removeItems'], 'multicolumn') ? false : true;
-            if (!$hasAccess) {
-                return false;
-            }
-        }
-
-        // is admin?
-        if (!empty($GLOBALS['BE_USER']->user['admin'])) {
-            return $hasAccess;
-        }
-
-        // is explicitADmode allow ?
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] === 'explicitAllow') {
-            $hasAccess = GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:ALLOW') ? true : false;
-        } else {
-            $hasAccess = GeneralUtility::inList($GLOBALS['BE_USER']->groupData['explicit_allowdeny'], 'tt_content:CType:multicolumn:DENY') ? false : true;
-        }
-
-        return $hasAccess;
     }
 
     /**

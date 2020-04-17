@@ -3,9 +3,6 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T22:24:32Z" product-name="multicolumn">
         <header />
         <body>
-            <trans-unit id="cms_layout.effectBox">
-                <source>Effect Box column</source>
-            </trans-unit>
             <trans-unit id="cms_layout.columnTitle">
                 <source>Column</source>
             </trans-unit>

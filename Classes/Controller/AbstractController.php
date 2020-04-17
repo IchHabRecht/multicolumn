@@ -25,15 +25,12 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
      * @param string $confName Path to typoscript to render each element with
      * @param array $recordsArray Array which contains elements (array) for typoscript rendering
      * @param array $appendData Additinal data
-     * @param bool $debug
-     *
      * @return    string        All items rendered as a string
      */
-    public function renderListItems($tableName, $confName, array $recordsArray, array $appendData = [], $debug = false)
+    public function renderListItems($tableName, $confName, array $recordsArray, array $appendData = [])
     {
         $arrayLength = count($recordsArray);
         $rowNr = 1;
-        $index = 0;
         $content = null;
 
         foreach ($recordsArray as $data) {
@@ -79,8 +76,8 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
     /**
      * Render an array with trough cObjGetSingle
      *
-     * @param    string $confName Path to typoscript to render each element with
-     * @param    array $recordsArray Array which contains elements (array) for typoscript rendering
+     * @param string $confName Path to typoscript to render each element with
+     * @param array $recordsArray Array which contains elements (array) for typoscript rendering
      *
      * @return    string        All items rendered as a string
      */
@@ -97,7 +94,7 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
     /**
      * Includes a css or js file
      *
-     * @param    include files
+     * @param include files
      */
     protected function includeCssJsFiles(array $files)
     {
@@ -193,15 +190,5 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
         }
 
         return $hooked;
-    }
-
-    /**
-     * Restore orginal cObj data to current cObj
-     */
-    protected function restoreCobjData()
-    {
-        $this->cObj->data = $this->currentCobjData;
-        $this->cObj->currentRecord = $this->currentCobjRecordString;
-        $this->cObj->parentRecordNumber = $this->currentCobjParentRecordNumber;
     }
 }

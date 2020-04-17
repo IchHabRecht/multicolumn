@@ -83,9 +83,7 @@ class FlexFormUtility
     /**
      * Generates the icons for the flexform selector layout
      *
-     * @param array $params Array with current record and empty items arra
-     *
-     * @return array Generated items array
+     * @param array $params Array with current record and empty items array
      * */
     public function addFieldsToFlexForm(&$params)
     {
@@ -116,25 +114,7 @@ class FlexFormUtility
                     if (!empty($tsConfig['config.']['layoutPreset.']['enableLayouts'])) {
                         $this->filterItems($tsConfig['layoutPreset.'], $tsConfig['config.']['layoutPreset.']['enableLayouts']);
                     }
-
-                    // add effectBox to the end
-                    if (!empty($tsConfig['layoutPreset.']['effectBox.'])) {
-                        $effectBox = $tsConfig['layoutPreset.']['effectBox.'];
-                        // add effect box to the end
-                        unset($tsConfig['layoutPreset.']['effectBox.']);
-                        $tsConfig['layoutPreset.']['effectBox.'] = $effectBox;
-                    }
                     $this->buildItems($tsConfig['layoutPreset.'], $params);
-                }
-                break;
-            case 'effect':
-                if (is_array($tsConfig['effectBox.'])) {
-                    // enable only specific effects
-                    if (!empty($tsConfig['config.']['effectBox.']['enableEffects'])) {
-                        $this->filterItems($tsConfig['effectBox.'], $tsConfig['config.']['effectBox.']['enableEffects']);
-                    }
-
-                    $this->buildItems($tsConfig['effectBox.'], $params);
                 }
                 break;
         }

@@ -15,7 +15,6 @@ namespace IchHabRecht\Multicolumn\Controller;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,20 +77,6 @@ class ContainerController extends AbstractController
     protected $multicolumnContainerUid;
 
     /**
-     * Is effect box
-     *
-     * @var        int
-     */
-    protected $isEffectBox;
-
-    /**
-     * Effect configuration array from ts / flexform
-     *
-     * @var        array
-     */
-    protected $effectConfiguration;
-
-    /**
      * maxWidth before
      *
      * @var        int
@@ -104,8 +89,8 @@ class ContainerController extends AbstractController
     /**
      * The main method of the PlugIn
      *
-     * @param    string $content : The PlugIn content
-     * @param    array $conf : The PlugIn configuration
+     * @param string $content : The PlugIn content
+     * @param array $conf : The PlugIn configuration
      *
      * @return   string The content that is displayed on the website
      */
@@ -117,16 +102,14 @@ class ContainerController extends AbstractController
             return $this->showFlashMessage($this->llPrefixed['lll:error.typoscript.title'], $this->llPrefixed['lll:error.typoscript.message']);
         }
 
-        $content = $this->layoutConfiguration['columns'] ? $this->renderMulticolumnView() : $this->renderEffectBoxView();
-
-        return $content;
+        return $this->renderMulticolumnView();
     }
 
     /**
      * Initalizes the plugin.
      *
-     * @param    string $content : Content sent to plugin
-     * @param    string[] $conf : Typoscript configuration array
+     * @param string $content : Content sent to plugin
+     * @param string[] $conf : Typoscript configuration array
      */
     protected function init($content, $conf)
     {
@@ -152,55 +135,34 @@ class ContainerController extends AbstractController
         }
 
         $this->flex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlexFormUtility::class, $this->cObj->data['pi_flexform']);
-        $this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.') ? true : false;
         // store current max width
         $this->TSFEmaxWidthBefore = isset($GLOBALS['TSFE']->register['maxImageWidth']) ? $GLOBALS['TSFE']->register['maxImageWidth'] : null;
 
-        // effect view
-        if ($this->isEffectBox) {
-            $this->effectConfiguration = MulticolumnUtility::getEffectConfiguration(null, $this->flex);
-            if (!empty($this->effectConfiguration['options'])) {
-                $name = 'mullticolumnEffectBox_' . $this->cObj->data['uid'];
-                $code = 'var ' . $name . ' ={' . $this->effectConfiguration['options'] . '};';
-                GeneralUtility::makeInstance(PageRenderer::class)->addJsInlineCode($name, $code);
-            }
-            // js files
-            if (is_array($this->effectConfiguration['jsFiles.'])) {
-                $this->includeCssJsFiles($this->effectConfiguration['jsFiles.']);
-            }
-            // css files
-            if (is_array($this->effectConfiguration['cssFiles.'])) {
-                $this->includeCssJsFiles($this->effectConfiguration['cssFiles.']);
-            }
+        $this->layoutConfiguration = MulticolumnUtility::getLayoutConfiguration(null, $this->flex);
 
-            // default multicolumn view
-        } else {
-            $this->layoutConfiguration = MulticolumnUtility::getLayoutConfiguration(null, $this->flex);
-
-            //include layout css
-            if (!empty($this->layoutConfiguration['layoutCss']) || !empty($this->layoutConfiguration['layoutCss.'])) {
-                $files = is_array($this->layoutConfiguration['layoutCss.']) ? $this->layoutConfiguration['layoutCss.'] : ['layoutCss' => $this->layoutConfiguration['layoutCss']];
-                $this->includeCssJsFiles($files);
-            }
-
-            // force equal height ?
-            $config = MulticolumnUtility::getTSConfig($GLOBALS['TSFE']->id, 'config');
-            if (!empty($this->layoutConfiguration['makeEqualElementBoxHeight'])) {
-                if (is_array($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.'])) {
-                    $this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.']);
-                }
-            }
-            // force equal height for each column
-            if (!empty($this->layoutConfiguration['makeEqualElementColumnHeight'])) {
-                if (is_array($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.'])) {
-                    $this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.']);
-                }
-            }
-
-            // do option split
-            $this->layoutConfigurationSplited = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->explodeConfigurationForOptionSplit($this->layoutConfiguration, (int)$this->layoutConfiguration['columns']);
+        //include layout css
+        if (!empty($this->layoutConfiguration['layoutCss']) || !empty($this->layoutConfiguration['layoutCss.'])) {
+            $files = is_array($this->layoutConfiguration['layoutCss.']) ? $this->layoutConfiguration['layoutCss.'] : ['layoutCss' => $this->layoutConfiguration['layoutCss']];
+            $this->includeCssJsFiles($files);
         }
+
+        // force equal height ?
+        $config = MulticolumnUtility::getTSConfig($GLOBALS['TSFE']->id, 'config');
+        if (!empty($this->layoutConfiguration['makeEqualElementBoxHeight'])) {
+            if (is_array($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.'])) {
+                $this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementBoxHeight.']['includeFiles.']);
+            }
+        }
+        // force equal height for each column
+        if (!empty($this->layoutConfiguration['makeEqualElementColumnHeight'])) {
+            if (is_array($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.'])) {
+                $this->includeCssJsFiles($config['advancedLayouts.']['makeEqualElementColumnHeight.']['includeFiles.']);
+            }
+        }
+
+        // do option split
+        $this->layoutConfigurationSplited = GeneralUtility::makeInstance(TypoScriptService::class)
+            ->explodeConfigurationForOptionSplit($this->layoutConfiguration, (int)$this->layoutConfiguration['columns']);
     }
 
     protected function renderMulticolumnView()
@@ -214,45 +176,6 @@ class ContainerController extends AbstractController
         $listData['containerUid'] = $this->multicolumnContainerUid;
 
         return $this->renderItem('columnContainer', $listData);
-    }
-
-    protected function renderEffectBoxView()
-    {
-        $listData = $this->cObj->data;
-
-        $columnWidth = !empty($this->effectConfiguration['effectBoxWidth']) ? $this->effectConfiguration['effectBoxWidth'] : $this->renderColumnWidth();
-        $isColumnWidthInt = intval($columnWidth);
-        // evalute column width from css string
-        if (empty($isColumnWidthInt)) {
-            $matches = [];
-            preg_match('/width?\s*:([0-9]*)/', $columnWidth, $matches);
-            $columnWidth = $matches[1];
-        }
-
-        $GLOBALS['TSFE']->register['maxImageWidth'] = !empty($columnWidth) ? $columnWidth : $GLOBALS['TSFE']->register['maxImageWidth'];
-
-        $contentElements = DatabaseUtility::getContentElementsFromContainer($columnData['colPos'], $this->cObj->data['pid'], $this->multicolumnContainerUid, $this->cObj->data['sys_language_uid']);
-        if (is_array($contentElements)) {
-            $listeItemsArray = [
-                'effect' => $this->effectConfiguration['effect'],
-                'columnWidth' => $columnWidth ? ('width:' . $columnWidth . 'px;') : null,
-            ];
-            $listeItemsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listeItemsArray, $this->llPrefixed);
-            $listItemContent = $this->renderListItems('tt_content', 'effectBoxItems', $contentElements, $listeItemsArray);
-        } else {
-            $listItemContent = '';
-        }
-
-        $listData['columnWidth'] = $columnWidth;
-        $listData['effect'] = $this->effectConfiguration['effect'];
-        $listData['effectBoxClass'] = $this->effectConfiguration['effectBoxClass'];
-        $listData['effectBoxItems'] = $listItemContent;
-        $listData = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($listData, $this->llPrefixed);
-
-        $content = $this->renderItem('effectBox', $listData);
-        $GLOBALS['TSFE']->register['maxImageWidth'] = $this->TSFEmaxWidthBefore;
-
-        return $content;
     }
 
     /**
@@ -322,9 +245,9 @@ class ContainerController extends AbstractController
     /**
      * Evaluates the maxwidth of current column
      *
-     * @param    string $confName Path to typoscript to render each element with
-     * @param    array $recordsArray Array which contains elements (array) for typoscript rendering
-     * @param    array $appendData Additinal data
+     * @param string $confName Path to typoscript to render each element with
+     * @param array $recordsArray Array which contains elements (array) for typoscript rendering
+     * @param array $appendData Additinal data
      *
      * @return    string        All items rendered as a string
      */

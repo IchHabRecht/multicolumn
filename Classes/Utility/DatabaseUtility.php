@@ -79,31 +79,6 @@ class DatabaseUtility
     }
 
     /**
-     * Add additional workspace clause if needed
-     *
-     * @param string $whereClause
-     *
-     * @return string
-     */
-    public static function getWorkspaceClause($whereClause)
-    {
-        $table = 'tt_content';
-
-        if (!empty($GLOBALS['BE_USER']->workspace)) {
-            $workspaceId = intval($GLOBALS['BE_USER']->workspace);
-            $workspaceClause = ' AND (' . $table . '.t3ver_wsid=' . $workspaceId . ' OR ' . $table . '.t3ver_wsid=0)';
-
-            if (strstr($whereClause, ' AND tt_content.pid > 0')) {
-                $whereClause = str_replace(' AND tt_content.pid > 0', $workspaceClause, $whereClause);
-            } else {
-                $whereClause = str_replace(' AND tt_content.deleted=0', ' AND tt_content.deleted=0' . $workspaceClause, $whereClause);
-            }
-        }
-
-        return $whereClause;
-    }
-
-    /**
      * Get number of content elements inside a multicolumn container
      *
      * @param int $mulitColumnId
@@ -225,12 +200,10 @@ class DatabaseUtility
      * Get multicolumn content element from uid
      *
      * @param int $uid
-     * @param int $selectFields
-     * @param bool $enableFields
-     *
+     * @param string $selectFields
      * @return array|null
      */
-    public static function getContainerFromUid($uid, $selectFields = 'uid,header', $enableFields = false)
+    public static function getContainerFromUid($uid, $selectFields = 'uid,header')
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

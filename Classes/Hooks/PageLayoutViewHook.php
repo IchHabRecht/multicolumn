@@ -95,13 +95,6 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     protected $LL;
 
     /**
-     * Is effectbox?
-     *
-     * @var        bool
-     */
-    protected $isEffectBox;
-
-    /**
      * @param IconFactory $iconFactory
      */
     public function __construct(IconFactory $iconFactory = null)
@@ -132,7 +125,6 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $this->pObj = $parentObject;
             $this->tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
             $this->LL = MulticolumnUtility::includeBeLocalLang();
-            $this->isEffectBox = ($this->flex->getFlexValue('preSetLayout', 'layoutKey') == 'effectBox.');
 
             $this->multiColCe = $row;
             $this->multiColUid = intval($row['uid']);
@@ -211,7 +203,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     /**
      * Builds the columns markup
      *
-     * @param    int $numberOfColumns : how many columns to build
+     * @param int $numberOfColumns : how many columns to build
      *
      * @return    string            html content
      */
@@ -292,10 +284,10 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     /**
      * Builds the overview of content elements for the column
      *
-     * @param    int $colPos
-     * @param    int $pid page id
-     * @param    int $mulitColumnParentId parent id of multicolumn content element
-     * @param    int $sysLanguageUid sys language uid
+     * @param int $colPos
+     * @param int $pid page id
+     * @param int $mulitColumnParentId parent id of multicolumn content element
+     * @param int $sysLanguageUid sys language uid
      *
      * @return string
      */
@@ -315,7 +307,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     /**
      * Builds the lost content elements container
      *
-     * @param    int $lastColumnNumber last visible columnNumber
+     * @param int $lastColumnNumber last visible columnNumber
      *
      * @return    string            $column markup
      */
@@ -457,7 +449,6 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         } else {
             $routeName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $href = '#';
             $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
         }
         $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));

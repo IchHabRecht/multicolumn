@@ -12,12 +12,6 @@
             <trans-unit id="columnMargin.description">
                 <source>The TypoScript property optionSplit is possible. Example: 0 |*| 0 10px</source>
             </trans-unit>
-            <trans-unit id="effectBoxWidth.description">
-                <source>The CSS properties for the element. Example: height:250px;width:600px;</source>
-            </trans-unit>
-            <trans-unit id="effectOptions.description">
-                <source>The Javascript properties according the selected effect. (The option must always start with a comma). An example for the sudo slider effect would be ",insertAfter : true"</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>
