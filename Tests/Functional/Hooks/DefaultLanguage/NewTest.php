@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional\Hooks\DefaultLanguage;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -13,10 +14,11 @@
 
 require_once __DIR__ . '/../../../FunctionalBaseTest.php';
 
+use IchHabRecht\Multicolumn\Tests\Functional\FunctionalBaseTest;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
+class NewTest extends FunctionalBaseTest
 {
     /**
      * Add a new multicolumn container to an empty page
@@ -27,10 +29,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
     {
         $uniqueNewID = StringUtility::getUniqueId('NEW');
         $dataMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 $uniqueNewID => [
                     'pid' => 2,
-                    'CType' => tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN,
+                    'CType' => FunctionalBaseTest::CTYPE_MULTICOLUMN,
                     'header' => 'New multicolumn container',
                     'colPos' => 0,
                     'sys_language_uid' => 0,
@@ -47,10 +49,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'pid=2'
             . ' AND deleted=0'
-            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN . '\''
+            . ' AND CType=\'' . FunctionalBaseTest::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=0'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -66,10 +68,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
     {
         $uniqueNewID = StringUtility::getUniqueId('NEW');
         $dataMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 $uniqueNewID => [
                     'pid' => 1,
-                    'CType' => tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN,
+                    'CType' => FunctionalBaseTest::CTYPE_MULTICOLUMN,
                     'header' => 'New multicolumn container',
                     'colPos' => 1,
                     'sys_language_uid' => 0,
@@ -86,10 +88,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN . '\''
+            . ' AND CType=\'' . FunctionalBaseTest::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=1'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -105,10 +107,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
     {
         $uniqueNewID = StringUtility::getUniqueId('NEW');
         $dataMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 $uniqueNewID => [
                     'pid' => 1,
-                    'CType' => tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN,
+                    'CType' => FunctionalBaseTest::CTYPE_MULTICOLUMN,
                     'header' => 'New multicolumn container',
                     'colPos' => 0,
                     'sys_language_uid' => 0,
@@ -125,10 +127,10 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'pid=1'
             . ' AND deleted=0'
-            . ' AND CType=\'' . tx_multicolumn_tcemainBaseTest::CTYPE_MULTICOLUMN . '\''
+            . ' AND CType=\'' . FunctionalBaseTest::CTYPE_MULTICOLUMN . '\''
             . ' AND colPos=0'
             . ' AND tx_multicolumn_parentid=0'
         );
@@ -144,7 +146,7 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
     {
         $uniqueNewID = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('NEW');
         $dataMap = [
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE => [
+            FunctionalBaseTest::CONTENT_TABLE => [
                 $uniqueNewID => [
                     'pid' => 1,
                     'CType' => self::CTYPE_MULTICOLUMN,
@@ -164,7 +166,7 @@ class tx_multicolumn_tcemainNewTest extends tx_multicolumn_tcemainBaseTest
 
         $count = $this->getDatabaseConnection()->selectCount(
             '*',
-            tx_multicolumn_tcemainBaseTest::CONTENT_TABLE,
+            FunctionalBaseTest::CONTENT_TABLE,
             'pid=1'
             . ' AND deleted=0'
             . ' AND CType=\'' . self::CTYPE_MULTICOLUMN . '\''

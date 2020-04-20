@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T22:24:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="cms_layout.columnTitle">
+                <target>Spalte</target>
+            </trans-unit>
+            <trans-unit id="cms_layout.deleteWarning">
+                <target>(Dieser Mehrspaltencontainer hat %s Inhalts-Element(e), welche ebenfalls gelöscht werden!)</target>
+            </trans-unit>
+            <trans-unit id="cms_layout.lostElements.title">
+                <target>Spaltenlose Inhaltselmente</target>
+            </trans-unit>
+            <trans-unit id="cms_layout.lostElements.message">
+                <target>Folgende Inhaltselemente gehören keiner Spalte an. Sie können das Inhaltselement bearbeiten und einer neuen Spalte zuweisen oder mit dem Element-Kontext-Menu verschieben.</target>
+            </trans-unit>
+            <trans-unit id="multicolumColumn">
+                <target>Multispalte</target>
+                :</trans-unit>
+            <trans-unit id="multicolumColumn.clickmenu">
+                <target>Spalte</target>
+            </trans-unit>
+            <trans-unit id="emconfhelper.title">
+                <target>Uppsala! Es besteht ein Konflikt mit der Erweiterung</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

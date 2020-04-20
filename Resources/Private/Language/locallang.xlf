@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T22:24:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="cms_layout.columnTitle">
+                <source>Column</source>
+            </trans-unit>
+            <trans-unit id="cms_layout.lostElements.title">
+                <source>Lost content elements</source>
+            </trans-unit>
+            <trans-unit id="cms_layout.lostElements.message">
+                <source>Following elements have no relation to a multicolumn column. You can edit the element and switch to an other column or simply cut and paste with the element context menu.</source>
+            </trans-unit>
+            <trans-unit id="cms_layout.deleteWarning">
+                <source>(This multicolumn container has %s content element(s) which will be deleted, too!)</source>
+            </trans-unit>
+            <trans-unit id="multicolumColumn">
+                <source>Multicolumn column:</source>
+            </trans-unit>
+            <trans-unit id="multicolumColumn.clickmenu">
+                <source>column</source>
+            </trans-unit>
+            <trans-unit id="emconfhelper.xclass.title">
+                <source>Uppps! There seems to be a conflict with</source>
+            </trans-unit>
+            <trans-unit id="emconfhelper.xclass.message">
+                <source>uses a XCLASS to overwrite TYPO3 core functions. In order to use the Multicolumn extension please deactivate the XCLASS or uninstall</source>
+            </trans-unit>
+            <trans-unit id="emconfhelper.ok.title">
+                <source>Ready to go</source>
+            </trans-unit>
+            <trans-unit id="emconfhelper.ok.message">
+                <source>The compatibility check was successfully. Your TYPO3 installation is ready for the Multicolumn extension.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

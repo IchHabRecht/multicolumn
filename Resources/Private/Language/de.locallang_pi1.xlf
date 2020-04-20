@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-26T16:38:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="error.typoscript.title">
+                <target>Multicolumn-Typoscript fehlt!</target>
+            </trans-unit>
+            <trans-unit id="error.typoscript.message">
+                <target>Bitte Multicolumn Typoscript inkludieren. Du kannst im Voralge-Modul im Bereich "Includes -> Include static (from extensions)" das Multicolum Typoscript hinzufügen.</target>
+            </trans-unit>
+            <trans-unit id="prev">
+                <target>Zurück</target>
+            </trans-unit>
+            <trans-unit id="next">
+                <target>Weiter</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

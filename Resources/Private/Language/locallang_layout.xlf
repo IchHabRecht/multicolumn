@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T21:50:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="layout.1">
+                <source>Two Columns</source>
+            </trans-unit>
+            <trans-unit id="layout.2">
+                <source>Three Columns</source>
+            </trans-unit>
+            <trans-unit id="layout.3">
+                <source>Four Columns</source>
+            </trans-unit>
+            <trans-unit id="layout.10">
+                <source>Two Columns (75% | 25%)</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

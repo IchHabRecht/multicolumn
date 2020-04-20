@@ -1,4 +1,5 @@
 <?php
+namespace IchHabRecht\Multicolumn\Tests\Functional;
 
 /*
  * This file is part of the TYPO3 Multicolumn project.
@@ -17,7 +18,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
+abstract class FunctionalBaseTest extends FunctionalTestCase
 {
     const CONTENT_TABLE = 'tt_content';
     const CTYPE_MULTICOLUMN = 'multicolumn';
@@ -34,15 +35,23 @@ abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
+
         $this->importDataSet('ntf://Database/pages.xml');
         $this->importDataSet('ntf://Database/sys_language.xml');
-        $this->importDataSet('ntf://Database/pages_language_overlay.xml');
-
-        $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/multicolumn/Tests/Functional/Fixtures/';
         $this->importDataSet($fixturePath . 'tt_content.xml');
+
+        if (version_compare(TYPO3_version, '9.5', '>=')) {
+            $this->importDataSet($fixturePath . 'pages_overlay.xml');
+        } else {
+            $this->importDataSet('ntf://Database/pages_language_overlay.xml');
+        }
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::getInstance()->initializeLanguageObject();
+
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService->getMessageQueueByIdentifier()->clear();
     }
 
     /**
@@ -50,7 +59,7 @@ abstract class tx_multicolumn_tcemainBaseTest extends FunctionalTestCase
      */
     protected function assertNoProssesingErrorsInDataHandler(DataHandler $dataHandler)
     {
-        $dataHandler->printLogErrorMessages('');
+        $dataHandler->printLogErrorMessages();
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 

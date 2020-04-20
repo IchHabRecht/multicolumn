@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2018-01-26T22:04:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="tx_multicolumn_multicolumn">
+                <target>Multispalten Container</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_parentid">
+                <target>Multispalten Container</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_tab.config">
+                <target>Konfiguration</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_preSetLayout">
+                <target>Vordefinierte Layouts</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columns">
+                <target>Anzahl spalten</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_advanced">
+                <target>Erweiterte Layouts</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_containerwidth">
+                <target>Containerbreite</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnwidth">
+                <target>Spaltenbreite</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.container">
+                <target>Masseinheit des Containers</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.column">
+                <target>Masseinheit der Spalte</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.percent">
+                <target>Prozent</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_dimensionmeasure.pixel">
+                <target>Pixel</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnmargin">
+                <target>Spaltenabstand</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_columnpadding">
+                <target>Spaltenpadding</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_containerClass">
+                <target>CSS-Klasse des Containers</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_layout">
+                <target>Layout</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_disableimageshrink">
+                <target>Automatisches Bild skalieren deaktivieren</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_makeEqualElementBoxHeight">
+                <target>Erzwinge gleiche Höhe für jedes Multicolumn Element</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_makeEqualElementColumnHeight">
+                <target>Erzwinge gleiche Höhe für jede Multicolumn Spalte</target>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_multicolumn_disableDefaultStyles">
+                <target>Standart CSS-Styles deaktivieren</target>
+            </trans-unit>
+            <trans-unit id="pi1_title">
+                <target>Mehrspalten Container</target>
+            </trans-unit>
+            <trans-unit id="pi1_plus_wiz_description">
+                <target>Diese Element ermöglicht eine Darstellung von Inhaltselementen über mehrere Spalten.</target>
+            </trans-unit>id
+        </body>
+    </file>
+</xliff>

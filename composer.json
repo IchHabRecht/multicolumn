@@ -17,27 +17,21 @@
         }
     ],
     "require": {
-        "php": ">= 5.5, < 7.4",
-        "typo3/cms-core": "^7.6 || ^8.7"
+        "php": ">= 5.5, < 7.5",
+        "typo3/cms-core": "^8.7 || ^9.5"
     },
     "require-dev": {
-        "nimut/testing-framework": "2.x-dev || 4.x-dev"
+        "nimut/testing-framework": "5.x-dev"
     },
     "autoload": {
         "psr-4": {
             "IchHabRecht\\Multicolumn\\": "Classes/"
-        },
-        "classmap": [
-            "hooks/",
-            "lib/",
-            "pi1/",
-            "pi_sitemap/"
-        ]
+        }
     },
     "autoload-dev": {
-        "classmap": [
-            "Tests/"
-        ]
+        "psr-4": {
+            "IchHabRecht\\Multicolumn\\Test\\": "Tests/"
+        }
     },
     "replace": {
         "typo3-ter/multicolumn": "self.version"

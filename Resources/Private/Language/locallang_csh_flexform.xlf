@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-26T22:13:32Z" product-name="multicolumn">
+        <header />
+        <body>
+            <trans-unit id="columnWidth.description">
+                <source>The TypoScript property optionSplit is possible. Example: 24 |*| 19</source>
+            </trans-unit>
+            <trans-unit id="columnPadding.description">
+                <source>The TypoScript property optionSplit is possible. Example: 0 |*| 0 10px</source>
+            </trans-unit>
+            <trans-unit id="columnMargin.description">
+                <source>The TypoScript property optionSplit is possible. Example: 0 |*| 0 10px</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

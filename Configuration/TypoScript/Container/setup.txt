@@ -1,0 +1,187 @@
+plugin.tx_multicolumn_pi1 = USER
+plugin.tx_multicolumn_pi1 {
+    userFunc = IchHabRecht\Multicolumn\Controller\ContainerController->main
+
+    # internal do not remove
+    includeFromStatic = 1
+
+    # column container
+    columnContainer = COA
+    columnContainer {
+        if.isTrue.field = content
+
+        1 = LOAD_REGISTER
+        1 {
+            width = width: {field:containerWidth}{field:containerMeasure};
+            width {
+                insertData = 1
+                if {
+                    isTrue.field = containerWidth
+                    isFalse.field = disableStyles
+                }
+            }
+
+            # to do add configuration option to prevent clear
+            clearfix = clearfix
+
+            makeEqualElementBoxHeight = multicolumnContainerFixHeight
+            makeEqualElementBoxHeight {
+                if.isTrue.field = makeEqualElementBoxHeight
+            }
+
+            makeEqualElementColumnHeight = multicolumnContainerfixColumnHeight
+            makeEqualElementColumnHeight {
+                if.isTrue.field = makeEqualElementColumnHeight
+            }
+
+            # layout class
+            layout = multicolumnLayout{field:layoutKey}
+            layout {
+                insertData = 1
+                if.isTrue.field = layoutKey
+            }
+
+            # Extra Class for Container from FlexForm
+            containerClass.cObject = TEXT
+            containerClass.cObject {
+                data = field:containerClass
+                htmlSpecialChars = 1
+                if.isTrue.field = containerClass
+            }
+        }
+
+        2 = TEXT
+        2 {
+            insertData = 1
+            value (
+				<ul class="multicolumnContainer {register:containerClass} {register:layout} {register:clearfix} {register:makeEqualElementBoxHeight} {register:makeEqualElementColumnHeight}" style="{register:width}">
+					{field:content}
+				</ul>
+            )
+        }
+
+        3 = RESTORE_REGISTER
+    }
+
+    # markup for column item
+    column = COA
+    column {
+        1 = LOAD_REGISTER
+        1 {
+            width = width: {field:columnWidth}{field:columnMeasure};
+            width {
+                insertData = 1
+                if.isTrue.field = columnWidth
+            }
+
+            margin = margin: {field:columnMargin}
+            margin {
+                if.isTrue.field = columnMargin
+                insertData = 1
+            }
+
+            padding = padding: {field:columnPadding}
+            padding {
+                if {
+                    isTrue.field = columnPadding
+                    isFalse.field = disableStyles
+                }
+
+                insertData = 1
+            }
+
+            columnItems.cObject = TEXT
+            columnItems.cObject {
+                if.isTrue.field = content
+                insertData = 1
+                value (
+					<div class="columnItems" style="{register:padding}">
+						{field:content}
+					</div>
+                )
+            }
+        }
+
+        2 = LOAD_REGISTER
+        2 {
+            styles = style="{register:width} {register:margin}"
+            styles {
+                insertData = 1
+                if.isFalse.field = disableStyles
+            }
+        }
+
+        3 = TEXT
+        3 {
+            insertData = 1
+            value (
+				<li {register:styles} class="column column{field:recordNumber} {field:isFirst} {field:isLast}">
+					{register:columnItems}
+				</li>
+            )
+        }
+
+        4 = RESTORE_REGISTER
+    }
+
+    # render content elements
+    columnItem = COA
+    columnItem {
+        stdWrap.dataWrap = <div class="columnItem columnItem{field:recordNumber} {field:isFirst} {field:isLast} columnItem{field:CType}">|</div>
+
+        10 =< tt_content
+    }
+
+    # maxWidth of colum (needed for shrink images)
+    columnWidth = CASE
+    columnWidth {
+        key.data = field:colPos
+
+        default = TEXT
+        default {
+            value = {$styles.content.imgtext.colPos0.maxW}
+            ifEmpty = {$styles.content.imgtext.maxW}
+            intval = 1
+        }
+
+        #col1
+        1 = TEXT
+        1 {
+            value = {$styles.content.imgtext.colPos1.maxW}
+            ifEmpty = {$styles.content.imgtext.maxW}
+            intval = 1
+        }
+
+        #col2
+        2 = TEXT
+        2 {
+            value = {$styles.content.imgtext.colPos2.maxW}
+            ifEmpty = {$styles.content.imgtext.maxW}
+            intval = 1
+        }
+    }
+}
+
+plugin.tx_multicolumn_pi1._CSS_DEFAULT_STYLE (
+	.clearfix:after {
+		clear:both;
+		content:".";
+		display:block;
+		font-size:0;
+		height:0;
+		visibility:hidden;
+	}
+
+	.columnItems,
+	.multicolumnContainer {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	.multicolumnContainer .column {
+		float: left;
+	}
+)
+
+tt_content.multicolumn < tt_content.multicolumn_pi1
