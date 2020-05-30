@@ -117,6 +117,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
     {
         // return if not multicolumn
         if ($row['CType'] == 'multicolumn') {
+            $drawItem = false;
             $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
             $cssFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:multicolumn/' . $this->cssFile));
             $pageRenderer->addCssFile($cssFile, 'stylesheet', 'screen');
@@ -412,32 +413,6 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
         return str_replace('db_new_content_el.php?', 'db_new_content_el.php?tx_multicolumn_parentid=' . $this->multiColUid . '&amp;', $headerContent);
     }
 
-    /**
-     * This function is deprecated. Do not use it.
-     *
-     * @param int $pid record id
-     * @param int $colPos column position value
-     * @param int $mulitColumnParentId content id, reference where this content element belongs to
-     * @param int $sysLanguageUid System language
-     * @param null $uid_pid uid of previous content element
-     * @return    string
-     * @deprecated
-     */
-    public function getNewRecordParams($pid, $colPos, $mulitColumnParentId, $sysLanguageUid = 0, $uid_pid = null)
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $params = '&id=' . (int)$pid;
-        $params .= '&colPos=' . (int)$colPos;
-        $params .= '&tx_multicolumn_parentid=' . (int)$mulitColumnParentId;
-        $params .= '&sys_language_uid=' . (int)$sysLanguageUid;
-        $params .= '&uid_pid=' . ($uid_pid !== null ? -(int)$uid_pid : (int)$pid);
-        $params .= '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue(
-                BackendUtility::getModuleUrl('new_content_element') . $params
-            ) . ';';
-    }
-
     protected function getNewContentElementButton(int $pid, int $colPos, int $mulitColumnParentId, int $sysLanguageUid = 0, int $uid_pid = null): string
     {
         $urlParameters = [
@@ -448,12 +423,13 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             'uid_pid' => ($uid_pid !== null ? -$uid_pid : $pid),
             'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
         ];
-        $tsConfig = BackendUtility::getModTSconfig($pid, 'mod');
         if (version_compare(TYPO3_version, '9.0', '<')) {
+            $tsConfig = BackendUtility::getModTSconfig($pid, 'mod');
             $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element';
             $url = BackendUtility::getModuleUrl($moduleName, $urlParameters);
         } else {
-            $routeName = $tsConfig['properties']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
+            $tsConfig = BackendUtility::getPagesTSconfig($pid);
+            $routeName = $tsConfig['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
         }

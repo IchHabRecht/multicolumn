@@ -15,7 +15,7 @@ namespace IchHabRecht\Multicolumn\ContextMenu;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 class ItemProvider extends RecordProvider
 {
@@ -35,11 +35,12 @@ class ItemProvider extends RecordProvider
         $languageService = $this->getLanguageService();
 
         $newItems = [];
+        $defaultLabel = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto')
+            ?: $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto');
         $columns = DatabaseUtility::getNumberOfColumnsFromContainer($this->record['uid'], $this->record);
         for ($i = 0; $i < $columns; $i++) {
             $newItems['multicolumn-pasteinto-' . $i] = [
-                'label' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.pasteinto')
-                    . ' ' . $languageService->sL('LLL:EXT:multicolumn/Resources/Private/Language/locallang.xlf:multicolumColumn.clickmenu')
+                'label' => $defaultLabel . ' ' . $languageService->sL('LLL:EXT:multicolumn/Resources/Private/Language/locallang.xlf:multicolumColumn.clickmenu')
                     . ' ' . ($i + 1),
                 'iconIdentifier' => 'actions-document-paste-into',
                 'callbackAction' => 'pasteIntoColumn',

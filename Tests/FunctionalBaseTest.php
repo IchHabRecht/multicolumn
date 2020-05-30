@@ -48,7 +48,13 @@ abstract class FunctionalBaseTest extends FunctionalTestCase
         }
 
         $this->setUpBackendUserFromFixture(1);
-        Bootstrap::getInstance()->initializeLanguageObject();
+
+        if (method_exists(Bootstrap::class, 'getInstance')) {
+            $bootstrap = Bootstrap::getInstance();
+        } else {
+            $bootstrap = Bootstrap::class;
+        }
+        call_user_func([$bootstrap, 'initializeLanguageObject']);
 
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $flashMessageService->getMessageQueueByIdentifier()->clear();

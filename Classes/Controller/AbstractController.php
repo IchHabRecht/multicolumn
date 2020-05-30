@@ -181,7 +181,7 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
         // Hook: menuConfig_preProcessModMenu
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['multicolumn']['pi1_hooks'][$functionName] as $classRef) {
-                $hookObj = GeneralUtility::getUserObj($classRef);
+                $hookObj = GeneralUtility::makeInstance($classRef);
                 if (method_exists($hookObj, $functionName)) {
                     $hookObj->$functionName($this, $hookRequestParams);
                     $hooked++;
