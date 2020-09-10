@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace IchHabRecht\Multicolumn\Tests\Functional\Hooks\DefaultLanguage;
 
 /*
@@ -73,7 +76,7 @@ class PasteTest extends FunctionalBaseTest
         );
         $contextMenu = new ContextMenu();
 
-        $this->assertArraySubset($expectedSubset, $contextMenu->getItems($table, $uid, ''));
+        $this->assertArraySubset($expectedSubset, $contextMenu->getItems($table, (string)$uid, ''));
     }
 
     /**
