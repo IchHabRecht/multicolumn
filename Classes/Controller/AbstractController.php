@@ -15,6 +15,7 @@ namespace IchHabRecht\Multicolumn\Controller;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
@@ -102,28 +103,37 @@ abstract class AbstractController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
             if (is_array($file)) {
                 continue;
             }
-            $mediaTypeSplit = strrchr($file, '.');
-            $file = $GLOBALS['TSFE']->tmpl->getFileName($file);
 
-            $hookRequestParams = [
-                'includeFile' => [
-                    $fileKey => $file,
-                    $fileKey . '.' => $files[$fileKey . '.'],
-                ],
-                'mediaType' => str_replace('.', null, $mediaTypeSplit),
-            ];
+            try {
+                $mediaTypeSplit = strrchr($file, '.');
+                if (class_exists('TYPO3\\CMS\\Frontend\\Resource\\FilePathSanitizer')) {
+                    $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
+                } else {
+                    $file = $GLOBALS['TSFE']->tmpl->getFileName($file);
+                }
 
-            if (!$this->hookRequest('addJsCssFile', $hookRequestParams)) {
-                $resolved = $file;
+                $hookRequestParams = [
+                    'includeFile' => [
+                        $fileKey => $file,
+                        $fileKey . '.' => $files[$fileKey . '.'],
+                    ],
+                    'mediaType' => str_replace('.', null, $mediaTypeSplit),
+                ];
 
-                if (file_exists($resolved)) {
-                    $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-                    if ($mediaTypeSplit === '.js') {
-                        $pageRenderer->addJsFooterFile($resolved);
-                    } else {
-                        $pageRenderer->addCssFile($resolved);
+                if (!$this->hookRequest('addJsCssFile', $hookRequestParams)) {
+                    $resolved = $file;
+
+                    if (file_exists($resolved)) {
+                        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+                        if ($mediaTypeSplit === '.js') {
+                            $pageRenderer->addJsFooterFile($resolved);
+                        } else {
+                            $pageRenderer->addCssFile($resolved);
+                        }
                     }
                 }
+            } catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+                // do nothing in case the file path is invalid
             }
         }
     }
