@@ -1,3 +1,7 @@
+2020-09-10         [RELEASE] Release of multicolumn 5.1.1 (Nicole Cordes)
+2020-09-10 8e9c8ee [TASK] Update supporting files to EXT:my_skeleton 0.4.0 (Nicole Cordes)
+2020-09-10 6cca56b [BUGFIX] Prevent calling deprecated function TemplateService::getFileName (Nicole Cordes)
+
 2020-05-30         [RELEASE] Release of multicolumn 5.1.0 (Nicole Cordes)
 2020-05-30 1b35c36 [FEATURE] Add compatibility to TYPO3 10.4 (Nicole Cordes)
 
