@@ -18,6 +18,7 @@ namespace IchHabRecht\Multicolumn\Controller;
 use IchHabRecht\Multicolumn\Utility\DatabaseUtility;
 use IchHabRecht\Multicolumn\Utility\FlexFormUtility;
 use IchHabRecht\Multicolumn\Utility\MulticolumnUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -129,8 +130,10 @@ class ContainerController extends AbstractController
         $this->llPrefixed = MulticolumnUtility::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
         $this->pi_setPiVarDefaults();
 
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+
         // Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
-        if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TSFE']->sys_language_uid && $this->cObj->data['_LOCALIZED_UID']) {
+        if ($languageAspect->getLegacyOverlayType() && $languageAspect->getId() && $this->cObj->data['_LOCALIZED_UID']) {
             $this->multicolumnContainerUid = $this->cObj->data['_LOCALIZED_UID'];
         } else {
             // take default uid from cObj->data
