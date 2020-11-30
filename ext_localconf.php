@@ -17,6 +17,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
     \IchHabRecht\Multicolumn\Hooks\PageLayoutViewHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']['multicolumn'] =
     \IchHabRecht\Multicolumn\Hooks\PageLayoutViewHook::class . '->addDeleteWarning';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used']['multicolumn'] =
+    \IchHabRecht\Multicolumn\Hooks\ContentUsedDecision::class . '->isContentElementUsed';
 
 // special eval
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\IchHabRecht\Multicolumn\Evaluation\MaxColumnsEvaluator::class] = '';
