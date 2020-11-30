@@ -129,8 +129,12 @@ class ContainerController extends AbstractController
         $this->llPrefixed = MulticolumnUtility::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
         $this->pi_setPiVarDefaults();
 
+        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
+        $currentLanguageUid = $context->getPropertyFromAspect('language', 'id');
+        $legacyOverlayType = $context->getPropertyFromAspect('language', 'legacyOverlayType');
+
         // Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
-        if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TSFE']->sys_language_uid && $this->cObj->data['_LOCALIZED_UID']) {
+        if ($legacyOverlayType && $currentLanguageUid && $this->cObj->data['_LOCALIZED_UID']) {
             $this->multicolumnContainerUid = $this->cObj->data['_LOCALIZED_UID'];
         } else {
             // take default uid from cObj->data
