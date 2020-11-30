@@ -130,10 +130,17 @@ class ContainerController extends AbstractController
         $this->llPrefixed = MulticolumnUtility::prefixArray($this->LOCAL_LANG[$LLkey], 'lll:');
         $this->pi_setPiVarDefaults();
 
-        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 
-        // Check if sys_language_contentOL is set and take $this->cObj->data['_LOCALIZED_UID']
-        if ($languageAspect->getLegacyOverlayType() && $languageAspect->getId() && $this->cObj->data['_LOCALIZED_UID']) {
+        // Check if sys_language_contentOL or getLegacyOverlayType is set and take $this->cObj->data['_LOCALIZED_UID']
+        if (version_compare(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version(), '9.4.0', '>=')) {
+            /** @var \TYPO3\CMS\Core\Context\LanguageAspect $languageAspect */
+            $languageAspect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language');
+            $isLocalizedRecord = $languageAspect->getId() && $languageAspect->getLegacyOverlayType();
+        } else {
+            $isLocalizedRecord = $GLOBALS['TSFE']->sys_language_uid && $GLOBALS['TSFE']->sys_language_contentol;
+        }
+
+        if ($isLocalizedRecord && $this->cObj->data['_LOCALIZED_UID']) {
             $this->multicolumnContainerUid = $this->cObj->data['_LOCALIZED_UID'];
         } else {
             // take default uid from cObj->data
